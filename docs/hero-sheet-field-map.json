@@ -1,0 +1,101 @@
+{
+  "_meta": {
+    "source": "books/core/sheets/printable-and-fillable/Fillable/OG_Hero Sheet_ENG_Fillable.pdf",
+    "page": "841.89 x 595.28 pt landscape, single page, 165 widgets",
+    "naming": "PDF field names are Acrobat's Italian defaults: 'Campo testo N' (text) and 'Casella di controllo N' (checkbox). tx/cb below abbreviate those prefixes.",
+    "checkbox_on_state": "non-ASCII export value; read it from the widget's /AP /N keys at runtime rather than hardcoding",
+    "verified": "positions only (see docs/PLAN.md appendix); visual check of a filled export is milestone task T2.6"
+  },
+  "personal": {
+    "name": "tx1012",
+    "role": "tx1013",
+    "trope": "tx1014",
+    "job": "tx1015",
+    "age": "tx1017",
+    "flaw": "tx1016",
+    "catchphrase": "tx1018",
+    "portrait": "IMG (pushbutton, ff=65536; pdf-lib PDFButton.setImage)"
+  },
+  "attributes_third_dot": {
+    "brawn": "cb153",
+    "nerves": "cb200",
+    "smooth": "cb201",
+    "focus": "cb162",
+    "crime": "cb202"
+  },
+  "skills_dots_2_and_3": {
+    "endure": ["cb154", "cb155"],
+    "fight": ["cb156", "cb157"],
+    "force": ["cb158", "cb159"],
+    "stunt": ["cb160", "cb161"],
+    "cool": ["cb168", "cb169"],
+    "drive": ["cb170", "cb171"],
+    "shoot": ["cb172", "cb173"],
+    "survival": ["cb174", "cb175"],
+    "flirt": ["cb176", "cb177"],
+    "leadership": ["cb178", "cb179"],
+    "speech": ["cb180", "cb181"],
+    "style": ["cb182", "cb183"],
+    "detect": ["cb184", "cb185"],
+    "fix": ["cb186", "cb187"],
+    "heal": ["cb188", "cb189"],
+    "know": ["cb190", "cb191"],
+    "awareness": ["cb192", "cb193"],
+    "dexterity": ["cb194", "cb195"],
+    "stealth": ["cb196", "cb197"],
+    "streetwise": ["cb198", "cb199"]
+  },
+  "grit_left_to_right": ["cb85", "cb90", "cb86", "cb93", "cb91", "cb87", "cb94", "cb92", "cb88", "cb95", "cb89", "cb96"],
+  "feats_boxes_two_lines_each": [
+    ["tx100", "tx101"],
+    ["tx102", "tx103"],
+    ["tx104", "tx105"],
+    ["tx106", "tx107"],
+    ["tx108", "tx109"],
+    ["tx1010", "tx1011"]
+  ],
+  "spotlight": ["cb113", "cb114", "cb115"],
+  "adrenaline": ["cb130", "cb131", "cb132", "cb133", "cb134", "cb135"],
+  "mission": "tx40",
+  "experiences": ["tx41", "tx42", "tx43", "tx44"],
+  "conditions": {
+    "hurt": "cb145",
+    "nervous": "cb143",
+    "like_a_fool": "cb141",
+    "distracted": "cb139",
+    "scared": "cb137",
+    "tired": "cb144",
+    "other": ["cb142", "cb140", "cb138"],
+    "other_text": ["tx45", "tx46", "tx47"],
+    "broken": "cb136"
+  },
+  "death_roulette_chambers_2_to_6": {
+    "2": "cb206",
+    "3": "cb207",
+    "4": "cb208",
+    "5": "cb209",
+    "6": "cb210",
+    "note": "chamber 1 is pre-printed as loaded; verify chamber order visually"
+  },
+  "guns_rows": [
+    { "name": "tx48", "melee": "tx49", "close": "tx65", "medium": "tx68", "long": "tx71", "mags": ["cb116", "cb119", "cb122"] },
+    { "name": "tx52", "melee": "tx50", "close": "tx66", "medium": "tx69", "long": "tx72", "mags": ["cb117", "cb120", "cb123"] },
+    { "name": "tx53", "melee": "tx51", "close": "tx67", "medium": "tx70", "long": "tx73", "mags": ["cb118", "cb121", "cb124"] }
+  ],
+  "gear_rows": [
+    { "name": "tx54", "bag": "cb125" },
+    { "name": "tx55", "bag": "cb126" },
+    { "name": "tx56", "bag": "cb127" },
+    { "name": "tx57", "bag": "cb128" },
+    { "name": "tx58", "bag": "cb129" }
+  ],
+  "cash_left_to_right": ["cb112", "cb111", "cb110", "cb109", "cb103"],
+  "storage": ["tx59", "tx62", "tx63", "tx64"],
+  "ride": {
+    "name": "tx60",
+    "speed": "tx61",
+    "armor": ["cb97", "cb99", "cb101"],
+    "armor_extra_armored": ["cb98", "cb100", "cb102"],
+    "types": { "bike": "cb104", "car": "cb105", "nautical": "cb106", "flying": "cb107", "armored": "cb108" }
+  }
+}
