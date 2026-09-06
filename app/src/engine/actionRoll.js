@@ -30,3 +30,30 @@ export function rollAction({ attribute = 0, skill = 0, modifier = 0, difficulty 
   const dice = Array.from({ length: pool }, () => d6(rng)).sort((a, b) => a - b)
   return { pool, dice, difficulty, ...analyseActionRoll(dice, difficulty) }
 }
+
+const probabilityCache = new Map()
+const factorial = value => value < 2 ? 1 : value * factorial(value - 1)
+
+export function actionSuccessProbability(pool, difficulty = 3) {
+  const diceCount = Math.max(2, Math.min(9, Math.floor(Number(pool) || 0)))
+  const key = `${diceCount}:${difficulty}`
+  if (probabilityCache.has(key)) return probabilityCache.get(key)
+  let favorable = 0
+  const counts = Array(6).fill(0)
+  const visit = (face, remaining) => {
+    if (face === 5) {
+      counts[face] = remaining
+      const dice = counts.flatMap((count, index) => Array(count).fill(index + 1))
+      if (analyseActionRoll(dice, difficulty).passed) favorable += factorial(diceCount) / counts.reduce((total, count) => total * factorial(count), 1)
+      return
+    }
+    for (let count = 0; count <= remaining; count += 1) {
+      counts[face] = count
+      visit(face + 1, remaining - count)
+    }
+  }
+  visit(0, diceCount)
+  const probability = favorable / (6 ** diceCount)
+  probabilityCache.set(key, probability)
+  return probability
+}

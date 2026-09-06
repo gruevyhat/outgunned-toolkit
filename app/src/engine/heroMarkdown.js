@@ -1,5 +1,6 @@
 import { encodeHero } from './share.js'
 import { groupFeatIds } from './build.js'
+import {isMeleeWeapon,isWeapon,usesMags} from './gearCatalog.js'
 
 const title = value => String(value || '').replace(/[_-]+/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase())
 const dots = (value, max = 3) => `${'●'.repeat(Math.max(0, Number(value) || 0))}${'○'.repeat(Math.max(0, max - (Number(value) || 0)))}`
@@ -9,10 +10,12 @@ export function heroMarkdown(hero, data = {}) {
   const attributes = Object.entries(hero.attributes || {}).map(([id, value]) => `- **${title(id)}:** ${dots(value)} (${value})`).join('\n')
   const skills = Object.entries(hero.skills || {}).map(([id, value]) => `- **${title(id)}:** ${dots(value)} (${value})`).join('\n')
   const feats = groupFeatIds(hero.feats).map(({id,count}) => `- ${nameOf(data.feats?.feats, id)}${count > 1 ? ` (×${count})` : ''}`).join('\n') || '- —'
-  const isMelee = item => item.kind === 'melee' || item.kind === 'weapon' || !!(item.id && data.gear?.weapons?.[item.id] && !data.gear?.guns?.[item.id])
-  const melee = (hero.gear?.items || []).filter(isMelee)
-  const weapons = [...(hero.gear?.guns || []).map(item => `- ${item.name || nameOf(data.gear?.gear, item.id)} — ${item.mags ?? 0} Mags`), ...melee.map(item => `- ${item.name || nameOf(data.gear?.gear, item.id)} — Melee`)].join('\n') || '- —'
-  const gear = (hero.gear?.items || []).filter(item => !isMelee(item)).map(item => `- ${item.name || nameOf(data.gear?.gear, item.id)}${item.bag ? ' (in bag)' : ''}`).join('\n') || '- —'
+  const catalogItem = item => item.id && data.gear?.gear?.[item.id] || item
+  const isSavedWeapon = item => isWeapon(item) || isWeapon(catalogItem(item))
+  const itemWeapons = (hero.gear?.items || []).filter(isSavedWeapon)
+  const weaponLine = item => `- ${item.name || nameOf(data.gear?.gear, item.id)} — ${isMeleeWeapon(item)||isMeleeWeapon(catalogItem(item))?'Melee':usesMags(item)?`${item.mags ?? 0} Mags`:'Ranged'}`
+  const weapons = [...(hero.gear?.guns || []), ...itemWeapons].map(weaponLine).join('\n') || '- —'
+  const gear = (hero.gear?.items || []).filter(item => !isSavedWeapon(item)).map(item => `- ${item.name || nameOf(data.gear?.gear, item.id)}${item.bag ? ' (in bag)' : ''}`).join('\n') || '- —'
   const experiences = (hero.experiences || []).map(value => `- ${value}`).join('\n') || '- —'
   const resources = hero.resources || {}
   return `# ${hero.personal?.name || 'Unnamed Hero'}

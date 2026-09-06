@@ -1,5 +1,6 @@
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { groupFeatIds } from '../engine/build.js';
+import {isMeleeWeapon as catalogMeleeWeapon, isWeapon, usesMags, weaponModifier} from '../engine/gearCatalog.js';
 
 const PAGE = Object.freeze({ width: 792, height: 612 }); // landscape Letter, points
 const MARGIN = 24;
@@ -72,16 +73,20 @@ function getGuns(hero) {
 }
 
 function isMeleeWeapon(item, data) {
-  return item?.kind === 'melee' || item?.kind === 'weapon' || Boolean(item?.id && data?.gear?.weapons?.[item.id] && !data?.gear?.guns?.[item.id]);
+  return catalogMeleeWeapon(item) || catalogMeleeWeapon(item?.id && data?.gear?.gear?.[item.id]);
+}
+
+function isSavedWeapon(item, data) {
+  return isWeapon(item) || isWeapon(item?.id && data?.gear?.gear?.[item.id]);
 }
 
 function getItems(hero, data) {
-  return Array.isArray(hero?.gear?.items) ? hero.gear.items.filter(item => !isMeleeWeapon(item, data)) : [];
+  return Array.isArray(hero?.gear?.items) ? hero.gear.items.filter(item => !isSavedWeapon(item, data)) : [];
 }
 
 function getWeapons(hero, data) {
-  const melee = Array.isArray(hero?.gear?.items) ? hero.gear.items.filter(item => isMeleeWeapon(item, data)) : [];
-  return [...getGuns(hero), ...melee];
+  const legacyWeapons = Array.isArray(hero?.gear?.items) ? hero.gear.items.filter(item => isSavedWeapon(item, data)) : [];
+  return [...getGuns(hero), ...legacyWeapons];
 }
 
 function checkRect(label, rect) {
@@ -381,9 +386,11 @@ export async function drawHeroSheet(hero = {}, data = {}) {
     const gy = gunsBox.y + gunsBox.h - 47 - index * 28;
     let x = gx;
     const melee = isMeleeWeapon(gun, data);
-    const vals = [gunName(data, gun), melee ? 'Fight' : rangeValue(gun, 'melee'), melee ? '-' : rangeValue(gun, 'close'), melee ? '-' : rangeValue(gun, 'medium'), melee ? '-' : rangeValue(gun, 'long')];
+    const abstractRanged = !melee && !gun.range;
+    const attack = `Shoot${weaponModifier(gun) ? ` +${weaponModifier(gun)}` : ''}`;
+    const vals = [gunName(data, gun), melee ? 'Fight' : abstractRanged ? attack : rangeValue(gun, 'melee'), melee || abstractRanged ? '-' : rangeValue(gun, 'close'), melee || abstractRanged ? '-' : rangeValue(gun, 'medium'), melee || abstractRanged ? '-' : rangeValue(gun, 'long')];
     vals.forEach((val, valIndex) => { drawFittedLine(page, regular, val, x, gy, gunCols[valIndex] - 7, 7); x += gunCols[valIndex]; });
-    if (melee) drawFittedLine(page, regular, '-', x, gy, gunCols[5] - 7, 7);
+    if (melee || !usesMags(gun)) drawFittedLine(page, regular, '-', x, gy, gunCols[5] - 7, 7);
     else drawTracker(page, x, gy - 4, numeric(gun.mags, 2), 3, { width: 11, height: 11, gap: 2 });
   });
   for (let index = getWeapons(hero, data).length; index < 3; index += 1) {
