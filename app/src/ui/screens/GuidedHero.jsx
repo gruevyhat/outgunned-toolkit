@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { makeRng } from '../../engine/dice.js'
 import { generateRandom } from '../../engine/hero.js'
 import { roleAttributeOptions } from '../../engine/build.js'
+import { validateHero } from '../../engine/validate.js'
 import { Dots } from '../components/index.jsx'
 import HeroSheet from './HeroSheet.jsx'
 
@@ -48,7 +49,7 @@ export default function GuidedHero({ data, onBack, defaults = {} }) {
     window.scrollTo(0, 0)
   }, [step])
 
-  if (step === 6 && hero) return <HeroSheet hero={hero} data={data} onHome={onBack} />
+  if (step === 6 && hero) return <GuidedReview initial={hero} data={data} onHome={onBack} />
 
   const canContinue = !(step === 3 && form.freeSkillPoints.length !== 2)
     && !(step === 4 && (form.roleFeats.length !== roleCap || form.tropeFeats.length !== 1 || (form.age === 'Old' && form.extraFeats.length !== 1)))
@@ -96,6 +97,24 @@ export default function GuidedHero({ data, onBack, defaults = {} }) {
 
     <button className="primary" disabled={!canContinue} onClick={() => setStep(step + 1)}>{step === 5 ? 'Review hero' : 'Continue'}</button>
   </main>
+}
+
+export function GuidedReview({ initial, data, onHome }) {
+  const [hero, setHero] = useState(() => structuredClone(initial))
+  const [editing, setEditing] = useState(false)
+  const edit = (field, value) => {
+    if (['role', 'trope', 'personal.age'].includes(field)) {
+      const pins = { role: field === 'role' ? value : hero.role, trope: field === 'trope' ? value : hero.trope, age: field === 'personal.age' ? value : hero.personal.age, name: hero.personal.name, job: hero.personal.job, catchphrase: hero.personal.catchphrase, flaw: hero.personal.flaw }
+      try { setHero(generateRandom(makeRng(Date.now()), data, pins)) } catch {}
+      return
+    }
+    const next = structuredClone(hero), parts = field.split('.')
+    let parent = next
+    for (const part of parts.slice(0, -1)) parent = parent[part]
+    parent[parts.at(-1)] = value
+    if (!validateHero(next, data).length) setHero(next)
+  }
+  return <HeroSheet hero={hero} data={data} mode={editing ? 'edit' : 'play'} onHome={onHome} onEdit={edit} onWorkingChange={setHero} onToggleEdit={() => setEditing(value => !value)} />
 }
 
 function ChoiceGrid({ label, values, selected, onChange }) {
