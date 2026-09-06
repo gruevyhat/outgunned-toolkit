@@ -12,12 +12,23 @@ import {decodeHash} from '../engine/share.js'
 import {parseHeroMarkdown} from '../engine/heroMarkdown.js'
 import {validateHero} from '../engine/validate.js'
 
+const PACK_STORAGE_KEY='outgunned-enabled-packs'
+const allPackIds=()=>contentPacks.map(pack=>pack.id)
+export function initialEnabledPacks(storage=typeof window!=='undefined'?window.localStorage:null){
+  if(!storage)return allPackIds()
+  try{
+    const saved=JSON.parse(storage.getItem(PACK_STORAGE_KEY))
+    return Array.isArray(saved)?saved.filter(id=>allPackIds().includes(id)):allPackIds()
+  }catch{return allPackIds()}
+}
+
 export default function App(){
-  const [mode,setMode]=useState('menu'),[shared,setShared]=useState(null),[guidedDefaults,setGuidedDefaults]=useState({}),[crew,setCrew]=useState([]),[enabledPacks,setEnabledPacks]=useState([])
+  const [mode,setMode]=useState('menu'),[shared,setShared]=useState(null),[guidedDefaults,setGuidedDefaults]=useState({}),[crew,setCrew]=useState([]),[enabledPacks,setEnabledPacks]=useState(initialEnabledPacks)
   const data=useMemo(()=>mergePacks(coreData,contentPacks,enabledPacks),[enabledPacks])
   useEffect(()=>{
     window.scrollTo(0,0)
   },[mode])
+  useEffect(()=>{try{window.localStorage.setItem(PACK_STORAGE_KEY,JSON.stringify(enabledPacks))}catch{}},[enabledPacks])
   useEffect(()=>{const raw=decodeHash(location.hash);if(raw?.type==='hero'){const packId=raw.value.role?.split('__')[0];if(contentPacks.some(pack=>pack.id===packId)&&!enabledPacks.includes(packId)){setEnabledPacks(current=>[...current,packId]);return}}const decoded=decodeHash(location.hash,validateHero,data);if(decoded?.type==='hero'){setShared(decoded.value);setMode('random')}else if(decoded?.type==='campaign'){setShared(decoded.value);setMode('mission')}},[data,enabledPacks])
   const home=()=>{history.replaceState(null,'',location.pathname+location.search);setShared(null);setMode('menu')}
   const togglePack=id=>{setEnabledPacks(current=>current.includes(id)?current.filter(x=>x!==id):[...current,id]);setCrew([]);setGuidedDefaults({})}
