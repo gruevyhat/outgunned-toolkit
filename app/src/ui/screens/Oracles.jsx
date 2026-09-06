@@ -10,6 +10,7 @@ const CATEGORY_RULES = [
   ['Campaign', /campaign_phases|macguffin/],
 ]
 const title = id => id.replaceAll('_', ' ')
+const REFERENCE_TABLES = new Set(['campaign_phases'])
 export const selectOracleValue = (value, rng) => {
   if (!Array.isArray(value) || !value.length) return value
   // Lists of records are reference tables (such as the full campaign structure).
@@ -24,6 +25,16 @@ export const formatOracleValue = value => {
   if (value && typeof value === 'object') return Object.values(value).map(formatOracleValue).join(' / ')
   return String(value ?? '—')
 }
+export const getOracleResult = (rng, tables, id) => {
+  if (REFERENCE_TABLES.has(id)) {
+    const row = tables.tables[id].rows[0]
+    const value = Object.entries(row).filter(([key]) => key !== 'roll').map(([, item]) => formatOracleValue(item)).join(' / ')
+    return { id, roll: null, value, reference: true }
+  }
+  const result = rollTable(rng, tables, id)
+  const value = Object.entries(result.row).filter(([key]) => key !== 'roll').map(([, item]) => formatOracleValue(selectOracleValue(item, rng))).join(' / ')
+  return { id, roll: Array.isArray(result.roll) ? result.roll.join(', ') : result.roll, value, reference: false }
+}
 
 export default function Oracles({ data, onBack }) {
   const [log, setLog] = useState([])
@@ -32,9 +43,7 @@ export default function Oracles({ data, onBack }) {
   const groups = useMemo(() => CATEGORY_RULES.map(([name, pattern]) => [name, ids.filter(id => pattern.test(id) && title(id).includes(query.toLowerCase()))]).filter(([, values]) => values.length), [data, query])
   const run = id => {
     const rng = makeRng(Date.now())
-    const result = rollTable(rng, data.missionTables, id)
-    const value = Object.entries(result.row).filter(([key]) => key !== 'roll').map(([, item]) => formatOracleValue(selectOracleValue(item, rng))).join(' / ')
-    setLog(current => [{ id, roll: Array.isArray(result.roll) ? result.roll.join(', ') : result.roll, value }, ...current].slice(0, 30))
+    setLog(current => [getOracleResult(rng, data.missionTables, id), ...current].slice(0, 30))
   }
   const current = log[0]
 
@@ -43,10 +52,10 @@ export default function Oracles({ data, onBack }) {
     <div className="tool-intro"><div><p className="eyebrow">Instant inspiration</p><h1>Oracles</h1></div></div>
     <input className="oracle-search" aria-label="Search oracles" placeholder="Find an oracle…" value={query} onChange={event => setQuery(event.target.value.toLowerCase())} />
 
-    {current && <section className="oracle-current"><small>{title(current.id)} · roll {current.roll}</small><strong>{current.value}</strong></section>}
+    {current && <section className={`oracle-current ${current.reference?'is-reference':''}`}><small>{current.reference?`Reference guide · ${title(current.id)}`:`${title(current.id)} · roll ${current.roll}`}</small><strong>{current.value}</strong></section>}
 
-    {groups.map(([name, values]) => <section className="oracle-section" key={name}><h2>{name}</h2><div className="oracle-grid">{values.map(id => <button key={id} onClick={() => run(id)}>↻ {title(id)}</button>)}</div></section>)}
+    {groups.map(([name, values]) => <section className="oracle-section" key={name}><h2>{name}</h2><div className="oracle-grid">{values.map(id => <button key={id} onClick={() => run(id)}>{REFERENCE_TABLES.has(id)?'▤':'↻'} {title(id)}</button>)}</div></section>)}
 
-    {log.length > 1 && <section className="log"><div className="log-header"><h2>Recent rolls</h2><button className="link" onClick={() => setLog(current ? [current] : [])}>Clear history</button></div>{log.slice(1).map((item, index) => <p key={`${item.id}-${index}`}><strong>{title(item.id)} [{item.roll}]</strong><br />{item.value}</p>)}</section>}
+    {log.length > 1 && <section className="log"><div className="log-header"><h2>Recent results</h2><button className="link" onClick={() => setLog(current ? [current] : [])}>Clear history</button></div>{log.slice(1).map((item, index) => <p key={`${item.id}-${index}`}><strong>{title(item.id)} [{item.reference?'reference':item.roll}]</strong><br />{item.value}</p>)}</section>}
   </main>
 }

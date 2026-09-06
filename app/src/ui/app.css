@@ -118,6 +118,8 @@ textarea { min-height: 104px; resize: vertical; }
 .oracle-current { margin: 1.25rem 0; padding: 1.2rem; border-left: 7px solid #c8202f; background: #17161a; color: #fffaf0; }
 .oracle-current small { color: #e5dac5; text-transform: uppercase; }
 .oracle-current strong { display: block; margin-top: .4rem; font-size: 1.25rem; line-height: 1.45; white-space: pre-line; }
+.oracle-current.is-reference { border-left-color: #e5dac5; }
+.oracle-current.is-reference strong { font-size: 1.08rem; line-height: 1.55; }
 .log { margin-top: 1rem; }
 .log-header { display: flex; align-items: center; justify-content: space-between; }
 .log p { padding: .8rem 0; border-bottom: 1px solid #c9c0b1; }
