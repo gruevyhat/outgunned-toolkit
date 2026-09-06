@@ -1,12 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { makeRng } from '../../engine/dice.js'
 import { generateRandom } from '../../engine/hero.js'
+import { randomPersonalValue } from '../../engine/personal.js'
 import { featSlots, roleAttributeOptions } from '../../engine/build.js'
 import { validateHero } from '../../engine/validate.js'
 import { Dots } from '../components/index.jsx'
 import HeroSheet from './HeroSheet.jsx'
 
-const STEPS = ['Role', 'Personal Data', 'Trope', 'Free Points', 'Feats', 'Gear', 'Review']
+const STEPS = ['Role', 'Trope', 'Personal Data', 'Free Points', 'Feats', 'Gear', 'Review']
 const byName = ([,a],[,b]) => (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base', numeric: true })
 
 export default function GuidedHero({ data, onBack, defaults = {}, onImportMarkdown }) {
@@ -51,6 +52,7 @@ export default function GuidedHero({ data, onBack, defaults = {}, onImportMarkdo
     try { return generateRandom(makeRng(73), data, pins) } catch { return null }
   }, [data, JSON.stringify(pins)])
   const set = (key, value) => setForm(current => ({ ...current, [key]: value }))
+  const randomizePersonal = field => set(field,randomPersonalValue(field,{data,role,trope:role.actsAsTrope?role:trope,attributes:[roleAttr,tropeAttr].filter(Boolean),current:form[field]},makeRng(Date.now()+field.length)))
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [step])
@@ -73,17 +75,17 @@ export default function GuidedHero({ data, onBack, defaults = {}, onImportMarkdo
       {role.fixedAttributes?.length?<p><strong>Raised Attributes:</strong> {role.fixedAttributes.join(' and ')}</p>:roleAttrs.length > 1 && <><h2>Role Attribute</h2><div className="choices">{roleAttrs.map(attribute => <button key={attribute} className={roleAttr === attribute ? 'selected' : ''} onClick={() => set('roleAttribute', attribute)}>{attribute}</button>)}</div></>}
     </>}
 
-    {step === 1 && <div className="form-grid">
-      <label>Name<input value={form.name} placeholder="Your hero's name" onChange={event => set('name', event.target.value)} /></label>
-      <label>Age<select value={form.age} onChange={event => set('age', event.target.value)}><option>Young</option><option>Adult</option><option>Old</option></select></label>
-      <label>{role.origins ? 'Origin' : 'Job'}<input value={form.job} placeholder={(role.jobs || role.origins || [''])[0]} onChange={event => set('job', event.target.value)} /></label>
-      <label>Catchphrase<input value={form.catchphrase} placeholder={role.catchphrases?.[0] || ''} onChange={event => set('catchphrase', event.target.value)} /></label>
-      <label>Flaw<input value={form.flaw} placeholder={role.flaws?.[0] || ''} onChange={event => set('flaw', event.target.value)} /></label>
-    </div>}
-
-    {step === 2 && <>
+    {step === 1 && <>
       {role.actsAsTrope?<p>This Special Role also acts as your Trope, so no separate Trope is chosen.</p>:<><ChoiceGrid label="Tropes" values={needsRoleTrope?Object.fromEntries(Object.entries(data.tropes.tropes).filter(([id,value])=>id!==firstTropeId&&(!role.doubleTrope||!value.colorTrope))):data.tropes.tropes} selected={form.trope} onChange={value => setForm(current => ({ ...current, trope: value, tropeAttribute: null, tropeFeats: [], extraFeats: [] }))} /><h2>Raised Attribute</h2><div className="choices">{trope.attributes.map(attribute => <button disabled={attribute === roleAttr} className={tropeAttr === attribute ? 'selected' : ''} onClick={() => set('tropeAttribute', attribute)} key={attribute}>{attribute}{attribute === roleAttr ? ' · already raised' : ''}</button>)}</div></>}
     </>}
+
+    {step === 2 && <div className="form-grid personal-data-grid">
+      <RandomPersonalField label="Name" value={form.name} placeholder="Your hero's name" onChange={value=>set('name',value)} onRandomize={()=>randomizePersonal('name')} />
+      <label>Age<select value={form.age} onChange={event => set('age', event.target.value)}><option>Young</option><option>Adult</option><option>Old</option></select></label>
+      <RandomPersonalField label={role.origins?'Origin':'Job'} value={form.job} placeholder={(role.jobs||role.origins||[''])[0]} onChange={value=>set('job',value)} onRandomize={()=>randomizePersonal('job')} />
+      <RandomPersonalField label="Catchphrase" value={form.catchphrase} placeholder={role.catchphrases?.[0]||trope?.quote||''} onChange={value=>set('catchphrase',value)} onRandomize={()=>randomizePersonal('catchphrase')} />
+      <RandomPersonalField label="Flaw" value={form.flaw} placeholder={role.flaws?.[0]||''} onChange={value=>set('flaw',value)} onRandomize={()=>randomizePersonal('flaw')} />
+    </div>}
 
     {step === 3 && <FreeSkills form={form} role={role.doubleTrope?{skills:[...role.skills,...roleTrope.skills]}:roleTrope||role} trope={trope} hero={hero} set={set} count={freePointCount} />}
 
@@ -139,6 +141,10 @@ function ChoiceGrid({ label, values, selected, onChange, alphabetical = false })
     </div>
     <div className="card-grid">{matches.map(([id, value]) => <button key={id} className={`choice-card ${id === selected ? 'selected' : ''}`} onClick={() => onChange(id)}><strong>{value.name}</strong><small>{value.tagline || value.blurb}</small><small className="source">{value.packName || 'Corebook'}</small></button>)}</div>
   </>
+}
+
+function RandomPersonalField({label,value,placeholder,onChange,onRandomize}){
+  return <label className="random-personal-field">{label}<div><input value={value} placeholder={placeholder} onChange={event=>onChange(event.target.value)}/><button type="button" aria-label={`Randomize ${label}`} title={`Randomize ${label}`} onClick={onRandomize}>↻ <span>Randomize</span></button></div></label>
 }
 
 function FreeSkills({ form, role, trope, hero, set, count=2 }) {

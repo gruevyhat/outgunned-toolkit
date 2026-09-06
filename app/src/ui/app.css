@@ -44,6 +44,11 @@ button:disabled { cursor: not-allowed; opacity: .42; transform: none; box-shadow
 .choice-count { color: #6b6660; font-size: .78rem; }
 
 .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; }
+.personal-data-grid { grid-template-columns:repeat(2,minmax(0,1fr)); align-items:end; max-width:920px; }
+.random-personal-field > div { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:stretch; gap:.4rem; margin-top:.35rem; }
+.random-personal-field input { margin-top:0; }
+.random-personal-field button { min-width:42px; padding:.55rem .7rem; color:#941726; }
+.random-personal-field button span { margin-left:.25rem; font-size:.68rem; }
 label { font-size: .78rem; font-weight: 800; text-transform: uppercase; }
 input, select, textarea { width: 100%; padding: .72rem; border: 1px solid #8d857b; border-radius: 3px; background: #fffaf0; color: #17161a; }
 label input, label select, label textarea { display: block; margin-top: .35rem; }
@@ -232,6 +237,7 @@ textarea { min-height: 104px; resize: vertical; }
   .dice-roll-button { grid-column: 1 / -1; }
   .dice-result { align-items: flex-start; flex-direction: column; }
   .dice-tray { justify-content: flex-start; }
+  .personal-data-grid { grid-template-columns:1fr; }
 }
 
 @media (max-width: 560px) {
@@ -245,4 +251,5 @@ textarea { min-height: 104px; resize: vertical; }
   .mission-actions { position: static; justify-content: flex-start; }
   .identity-grid { grid-template-columns: 1fr !important; }
   .identity-grid > * { grid-column: auto !important; }
+  .random-personal-field button span { display:none; }
 }
