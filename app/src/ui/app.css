@@ -143,6 +143,11 @@ textarea { min-height: 104px; resize: vertical; }
 .inventory-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; min-height: 34px; border-bottom: 1px solid #b9ad9b; font-size: 12px; }
 .remove-control { width: 25px; height: 25px; margin-left: .2rem; padding: 0; border-color: #941726; color: #941726; line-height: 1; }
 .ride-picker { display: grid; gap: .3rem; margin-bottom: .8rem; }
+.dice-modal-backdrop { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 1rem; background: rgba(23, 22, 26, .76); backdrop-filter: blur(3px); }
+.dice-modal-backdrop[hidden] { display: none; }
+.dice-modal { position: relative; width: min(880px, 100%); max-height: calc(100vh - 2rem); overflow: auto; border: 2px solid #17161a; border-radius: 7px; box-shadow: 0 22px 70px rgba(0,0,0,.45); }
+.dice-modal > section { background: #f3ede0 !important; box-shadow: none !important; }
+.dice-modal-close { position: absolute; z-index: 2; top: 3px; right: 7px; width: 30px; height: 30px; padding: 0; border: 0; background: transparent; color: #fffaf0; font-size: 1.6rem; line-height: 1; }
 .dice-controls { display: grid; grid-template-columns: minmax(130px, 1fr) auto minmax(130px, 1fr) minmax(95px, .55fr) minmax(115px, .65fr) auto; align-items: end; gap: .6rem; }
 .dice-controls label { display: grid; gap: .3rem; color: #6b6660; font-family: "Arial Narrow", Impact, sans-serif; font-size: .72rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
 .dice-controls select { min-width: 0; padding: .58rem; background: #fffaf0; border: 1px solid #6b6660; color: #17161a; text-transform: capitalize; }
