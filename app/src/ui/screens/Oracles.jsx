@@ -10,6 +10,12 @@ const CATEGORY_RULES = [
   ['Campaign', /campaign_phases|macguffin/],
 ]
 const title = id => id.replaceAll('_', ' ')
+export const selectOracleValue = (value, rng) => {
+  if (!Array.isArray(value) || !value.length) return value
+  // Lists of records are reference tables (such as the full campaign structure).
+  // Lists of strings are alternatives, so an oracle roll should return one of them.
+  return value.some(item => item && typeof item === 'object') ? value : value[Math.floor(rng() * value.length)]
+}
 export const formatOracleValue = value => {
   if (Array.isArray(value)) return value.map((item, index) => {
     if (item && typeof item === 'object') return `${index + 1}. ${item.name || `Phase ${index + 1}`} — ${[item.shots, item.purpose].filter(Boolean).join(': ')}`
@@ -25,8 +31,9 @@ export default function Oracles({ data, onBack }) {
   const ids = Object.keys(data.missionTables.tables)
   const groups = useMemo(() => CATEGORY_RULES.map(([name, pattern]) => [name, ids.filter(id => pattern.test(id) && title(id).includes(query.toLowerCase()))]).filter(([, values]) => values.length), [data, query])
   const run = id => {
-    const result = rollTable(makeRng(Date.now()), data.missionTables, id)
-    const value = Object.entries(result.row).filter(([key]) => key !== 'roll').map(([, item]) => formatOracleValue(item)).join(' / ')
+    const rng = makeRng(Date.now())
+    const result = rollTable(rng, data.missionTables, id)
+    const value = Object.entries(result.row).filter(([key]) => key !== 'roll').map(([, item]) => formatOracleValue(selectOracleValue(item, rng))).join(' / ')
     setLog(current => [{ id, roll: Array.isArray(result.roll) ? result.roll.join(', ') : result.roll, value }, ...current].slice(0, 30))
   }
   const current = log[0]
