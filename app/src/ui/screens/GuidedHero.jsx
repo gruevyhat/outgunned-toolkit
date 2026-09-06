@@ -7,11 +7,13 @@ import { Dots } from '../components/index.jsx'
 import HeroSheet from './HeroSheet.jsx'
 
 const STEPS = ['Role', 'Personal Data', 'Trope', 'Free Points', 'Feats', 'Gear', 'Review']
+const byName = ([,a],[,b]) => (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base', numeric: true })
 
 export default function GuidedHero({ data, onBack, defaults = {}, onImportMarkdown }) {
+  const firstRoleId = Object.entries(data.roles.roles).sort(byName)[0]?.[0]
   const [step, setStep] = useState(defaults.role ? 1 : 0)
   const [form, setForm] = useState({
-    role: defaults.role || Object.keys(data.roles.roles)[0],
+    role: defaults.role || firstRoleId,
     roleTrope: defaults.roleTrope || Object.keys(data.tropes.tropes)[0],
     trope: defaults.trope || Object.keys(data.tropes.tropes)[0],
     roleAttribute: null,
@@ -66,7 +68,7 @@ export default function GuidedHero({ data, onBack, defaults = {}, onImportMarkdo
     {step > 0 && <div className="wizard-summary"><span><strong>Role</strong> {needsRoleTrope?`${roleTrope.name} ${role.name.replace(/^The /,'')}`:role.name}</span><span><strong>Trope</strong> {role.actsAsTrope?role.name:trope.name}</span><span><strong>Age</strong> {form.age}</span></div>}
 
     {step === 0 && <>
-      <ChoiceGrid label="Roles" values={data.roles.roles} selected={form.role} onChange={value => setForm(current => ({ ...current, role: value, roleAttribute: null, roleFeats: [], tropeFeats:[], extraFeats:[], freeSkillPoints:[], gearChoices: [] }))} />
+      <ChoiceGrid label="Roles" values={data.roles.roles} selected={form.role} alphabetical onChange={value => setForm(current => ({ ...current, role: value, roleAttribute: null, roleFeats: [], tropeFeats:[], extraFeats:[], freeSkillPoints:[], gearChoices: [] }))} />
       {needsRoleTrope&&<><h2>{role.doubleTrope?'Color Trope':'Prodigy Role Trope'}</h2><p>{role.doubleTrope?'Every Power Guardian first chooses one of the six Color Tropes.':'This first Trope is written as your Role, followed by “Prodigy.”'}</p><ChoiceGrid label="Role Tropes" values={roleTropeChoices} selected={firstTropeId} onChange={value=>setForm(current=>({...current,roleTrope:value,roleAttribute:null,roleFeats:[],freeSkillPoints:[]}))}/></>}
       {role.fixedAttributes?.length?<p><strong>Raised Attributes:</strong> {role.fixedAttributes.join(' and ')}</p>:roleAttrs.length > 1 && <><h2>Role Attribute</h2><div className="choices">{roleAttrs.map(attribute => <button key={attribute} className={roleAttr === attribute ? 'selected' : ''} onClick={() => set('roleAttribute', attribute)}>{attribute}</button>)}</div></>}
     </>}
@@ -120,7 +122,7 @@ export function GuidedReview({ initial, data, onHome, onImportMarkdown }) {
   return <HeroSheet hero={hero} data={data} mode={editing ? 'edit' : 'play'} onHome={onHome} onEdit={edit} onWorkingChange={setHero} onToggleEdit={() => setEditing(value => !value)} onImportMarkdown={onImportMarkdown} />
 }
 
-function ChoiceGrid({ label, values, selected, onChange }) {
+function ChoiceGrid({ label, values, selected, onChange, alphabetical = false }) {
   const [query, setQuery] = useState('')
   const [source, setSource] = useState('All books')
   const sources = ['All books', ...new Set(Object.values(values).map(value => value.packName || 'Corebook'))]
@@ -128,7 +130,7 @@ function ChoiceGrid({ label, values, selected, onChange }) {
     const inSource = source === 'All books' || (value.packName || 'Corebook') === source
     const words = `${value.name} ${value.tagline || ''} ${value.blurb || ''}`.toLowerCase()
     return inSource && words.includes(query.toLowerCase())
-  })
+  }).sort(alphabetical ? byName : () => 0)
   return <>
     <div className="choice-tools">
       <input className="choice-search" aria-label={`Search ${label}`} placeholder={`Search ${label.toLowerCase()}…`} value={query} onChange={event => setQuery(event.target.value)} />
