@@ -1,0 +1,95 @@
+{
+  "_meta": { "source": "Outgunned Corebook ENG", "transcribed": "2026-09-05" },
+  "roles": {
+    "commando": {
+      "name": "The Commando", "pageRef": 20, "tagline": "STRONG. WELL TRAINED. UNSTOPPABLE.", "attribute": "brawn",
+      "skills": ["endure", "fight", "force", "cool", "shoot", "survival", "leadership", "fix", "awareness", "stealth"],
+      "feats": ["hard_to_kill", "hunter", "intimidation", "marksman", "military_background", "thats_all"],
+      "gear": [{"item":"knife"}, {"choice":["telephone","radio"]}, {"choice":"any_gun"}],
+      "jobs": ["Soldier", "Marine", "Mercenary"],
+      "catchphrases": ["Stay back, I got this", "Nobody left behind", "If it bleeds, we can defeat it"],
+      "flaws": ["I don't trust anyone", "I think everyone else is weak", "I never know when to back down"]
+    },
+    "fighter": {
+      "name": "The Fighter", "pageRef": 22, "tagline": "FISTS OF STEEL. FIT. UNBEATABLE.", "attribute": "brawn",
+      "skills": ["endure", "fight", "force", "stunt", "cool", "flirt", "leadership", "style", "heal", "dexterity"],
+      "feats": ["combo", "counter", "flying_kick", "hard_to_kill", "martial_arts", "punch_reload"],
+      "gear": [{"choice":"any_1cash_item"}],
+      "jobs": ["Martial Arts Teacher", "Bodyguard", "Bouncer"],
+      "catchphrases": ["Let's get to the bottom of this. You and me, one on one", "There's no need to fight", "It doesn't hurt!"],
+      "flaws": ["I don't believe in myself", "This old wound won't let me be", "I'm too hot-headed"]
+    },
+    "ace": {
+      "name": "The Ace", "pageRef": 24, "tagline": "FAST. RISK TAKER. PURE ADRENALINE.", "attribute": "nerves",
+      "skills": ["stunt", "cool", "drive", "shoot", "flirt", "style", "fix", "awareness", "dexterity", "streetwise"],
+      "feats": ["car_jump", "crazy_stunt", "full_throttle", "mechanic", "proven_driver", "spinout"],
+      "gear": [{"ride":{"speed":1}}, {"choice":["pistol","shotgun"]}],
+      "jobs": ["Pilot", "Courier", "Private Driver"],
+      "catchphrases": ["Freedom is priceless", "Family always comes first", "I feel a need for speed!"],
+      "flaws": ["I can never refuse a challenge", "I can't stand laws and rules", "I'm absent-minded and flaky"]
+    },
+    "agent": {
+      "name": "The Agent", "pageRef": 26, "tagline": "BRAVE. PROTECTOR. HARD TO KILL.", "attribute": "nerves",
+      "skills": ["endure", "fight", "stunt", "cool", "drive", "shoot", "leadership", "detect", "heal", "awareness"],
+      "feats": ["get_down", "gunslinger", "hard_to_kill", "lie_to_me", "pep_talk", "selfless"],
+      "gear": [{"item":"pistol"}, {"item":"handcuffs"}, {"item":"badge"}, {"choice":["telephone","radio"]}],
+      "jobs": ["Police Officer", "Government Agent", "Double Agent"],
+      "catchphrases": ["Not in my city", "Give it here, I'll do it", "I'm not a hero, I'm just doing my job"],
+      "flaws": ["I'm too arrogant and overconfident", "I always trust the wrong people", "I never accept help and don't work well with others"]
+    },
+    "face": {
+      "name": "The Face", "pageRef": 28, "tagline": "CHARMING. SMILING. CONFIDENT.", "attribute": "smooth",
+      "skills": ["flirt", "leadership", "speech", "style", "detect", "heal", "know", "dexterity", "stealth", "streetwise"],
+      "feats": ["artist", "cash_flow", "heartbreaker", "high_culture", "master_of_disguise", "silver_tongue"],
+      "gear": [{"item":"elegant_clothes"}, {"choice":"any_precious_item"}],
+      "jobs": ["White-collar Worker", "Actor", "Professional Gambler"],
+      "catchphrases": ["Trust me", "Do you know who you're talking to?", "Surely we can reach an agreement"],
+      "flaws": ["I underestimate my enemies", "I'm too vain", "I'm a sucker for a pretty face"]
+    },
+    "nobody": {
+      "name": "The Nobody", "pageRef": 30, "tagline": "BASIC. PERSON NEXT-DOOR. WRONG PLACE.", "attribute": "smooth",
+      "skills": ["fight", "shoot", "survival", "leadership", "speech", "detect", "fix", "heal", "know", "dexterity"],
+      "feats": ["ill_make_a_phone_call", "lie_to_me", "mechanic", "physician", "proven_driver", "silver_tongue"],
+      "gear": [{"either":[[{"choice":"any_1cash_item"}], [{"ride":{"speed":0}}]]}],
+      "jobs": ["Employee", "Cashier", "Nurse"],
+      "catchphrases": ["I didn't even want to come here!", "Everyone can do their part", "My kids are not gonna believe this!"],
+      "flaws": ["I can't fend for myself", "I trust everyone", "I'm afraid of guns"]
+    },
+    "brain": {
+      "name": "The Brain", "pageRef": 32, "tagline": "SMART. EXPERT. RESOURCEFUL.", "attribute": "focus",
+      "skills": ["drive", "leadership", "speech", "style", "detect", "fix", "heal", "know", "dexterity", "stealth"],
+      "feats": ["hacker", "high_culture", "intuition", "mastermind", "outsmart", "scientist"],
+      "gear": [{"item":"portable_computer"}, {"item":"notebook"}, {"item":"pencil"}],
+      "jobs": ["Researcher", "Professor", "Hacker"],
+      "catchphrases": ["Hear me out. I have a plan!", "Have I ever been wrong before?", "With the right lever, I shall move the world"],
+      "flaws": ["I think too much before acting", "I'm really out of shape", "Without my glasses, I am nearly blind"]
+    },
+    "sleuth": {
+      "name": "The Sleuth", "pageRef": 34, "tagline": "INSIGHTFUL. ONE STEP AHEAD. EYE FOR DETAILS.", "attribute": "focus",
+      "skills": ["endure", "stunt", "cool", "drive", "shoot", "detect", "know", "awareness", "stealth", "streetwise"],
+      "feats": ["detective", "ill_make_a_phone_call", "intimidation", "marksman", "reporter", "shadow"],
+      "gear": [{"choice":"any_1cash_item"}, {"choice":["pistol","rifle","shotgun"]}],
+      "jobs": ["Detective", "Reporter", "Private Eye"],
+      "catchphrases": ["You can run but you cannot hide", "The truth always comes out in the end", "You can't run from your past"],
+      "flaws": ["I don't know when to shut up", "I'm a slave to my vices", "I'm not comfortable with children"]
+    },
+    "criminal": {
+      "name": "The Criminal", "pageRef": 36, "tagline": "STEALTHY. STREETWISE. SELF-SERVING.", "attribute": "crime",
+      "skills": ["force", "stunt", "drive", "shoot", "survival", "speech", "awareness", "dexterity", "stealth", "streetwise"],
+      "feats": ["always_prepared", "gunslinger", "ill_make_a_phone_call", "lockpick", "pickpocket", "silver_tongue"],
+      "gear": [{"item":"pistol"}, {"choice":["knife","lockpicking_set","handcuffs"]}],
+      "jobs": ["Thief", "Convict", "Informer"],
+      "catchphrases": ["In and out. It's a piece of cake", "I'm not going back to prison", "If you want something, you have to take it"],
+      "flaws": ["I take nothing seriously", "I'm too greedy and self-serving", "I'm too anxious to prove myself"]
+    },
+    "spy": {
+      "name": "The Spy", "pageRef": 38, "tagline": "QUIET. ON THE AGENCY'S SECRET SERVICE. ELEGANT.", "attribute": "crime",
+      "skills": ["endure", "fight", "stunt", "cool", "drive", "shoot", "flirt", "detect", "awareness", "stealth"],
+      "feats": ["gunslinger", "heartbreaker", "martial_arts", "master_of_disguise", "parkour", "shadow"],
+      "gear": [{"item":"elegant_clothes"}, {"item":"pistol_silenced"}, {"choice":"any_item"}],
+      "jobs": ["MI6 Agent", "CIA Agent", "KGB Spy"],
+      "catchphrases": ["There's no time. I'll explain later", "The enemy of my enemy is my friend", "It might be impossible, but we have to do it"],
+      "flaws": ["Everybody lies", "I don't tolerate mistakes", "I push myself too hard for the mission"]
+    }
+  }
+}

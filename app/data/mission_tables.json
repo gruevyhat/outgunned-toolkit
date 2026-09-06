@@ -1,0 +1,409 @@
+{
+  "_meta": {
+    "source": "Assistant Director ENG 1.0",
+    "additionalSources": ["Outgunned Corebook ENG"],
+    "transcribed": "2026-09-05"
+  },
+  "tables": {
+    "villain_generator": {
+      "die": "d6",
+      "pageRef": 13,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["nature", "desire", "problem"],
+      "rows": [
+        { "roll": 1, "nature": "Politician", "desire": "Avarice / Decadence", "problem": "The Authorities" },
+        { "roll": 2, "nature": "Law Enforcer", "desire": "Reprisal / Vengeance", "problem": "Strong Competition" },
+        { "roll": 3, "nature": "Ruthless Criminal", "desire": "Fame / Infamy", "problem": "Lacking Expertise" },
+        { "roll": 4, "nature": "Secret Organization", "desire": "Control / Power", "problem": "Vital Resource" },
+        { "roll": 5, "nature": "Celebrity", "desire": "Dissent / Revolution", "problem": "Lack of Time" },
+        { "roll": 6, "nature": "Evil Billionaire", "desire": "Anarchy / Chaos", "problem": "Internal Quarrel" }
+      ]
+    },
+    "macguffin": {
+      "die": "d66",
+      "pageRef": 16,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["macguffin"],
+      "rows": [
+        { "roll": "11-12", "macguffin": "Cryptic document" },
+        { "roll": "13-14", "macguffin": "Mysterious phone-call" },
+        { "roll": "15-16", "macguffin": "Official paperwork" },
+        { "roll": "21-22", "macguffin": "Missing person" },
+        { "roll": "23-24", "macguffin": "Envelope full of cash" },
+        { "roll": "25-26", "macguffin": "Locked briefcase" },
+        { "roll": "31-32", "macguffin": "Stolen possession" },
+        { "roll": "33-34", "macguffin": "Expensive heirloom" },
+        { "roll": "35-36", "macguffin": "Overheard conversation" },
+        { "roll": "41-42", "macguffin": "CD filled with secrets" },
+        { "roll": "43-44", "macguffin": "Discarded weapon" },
+        { "roll": "45-46", "macguffin": "Reading of a will" },
+        { "roll": "51-52", "macguffin": "Odd classified ad" },
+        { "roll": "53-54", "macguffin": "Vehicle problems" },
+        { "roll": "55-56", "macguffin": "Holiday destination" },
+        { "roll": "61-62", "macguffin": "Top-Secret tech" },
+        { "roll": "63-64", "macguffin": "Building blueprints" },
+        { "roll": "65-66", "macguffin": "Current event" }
+      ]
+    },
+    "help": {
+      "die": "d66",
+      "pageRef": 17,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["help"],
+      "rows": [
+        { "roll": "11-12", "help": "Bouncer" },
+        { "roll": "13-14", "help": "Boxer" },
+        { "roll": "15-16", "help": "Cop" },
+        { "roll": "21-22", "help": "Detective" },
+        { "roll": "23-24", "help": "Ex-Con" },
+        { "roll": "25-26", "help": "Hacker" },
+        { "roll": "31-32", "help": "Martial Arts Teacher" },
+        { "roll": "33-34", "help": "Military Vet" },
+        { "roll": "35-36", "help": "Nurse" },
+        { "roll": "41-42", "help": "Patron" },
+        { "roll": "43-44", "help": "Pilot" },
+        { "roll": "45-46", "help": "Professor" },
+        { "roll": "51-52", "help": "Public Servant" },
+        { "roll": "53-54", "help": "Reporter" },
+        { "roll": "55-56", "help": "Salesperson" },
+        { "roll": "61-62", "help": "Socialite" },
+        { "roll": "63-64", "help": "Taxi Driver" },
+        { "roll": "65-66", "help": "Thief" }
+      ]
+    },
+    "flaw": {
+      "die": "d66",
+      "pageRef": 17,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["flaw"],
+      "rows": [
+        { "roll": "11-12", "flaw": "Absent-Minded" },
+        { "roll": "13-14", "flaw": "Anxious" },
+        { "roll": "15-16", "flaw": "Apathetic" },
+        { "roll": "21-22", "flaw": "Arrogant" },
+        { "roll": "23-24", "flaw": "Cynical" },
+        { "roll": "25-26", "flaw": "Deceptive" },
+        { "roll": "31-32", "flaw": "Delinquent" },
+        { "roll": "33-34", "flaw": "Distrustful" },
+        { "roll": "35-36", "flaw": "Greedy" },
+        { "roll": "41-42", "flaw": "Hedonistic" },
+        { "roll": "43-44", "flaw": "Impatient" },
+        { "roll": "45-46", "flaw": "Impolite" },
+        { "roll": "51-52", "flaw": "Impulsive" },
+        { "roll": "53-54", "flaw": "Lazy" },
+        { "roll": "55-56", "flaw": "Loner" },
+        { "roll": "61-62", "flaw": "Selfish" },
+        { "roll": "63-64", "flaw": "Talkative" },
+        { "roll": "65-66", "flaw": "Workaholic" }
+      ]
+    },
+    "hurdle": {
+      "die": "d6",
+      "pageRef": 17,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["hurdle"],
+      "rows": [
+        { "roll": 1, "hurdle": "Extreme weather / Natural disaster" },
+        { "roll": 2, "hurdle": "Criminal turf / Law enforcement" },
+        { "roll": 3, "hurdle": "Hazardous location / Confined location" },
+        { "roll": 4, "hurdle": "Unfamiliar location / MacGuffin at risk" },
+        { "roll": 5, "hurdle": "Target on the move / Big crowd of people" },
+        { "roll": 6, "hurdle": "Enemy" }
+      ]
+    },
+    "climax": {
+      "die": "d6",
+      "pageRef": 18,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["climax"],
+      "rows": [
+        { "roll": 1, "climax": "Disorientated / Lost" },
+        { "roll": 2, "climax": "Pursuit / Ticking Clock" },
+        { "roll": 3, "climax": "Destruction / Natural disaster*" },
+        { "roll": 4, "climax": "Innocent bystanders / Surrounded" },
+        { "roll": 5, "climax": "Betrayal / Threatened Ally" },
+        { "roll": 6, "climax": "Outclassed / Trapped" }
+      ]
+    },
+    "thematic_oracles": {
+      "die": "d66",
+      "pageRef": 56,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["action", "descriptor", "theme"],
+      "rows": [
+        { "roll": "11", "action": "Betray", "descriptor": "Ancient", "theme": "Aggression" },
+        { "roll": "12", "action": "Blackmail", "descriptor": "Artificial", "theme": "Authority" },
+        { "roll": "13", "action": "Bribe", "descriptor": "Beneficial", "theme": "Change" },
+        { "roll": "14", "action": "Broadcast", "descriptor": "Cryptic", "theme": "Clarity" },
+        { "roll": "15", "action": "Capture", "descriptor": "Damaged", "theme": "Confusion" },
+        { "roll": "16", "action": "Charm", "descriptor": "Delicate", "theme": "Contemplation" },
+        { "roll": "21", "action": "Cheat", "descriptor": "Destructive", "theme": "Control" },
+        { "roll": "22", "action": "Conceal", "descriptor": "Evocative", "theme": "Dependance" },
+        { "roll": "23", "action": "Conquer", "descriptor": "Exaggerated", "theme": "Desire" },
+        { "roll": "24", "action": "Conspire", "descriptor": "Fleeting", "theme": "Disaster" },
+        { "roll": "25", "action": "Consult", "descriptor": "Harmless", "theme": "Disharmony" },
+        { "roll": "26", "action": "Demonstrate", "descriptor": "Important", "theme": "Dishonesty" },
+        { "roll": "31", "action": "Discover", "descriptor": "Incomplete", "theme": "Doubt" },
+        { "roll": "32", "action": "Disguise", "descriptor": "Incredible", "theme": "Excess" },
+        { "roll": "33", "action": "Dominate", "descriptor": "Lucky", "theme": "Focus" },
+        { "roll": "34", "action": "Eliminate", "descriptor": "Missing", "theme": "Freedom" },
+        { "roll": "35", "action": "Embezzle", "descriptor": "Mysterious", "theme": "Fulfilment" },
+        { "roll": "36", "action": "Experiment", "descriptor": "Obscure", "theme": "Hope" },
+        { "roll": "41", "action": "Explore", "descriptor": "Perfect", "theme": "Illusion" },
+        { "roll": "42", "action": "Gather", "descriptor": "Perilous", "theme": "Innocence" },
+        { "roll": "43", "action": "Inspect", "descriptor": "Powerful", "theme": "Insecurity" },
+        { "roll": "44", "action": "Intimidate", "descriptor": "Precarious", "theme": "Intuition" },
+        { "roll": "45", "action": "Invade", "descriptor": "Protected", "theme": "Isolation" },
+        { "roll": "46", "action": "Kidnap", "descriptor": "Questionable", "theme": "Obsession" },
+        { "roll": "51", "action": "Manipulate", "descriptor": "Sensitive", "theme": "Patience" },
+        { "roll": "52", "action": "Obfuscate", "descriptor": "Shocking", "theme": "Rebellion" },
+        { "roll": "53", "action": "Occupy", "descriptor": "Significant", "theme": "Recklessness" },
+        { "roll": "54", "action": "Purchase", "descriptor": "Strange", "theme": "Reckoning" },
+        { "roll": "55", "action": "Ransack", "descriptor": "Strong", "theme": "Sacrifice" },
+        { "roll": "56", "action": "Research", "descriptor": "Substantial", "theme": "Stagnation" },
+        { "roll": "61", "action": "Reveal", "descriptor": "Temporary", "theme": "Success" },
+        { "roll": "62", "action": "Steal", "descriptor": "Unforeseen", "theme": "Suffering" },
+        { "roll": "63", "action": "Subdue", "descriptor": "Unknown", "theme": "Tradition" },
+        { "roll": "64", "action": "Trade", "descriptor": "Unnatural", "theme": "Trickery" },
+        { "roll": "65", "action": "Unite", "descriptor": "Unrestrained", "theme": "Tyranny" },
+        { "roll": "66", "action": "Weaken", "descriptor": "Valuable", "theme": "Union" }
+      ]
+    },
+    "general_clues": {
+      "die": "d6xcoin",
+      "pageRef": 57,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["heads", "tails"],
+      "rows": [
+        { "roll": 1, "heads": "Video or photo", "tails": "Audio recording" },
+        { "roll": 2, "heads": "Memo or note", "tails": "Advertisement or ticket" },
+        { "roll": 3, "heads": "News report or rumor", "tails": "Tip-off or warning" },
+        { "roll": 4, "heads": "Personal item", "tails": "Missing Item" },
+        { "roll": 5, "heads": "Weapon", "tails": "Blood" },
+        { "roll": 6, "heads": "Eyewitness", "tails": "Victim or corpse" }
+      ]
+    },
+    "mission_generator": {
+      "die": "d6",
+      "pageRef": 57,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["mission_type", "complication"],
+      "rows": [
+        { "roll": 1, "mission_type": "Deliver item", "complication": "Objective is on the move" },
+        { "roll": 2, "mission_type": "Steal item", "complication": "Objective is guarded" },
+        { "roll": 3, "mission_type": "Gather intel", "complication": "Very small window of time" },
+        { "roll": 4, "mission_type": "Protect NPC", "complication": "Objective is obscure or ambiguous" },
+        { "roll": 5, "mission_type": "Rescue Ally or NPC", "complication": "Objective is nearly inaccessible" },
+        { "roll": 6, "mission_type": "Antagonize Enemy", "complication": "Objective is in a very public place" }
+      ]
+    },
+    "scene_drama": {
+      "die": "d6",
+      "pageRef": 57,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["subject", "sense", "snag"],
+      "rows": [
+        { "roll": 1, "subject": "Ally or NPC", "sense": "Active", "snag": "Chase" },
+        { "roll": 2, "subject": "Enemy", "sense": "Dangerous", "snag": "Combat" },
+        { "roll": 3, "subject": "Location", "sense": "Lucky", "snag": "Crowd" },
+        { "roll": 4, "subject": "Object", "sense": "Missing", "snag": "Hazard" },
+        { "roll": 5, "subject": "Perception", "sense": "Suspicious", "snag": "Ruse" },
+        { "roll": 6, "subject": "Surroundings", "sense": "Unusual", "snag": "Time" }
+      ]
+    },
+    "unisex_names": {
+      "die": "d6x2",
+      "pageRef": 57,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["1", "2", "3", "4", "5", "6"],
+      "rows": [
+        { "roll": 1, "1": "Aiden", "2": "Clay", "3": "Kelly", "4": "Owen", "5": "River", "6": "Terry" },
+        { "roll": 2, "1": "Ali", "2": "Dylan", "3": "Kim", "4": "Pat", "5": "Rowan", "6": "Toni" },
+        { "roll": 3, "1": "Ash", "2": "Finn", "3": "Lee", "4": "Piper", "5": "Sam", "6": "Tyler" },
+        { "roll": 4, "1": "Billy", "2": "Francis", "3": "Mason", "4": "Quinn", "5": "Sean", "6": "Val" },
+        { "roll": 5, "1": "Bobby", "2": "Jack", "3": "Miller", "4": "Ray", "5": "Shay", "6": "Vic" },
+        { "roll": 6, "1": "Charlie", "2": "Jude", "3": "Nicky", "4": "Riley", "5": "Taylor", "6": "Wynn" }
+      ]
+    },
+    "urban_locations": {
+      "die": "d6x2",
+      "pageRef": 58,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["big_city_1_2", "big_city_3_4", "big_city_5_6", "small_town_1_2", "small_town_3_4", "small_town_5_6"],
+      "rows": [
+        { "roll": 1, "big_city_1_2": "Sidewalk", "big_city_3_4": "Busy Road", "big_city_5_6": "Highway Overpass", "small_town_1_2": "Foot or Animal Path", "small_town_3_4": "Country Road", "small_town_5_6": "Bridge" },
+        { "roll": 2, "big_city_1_2": "Industrial Area", "big_city_3_4": "Large Store", "big_city_5_6": "Residential Area", "small_town_1_2": "Farm", "small_town_3_4": "Small Store", "small_town_5_6": "House" },
+        { "roll": 3, "big_city_1_2": "Urban School or College", "big_city_3_4": "Restaurant", "big_city_5_6": "Trendy Bar or Club", "small_town_1_2": "Local High School", "small_town_3_4": "Family-run Restaurant", "small_town_5_6": "Provincial Bar or Pub" },
+        { "roll": 4, "big_city_1_2": "Shopping Mall", "big_city_3_4": "Parking Lot", "big_city_5_6": "Busy Gas Station", "small_town_1_2": "Strip Mall", "small_town_3_4": "Junkyard", "small_town_5_6": "Isolated Gas Station" },
+        { "roll": 5, "big_city_1_2": "Stadium", "big_city_3_4": "Sewer or Utility Hub", "big_city_5_6": "Dock or Marina", "small_town_1_2": "Sports Ground", "small_town_3_4": "Utility Provider Site", "small_town_5_6": "Jetty or Pier" },
+        { "roll": 6, "big_city_1_2": "Construction Site", "big_city_3_4": "Public Transport Hub", "big_city_5_6": "Airport", "small_town_1_2": "Railway Line", "small_town_3_4": "Public Transport Stop", "small_town_5_6": "Private Airfield" }
+      ]
+    },
+    "store": {
+      "die": "d6xcoin",
+      "pageRef": 58,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["heads", "tails"],
+      "rows": [
+        { "roll": 1, "heads": "Supermarket", "tails": "Convenience or grocery store" },
+        { "roll": 2, "heads": "Department store", "tails": "Pawn shop or thrift store" },
+        { "roll": 3, "heads": "Health club or gym", "tails": "Hair or beauty salon" },
+        { "roll": 4, "heads": "Clothing or shoe store", "tails": "Jewelry or electronic store" },
+        { "roll": 5, "heads": "Furniture or antique store", "tails": "Hardware store" },
+        { "roll": 6, "heads": "Library or book store", "tails": "Media or game store" }
+      ]
+    },
+    "skyscraper": {
+      "die": "d6xcoin",
+      "pageRef": 58,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["heads", "tails"],
+      "rows": [
+        { "roll": 1, "heads": "Parking Garage", "tails": "Security Suite" },
+        { "roll": 2, "heads": "Lobby", "tails": "Conference Room" },
+        { "roll": 3, "heads": "Bar or Cafe", "tails": "Boutique Store" },
+        { "roll": 4, "heads": "Offices", "tails": "Apartments" },
+        { "roll": 5, "heads": "Elevator or Stairs", "tails": "Utility Room or Closet" },
+        { "roll": 6, "heads": "Penthouse Suite", "tails": "Roof" }
+      ]
+    },
+    "world_region": {
+      "die": "d6x2",
+      "pageRef": 59,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["second_1_2", "second_3_4", "second_5_6"],
+      "rows": [
+        { "roll": 1, "second_1_2": "Antarctica", "second_3_4": "Pacific Islands", "second_5_6": "Australia" },
+        { "roll": 2, "second_1_2": "Southeastern Asia", "second_3_4": "Eastern Asia", "second_5_6": "Southern Asia" },
+        { "roll": 3, "second_1_2": "Western Asia", "second_3_4": "Central Asia", "second_5_6": "Eastern Europe" },
+        { "roll": 4, "second_1_2": "Western Europe", "second_3_4": "Northern Europe", "second_5_6": "Southern Europe" },
+        { "roll": 5, "second_1_2": "Northern Africa", "second_3_4": "Saharan Africa", "second_5_6": "Sub-Saharan Africa" },
+        { "roll": 6, "second_1_2": "South America", "second_3_4": "Central America", "second_5_6": "North America" }
+      ]
+    },
+    "natural_locations": {
+      "die": "d6x2",
+      "pageRef": 59,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["wild_1_2", "wild_3_4", "wild_5_6", "settled_1_2", "settled_3_4", "settled_5_6"],
+      "rows": [
+        { "roll": 1, "wild_1_2": "River or stream", "wild_3_4": "Pond or lake", "wild_5_6": "Island or shoreline", "settled_1_2": "Aqueduct", "settled_3_4": "Well or cistern", "settled_5_6": "Public bath or pools" },
+        { "roll": 2, "wild_1_2": "Tunnel or passageway", "wild_3_4": "Cave or cavern", "wild_5_6": "Slope or ledge", "settled_1_2": "Corridor", "settled_3_4": "Spacious room", "settled_5_6": "Stairwell or ladder" },
+        { "roll": 3, "wild_1_2": "Shelter or cover", "wild_3_4": "Cabin or cottage", "wild_5_6": "Abandoned camp", "settled_1_2": "Shanty or hut", "settled_3_4": "House or residence", "settled_5_6": "Barracks" },
+        { "roll": 4, "wild_1_2": "Glade or clearing", "wild_3_4": "Animal track", "wild_5_6": "Quicksand or peat bog", "settled_1_2": "Square or plaza", "settled_3_4": "Paved road", "settled_5_6": "Pit or opening" },
+        { "roll": 5, "wild_1_2": "Gravel pit or stony field", "wild_3_4": "Animal den or nest", "wild_5_6": "Sandy beach or salt flat", "settled_1_2": "Mine or quarry", "settled_3_4": "Stable or animal pen", "settled_5_6": "Training ground" },
+        { "roll": 6, "wild_1_2": "Forest, thicket or grove", "wild_3_4": "Canyon or valley", "wild_5_6": "Volcano", "settled_1_2": "Columned hall", "settled_3_4": "Temple", "settled_5_6": "Sacrifical altar" }
+      ]
+    },
+    "desert_jungle": {
+      "die": "d6",
+      "pageRef": 59,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["desert", "jungle"],
+      "rows": [
+        { "roll": 1, "desert": "Oasis or unending dunes", "jungle": "Wide river or swampy lake" },
+        { "roll": 2, "desert": "Shelter or animal track", "jungle": "Animal den or graveyard" },
+        { "roll": 3, "desert": "Sinkhole or mine entrance", "jungle": "Sinkhole or cave entrance" },
+        { "roll": 4, "desert": "Cacti or fossilized forest", "jungle": "Thicket or maze of trees" },
+        { "roll": 5, "desert": "Hill or rocky outcropping", "jungle": "Abandoned village or camp" },
+        { "roll": 6, "desert": "Canyon or gorge", "jungle": "Ruined temple or fortress" }
+      ]
+    },
+    "yes_no_oracle": {
+      "die": "d6",
+      "pageRef": 45,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["answer"],
+      "rows": [
+        { "roll": 1, "answer": "Extreme No" },
+        { "roll": "2-3", "answer": "No" },
+        { "roll": "4-5", "answer": "Yes" },
+        { "roll": 6, "answer": "Extreme Yes" }
+      ]
+    },
+    "scene_prompts": {
+      "die": "d6",
+      "pageRef": 56,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["type", "prompt", "oga_alternate"],
+      "rows": [
+        { "roll": 1, "type": "Background", "prompt": "An old friend or foe resurfaces, dredging up your past.", "oga_alternate": null },
+        { "roll": 2, "type": "Interaction", "prompt": "Spend a Scene interacting with a friendly NPC or pursuing an NPC who is connected to the Villain.", "oga_alternate": null },
+        { "roll": 3, "type": "Pursue a Lead", "prompt": "Use the intel you have gathered to discover new information.", "oga_alternate": null },
+        { "roll": 4, "type": "(OG) Side Mission", "prompt": "Your Ally needs you to do something.", "oga_alternate": "(OGA) Explore: Spend time exploring a location." },
+        { "roll": 5, "type": "On the Run", "prompt": "Someone is chasing after you or you are pursuing someone.", "oga_alternate": null },
+        { "roll": 6, "type": "Under Attack", "prompt": "An Enemy tracks you down or ambushes you.", "oga_alternate": null }
+      ]
+    },
+    "turning_point_twists": {
+      "die": "d6",
+      "pageRef": 169,
+      "source": "Outgunned Corebook ENG",
+      "columns": ["twists"],
+      "rows": [
+        {
+          "roll": "1-6",
+          "twists": [
+            "Great Reveal: The Heroes find out new and unexpected information that changes their mission completely.",
+            "Knife in the Back: A Supporting Character betrays the Heroes or abandons them in their time of need.",
+            "A New Threat: A Villain gets defeated, only to make way for a new Villain, more powerful and evil than the first.",
+            "Last-minute Tickets: The Heroes are suddenly forced to leave for a faraway or unknown destination."
+          ]
+        }
+      ]
+    },
+    "villain_strong_spots": {
+      "die": "d6",
+      "pageRef": 175,
+      "source": "Outgunned Corebook ENG",
+      "columns": ["strong_spots"],
+      "rows": [
+        {
+          "roll": "1-6",
+          "strong_spots": [
+            "Law enforcement: The Villain is the leader of a government agency, or they have the police on their payroll. Calling 911 is no use.",
+            "Organized crime: The Villain is a mob boss, or a trafficker with important ties with local organized crime. They know everything that happens in their city.",
+            "Untouchable: The Villain is a politician, or they have diplomatic immunity and cannot be incriminated easily. You must expose their evil to the world.",
+            "Extraordinary individual: The Villain is mighty and strong, or an expert martial artist, or they beefed up their body thanks to science. Even alone and bare-handed, they are a Boss Enemy.",
+            "Unlimited funding: The Villain is loaded; they can afford to buy a whole restaurant just because they want to skip the line. There is no limit to their means.",
+            "Secret organization: The Villain is the leader of a spy agency, of a mystical sect, or of a similar secret organization. Their spies are everywhere, hiding in plain sight.",
+            "Cutting-edge tech: The Villain has access to unthinkable technology and the latest products of science. Their lair is a veritable fortress, with all manner of defense systems.",
+            "Leverage on the Heroes: The Villain has taken hostage someone near and dear to the Heroes, or has incriminating evidence or some kind of information that allows them to keep the Heroes in check. In order to stop them, that leverage must be neutralized."
+          ]
+        }
+      ]
+    },
+    "enemy_weak_spots": {
+      "die": "d6x2",
+      "pageRef": 149,
+      "source": "Outgunned Corebook ENG",
+      "columns": ["1", "2", "3", "4", "5", "6"],
+      "rows": [
+        { "roll": 1, "1": "One of the Enemies has a truly portentous weapon. A Hero can spend 1 Adrenaline to gain a weapon of their choice.", "2": "Something allows you to sow chaos or generate collateral damage. A Hero can use their turn to sow chaos, if they do this, the Enemies lose one Feat at random.", "3": "The Enemy is easily predictable. They lose 1 Adrenaline or skip the next Adrenaline gain.", "4": "There’s a blunt object or heavy weapon you can use. You can attack with Brawn+Force +1.", "5": "There’s an unstable structure nearby. You could knock it over with a roll of Focus+Fix. If you succeed, the Enemy loses 2 Grit.", "6": "The Enemy is afraid of you. Gain 2 Adrenaline." },
+        { "roll": 2, "1": "One of the Enemies has a truly portentous weapon. A Hero can spend 1 Adrenaline to gain a weapon of their choice.", "2": "Something allows you to sow chaos or generate collateral damage. A Hero can use their turn to sow chaos, if they do this, the Enemies lose one Feat at random.", "3": "The Enemy is easily predictable. They lose 1 Adrenaline or skip the next Adrenaline gain.", "4": "There’s a blunt object or heavy weapon you can use. You can attack with Brawn+Force +1.", "5": "There’s an unstable structure nearby. You could knock it over with a roll of Focus+Fix. If you succeed, the Enemy loses 2 Grit.", "6": "The Enemy is afraid of you. Gain 2 Adrenaline." },
+        { "roll": 3, "1": "There is one safe way out. After a Reaction Turn, you can all abandon combat without rolling the dice.", "2": "The Enemy’s back is to the wall. All Heroes gain +1 for their next Reaction Turn.", "3": "The Enemy is wearing some explosives and you can set it off with a successful roll in Crime+Dexterity. If you succeed, the Enemy loses 2 Grit.", "4": "The Enemy is distracted or hasn’t noticed you. You can attack with Brawn+Stealth +1.", "5": "The Enemy is hindered or trapped. A Hero can use their turn to deal 1 Grit to the Enemy without rolling the dice.", "6": "Instead of a Weak Spot, you find... money! A Hero can use their turn to gain 1 $ without rolling the dice." },
+        { "roll": 4, "1": "The Enemy is exposed or standing beneath a precarious structure. You can attack with Nerves+Shoot +1.", "2": "The situation is right for a crazy stunt to work. You can take a Gamble with +2.", "3": "The Enemies aren’t really sharp. You can attack with Focus+Know +1.", "4": "There’s a protuberance you can swing from. You can attack with Brawn+Stunt +1.", "5": "You can draw the Enemy in a trap by rolling Crime+Street. If you succeed, the group skips the next Reaction Turn.", "6": "You realize that this is your chance. You get a Spotlight!" },
+        { "roll": 5, "1": "The Enemy is exposed or standing beneath a precarious structure. You can attack with Nerves+Shoot +1.", "2": "The situation is right for a crazy stunt to work. You can take a Gamble with +2.", "3": "The Enemies aren’t really sharp. You can attack with Focus+Know +1.", "4": "There’s a protuberance you can swing from. You can attack with Brawn+Stunt +1.", "5": "You can draw the Enemy in a trap by rolling Crime+Street. If you succeed, the group skips the next Reaction Turn.", "6": "You realize that this is your chance. You get a Spotlight!" },
+        { "roll": 6, "1": "The Enemy is exposed or standing beneath a precarious structure. You can attack with Nerves+Shoot +1.", "2": "The situation is right for a crazy stunt to work. You can take a Gamble with +2.", "3": "The Enemies aren’t really sharp. You can attack with Focus+Know +1.", "4": "There’s a protuberance you can swing from. You can attack with Brawn+Stunt +1.", "5": "You can draw the Enemy in a trap by rolling Crime+Street. If you succeed, the group skips the next Reaction Turn.", "6": "You realize that this is your chance. You get a Spotlight!" }
+      ]
+    },
+    "campaign_phases": {
+      "die": "d6",
+      "pageRef": 16,
+      "source": "Assistant Director ENG 1.0",
+      "columns": ["phases"],
+      "rows": [
+        {
+          "roll": "1-6",
+          "phases": [
+            { "name": "ESTABLISHING SHOT", "shots": "1 Shot", "purpose": "establishing the Heroes’ relationships, kicking off the campaign." },
+            { "name": "PRESSURE", "shots": "1-2 Shots", "purpose": "discovering the Villain’s motives, pursuing targets, gathering intel, reacting to unfolding events." },
+            { "name": "TURNING POINT", "shots": "1 Shot", "purpose": "introducing a dramatic Plot Twist to raise the campaign stakes. If it makes sense, plan two Turning Points." },
+            { "name": "CRISIS", "shots": "1-2 Shots", "purpose": "reacting to the Turning Point, changing previous plans, figuring out how to stop the Villain." },
+            { "name": "SHOWDOWN", "shots": "1 Shot", "purpose": "confronting the Villain. While the Heroes’ hard work getting to this point should not be ignored, Victory should not be assured!" }
+          ]
+        }
+      ]
+    }
+  }
+}

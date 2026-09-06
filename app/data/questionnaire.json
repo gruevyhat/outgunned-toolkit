@@ -1,0 +1,185 @@
+{
+  "_meta": { "source": "Original toolkit content", "transcribed": "2026-09-05" },
+  "questions": [
+    {"id":"q01","prompt":"The getaway car stalls with sirens closing in. You…","answers":[
+      {"text":"Pop the hood. Thirty seconds.","weights":{"skill:fix":2,"attr:focus":1,"trope:neurotic_geek":1}},
+      {"text":"Draw down and buy everyone time.","weights":{"skill:shoot":2,"skill:cool":1,"attr:nerves":1,"trope:diehard":1}},
+      {"text":"Bail and run the alleys.","weights":{"skill:stunt":2,"skill:stealth":1,"attr:crime":1,"trope:bad_to_the_bone":1}},
+      {"text":"Talk the first cop into a lift.","weights":{"skill:speech":2,"attr:smooth":1,"trope:cheater":1}}
+    ]},
+    {"id":"q02","prompt":"A locked service door is the only way into the building. You…","answers":[
+      {"text":"Shoulder it off its hinges.","weights":{"skill:force":2,"attr:brawn":1,"trope:hunk":1}},
+      {"text":"Study the lock and work it quietly.","weights":{"skill:dexterity":2,"skill:fix":1,"attr:focus":1,"trope:neurotic_geek":1}},
+      {"text":"Find a staff entrance and blend in.","weights":{"skill:stealth":2,"skill:style":1,"attr:crime":1,"trope:cheater":1}},
+      {"text":"Make a confident request of the guard.","weights":{"skill:speech":2,"skill:leadership":1,"attr:smooth":1,"trope:good_samaritan":1}}
+    ]},
+    {"id":"q03","prompt":"Your contact has sold you out. The room goes silent. You…","answers":[
+      {"text":"Keep your cool and watch every exit.","weights":{"skill:cool":2,"skill:awareness":1,"attr:nerves":1,"trope:lone_wolf":1}},
+      {"text":"Put them on the spot with a hard question.","weights":{"skill:detect":2,"skill:streetwise":1,"attr:focus":1,"trope:party_killer":1}},
+      {"text":"Smile, flirt, and turn the betrayal around.","weights":{"skill:flirt":2,"skill:speech":1,"attr:smooth":1,"trope:hot_stuff":1}},
+      {"text":"Hit first and ask questions later.","weights":{"skill:fight":2,"skill:force":1,"attr:brawn":1,"trope:jerk_with_a_heart_of_gold":1}}
+    ]},
+    {"id":"q04","prompt":"The team is lost in unfamiliar country before sunrise. You…","answers":[
+      {"text":"Read the terrain and make a route.","weights":{"skill:survival":2,"skill:awareness":1,"attr:crime":1,"trope:lone_wolf":1}},
+      {"text":"Ask locals the right questions.","weights":{"skill:streetwise":2,"skill:speech":1,"attr:smooth":1,"trope:mentor":1}},
+      {"text":"Repair the radio and call for coordinates.","weights":{"skill:fix":2,"skill:know":1,"attr:focus":1,"trope:genius_bruiser":1}},
+      {"text":"Lead everyone onward, no matter the weather.","weights":{"skill:leadership":2,"skill:endure":1,"attr:nerves":1,"trope:leader":1}}
+    ]},
+    {"id":"q05","prompt":"A rival draws a weapon in a crowded station. You…","answers":[
+      {"text":"Spot the threat before anyone else does.","weights":{"skill:awareness":2,"skill:detect":1,"attr:crime":1,"trope:party_killer":1}},
+      {"text":"Take the hit and keep moving.","weights":{"skill:endure":2,"skill:fight":1,"attr:brawn":1,"trope:last_boy_scout":1}},
+      {"text":"Slip behind the nearest pillar.","weights":{"skill:stealth":2,"skill:stunt":1,"attr:nerves":1,"trope:free_spirit":1}},
+      {"text":"Get the crowd safely out of the way.","weights":{"skill:heal":2,"skill:leadership":1,"attr:smooth":1,"trope:good_samaritan":1}}
+    ]},
+    {"id":"q06","prompt":"The safe contains a timer, a map, and three unlabeled keys. You…","answers":[
+      {"text":"Test the mechanism until it makes sense.","weights":{"skill:fix":2,"skill:know":1,"attr:focus":1,"trope:neurotic_geek":1}},
+      {"text":"Pocket the keys and improvise.","weights":{"skill:dexterity":2,"skill:streetwise":1,"attr:crime":1,"trope:cheater":1}},
+      {"text":"Call the shot and pick a key.","weights":{"skill:cool":2,"skill:detect":1,"attr:nerves":1,"trope:party_killer":1}},
+      {"text":"Force the safe open before the timer wins.","weights":{"skill:force":2,"skill:stunt":1,"attr:brawn":1,"trope:hunk":1}}
+    ]},
+    {"id":"q07","prompt":"A helicopter offers one seat out of the collapsing compound. You…","answers":[
+      {"text":"Take the controls and fly.","weights":{"skill:drive":2,"skill:awareness":1,"attr:nerves":1,"trope:free_spirit":1}},
+      {"text":"Put the most injured person aboard.","weights":{"skill:heal":2,"skill:leadership":1,"attr:smooth":1,"trope:good_samaritan":1}},
+      {"text":"Find another route through the wreckage.","weights":{"skill:stunt":2,"skill:survival":1,"attr:brawn":1,"trope:vigilante":1}},
+      {"text":"Stay behind to cover the retreat.","weights":{"skill:shoot":2,"skill:endure":1,"attr:crime":1,"trope:diehard":1}}
+    ]},
+    {"id":"q08","prompt":"Your mark invites you to a gala. You prepare by…","answers":[
+      {"text":"Learning every name and piece of gossip.","weights":{"skill:know":2,"skill:detect":1,"attr:focus":1,"trope:mentor":1}},
+      {"text":"Choosing an outfit nobody can forget.","weights":{"skill:style":2,"skill:flirt":1,"attr:smooth":1,"trope:hot_stuff":1}},
+      {"text":"Planning three exits and a fallback.","weights":{"skill:awareness":2,"skill:fix":1,"attr:crime":1,"trope:leader":1}},
+      {"text":"Bringing the perfect concealed weapon.","weights":{"skill:shoot":2,"skill:dexterity":1,"attr:nerves":1,"trope:bad_to_the_bone":1}}
+    ]},
+    {"id":"q09","prompt":"A teammate freezes during the firefight. You…","answers":[
+      {"text":"Shout an order they can follow.","weights":{"skill:leadership":2,"skill:speech":1,"attr:smooth":1,"trope:leader":1}},
+      {"text":"Drag them behind cover.","weights":{"skill:force":2,"skill:endure":1,"attr:brawn":1,"trope:trusty_sidekick":1}},
+      {"text":"Create a diversion and draw the fire away.","weights":{"skill:stunt":2,"skill:cool":1,"attr:nerves":1,"trope:trusty_sidekick":1}},
+      {"text":"Treat the wound when the shooting stops.","weights":{"skill:heal":2,"skill:fix":1,"attr:focus":1,"trope:good_samaritan":1}}
+    ]},
+    {"id":"q10","prompt":"You need information from a hostile witness. You…","answers":[
+      {"text":"Offer a deal they cannot refuse.","weights":{"skill:speech":2,"skill:flirt":1,"attr:smooth":1,"trope:cheater":1}},
+      {"text":"Notice the lie behind their story.","weights":{"skill:detect":2,"skill:know":1,"attr:focus":1,"trope:cool_but_distressed":1}},
+      {"text":"Find the pressure point and lean on it.","weights":{"skill:streetwise":2,"skill:awareness":1,"attr:crime":1,"trope:jerk_with_a_heart_of_gold":1}},
+      {"text":"Wait them out without blinking.","weights":{"skill:cool":2,"skill:endure":1,"attr:nerves":1,"trope:lone_wolf":1}}
+    ]},
+    {"id":"q11","prompt":"The bridge ahead has washed out. You…","answers":[
+      {"text":"Build a crossing from whatever is nearby.","weights":{"skill:fix":2,"skill:force":1,"attr:focus":1,"trope:neurotic_geek":1}},
+      {"text":"Jump it at a run.","weights":{"skill:stunt":2,"skill:survival":1,"attr:brawn":1,"trope:free_spirit":1}},
+      {"text":"Find the quietest path around.","weights":{"skill:awareness":2,"skill:stealth":1,"attr:crime":1,"trope:lone_wolf":1}},
+      {"text":"Get the others across first.","weights":{"skill:leadership":2,"skill:heal":1,"attr:smooth":1,"trope:good_samaritan":1}}
+    ]},
+    {"id":"q12","prompt":"A guard recognizes your face at the checkpoint. You…","answers":[
+      {"text":"Give them a new name and a straight story.","weights":{"skill:speech":2,"skill:style":1,"attr:smooth":1,"trope:cheater":1}},
+      {"text":"Slip away while their radio crackles.","weights":{"skill:stealth":2,"skill:dexterity":1,"attr:crime":1,"trope:lone_wolf":1}},
+      {"text":"Drive straight through the barrier.","weights":{"skill:drive":2,"skill:force":1,"attr:nerves":1,"trope:free_spirit":1}},
+      {"text":"Tell them exactly why they should let you pass.","weights":{"skill:leadership":2,"skill:cool":1,"attr:focus":1,"trope:good_samaritan":1}}
+    ]},
+    {"id":"q13","prompt":"The villain leaves a coded message. You…","answers":[
+      {"text":"Spot the pattern in the numbers.","weights":{"skill:know":2,"skill:detect":1,"attr:focus":1,"trope:neurotic_geek":1}},
+      {"text":"Search the room for the missing piece.","weights":{"skill:awareness":2,"skill:stealth":1,"attr:crime":1,"trope:cool_but_distressed":1}},
+      {"text":"Ask who benefits from the threat.","weights":{"skill:streetwise":2,"skill:speech":1,"attr:smooth":1,"trope:mentor":1}},
+      {"text":"Destroy it and make your own message.","weights":{"skill:style":2,"skill:stunt":1,"attr:nerves":1,"trope:vigilante":1}}
+    ]},
+    {"id":"q14","prompt":"Your ride is surrounded in a parking garage. You…","answers":[
+      {"text":"Punch the accelerator and take the ramp.","weights":{"skill:drive":2,"skill:stunt":1,"attr:nerves":1,"trope:free_spirit":1}},
+      {"text":"Fight your way to the nearest exit.","weights":{"skill:fight":2,"skill:force":1,"attr:brawn":1,"trope:genius_bruiser":1}},
+      {"text":"Talk one attacker into opening a lane.","weights":{"skill:speech":2,"skill:flirt":1,"attr:smooth":1,"trope:hot_stuff":1}},
+      {"text":"Disappear between the concrete pillars.","weights":{"skill:stealth":2,"skill:awareness":1,"attr:crime":1,"trope:lone_wolf":1}}
+    ]},
+    {"id":"q15","prompt":"The mission plan is falling apart. You…","answers":[
+      {"text":"Rewrite it on the spot.","weights":{"skill:know":2,"skill:fix":1,"attr:focus":1,"trope:leader":1}},
+      {"text":"Keep everyone moving forward.","weights":{"skill:leadership":2,"skill:cool":1,"attr:nerves":1,"trope:leader":1}},
+      {"text":"Follow your instincts and improvise.","weights":{"skill:survival":2,"skill:stunt":1,"attr:brawn":1,"trope:free_spirit":1}},
+      {"text":"Make the hard call nobody else will.","weights":{"skill:detect":2,"skill:shoot":1,"attr:crime":1,"trope:party_killer":1}}
+    ]},
+    {"id":"q16","prompt":"A wounded stranger asks for help during your escape. You…","answers":[
+      {"text":"Stop and patch them up.","weights":{"skill:heal":2,"skill:endure":1,"attr:focus":1,"trope:good_samaritan":1}},
+      {"text":"Carry them until the danger passes.","weights":{"skill:force":2,"skill:survival":1,"attr:brawn":1,"trope:last_boy_scout":1}},
+      {"text":"Promise to return with help.","weights":{"skill:speech":2,"skill:leadership":1,"attr:smooth":1,"trope:trusty_sidekick":1}},
+      {"text":"Check whether this is a trap first.","weights":{"skill:awareness":2,"skill:detect":1,"attr:crime":1,"trope:party_killer":1}}
+    ]},
+    {"id":"q17","prompt":"A chase reaches the city rooftops. You…","answers":[
+      {"text":"Take the shortest jump between buildings.","weights":{"skill:stunt":2,"skill:dexterity":1,"attr:brawn":1,"trope:free_spirit":1}},
+      {"text":"Read the traffic and choose a route.","weights":{"skill:drive":2,"skill:awareness":1,"attr:nerves":1,"trope:free_spirit":1}},
+      {"text":"Lose the pursuers in a crowd.","weights":{"skill:stealth":2,"skill:style":1,"attr:crime":1,"trope:lone_wolf":1}},
+      {"text":"Call out directions from above.","weights":{"skill:leadership":2,"skill:speech":1,"attr:smooth":1,"trope:mentor":1}}
+    ]},
+    {"id":"q18","prompt":"The enemy offers you a fortune to change sides. You…","answers":[
+      {"text":"Ask what they are really buying.","weights":{"skill:detect":2,"skill:speech":1,"attr:focus":1,"trope:cheater":1}},
+      {"text":"Take the money and plan the double-cross.","weights":{"skill:dexterity":2,"skill:style":1,"attr:crime":1,"trope:bad_to_the_bone":1}},
+      {"text":"Refuse and make them regret asking.","weights":{"skill:cool":2,"skill:fight":1,"attr:nerves":1,"trope:diehard":1}},
+      {"text":"Remind them who you are protecting.","weights":{"skill:leadership":2,"skill:flirt":1,"attr:smooth":1,"trope:good_samaritan":1}}
+    ]},
+    {"id":"q19","prompt":"You have one minute to disable a security system. You…","answers":[
+      {"text":"Hack it through the maintenance port.","weights":{"skill:fix":2,"skill:know":1,"attr:focus":1,"trope:neurotic_geek":1}},
+      {"text":"Cut the right wire by instinct.","weights":{"skill:dexterity":2,"skill:awareness":1,"attr:crime":1,"trope:genius_bruiser":1}},
+      {"text":"Hold the guards off while someone works.","weights":{"skill:shoot":2,"skill:cool":1,"attr:nerves":1,"trope:diehard":1}},
+      {"text":"Convince the operator it is a drill.","weights":{"skill:speech":2,"skill:style":1,"attr:smooth":1,"trope:cheater":1}}
+    ]},
+    {"id":"q20","prompt":"The floor gives way beneath you. You…","answers":[
+      {"text":"Catch the ledge and pull yourself up.","weights":{"skill:force":2,"skill:endure":1,"attr:brawn":1,"trope:hunk":1}},
+      {"text":"Swing to the next platform.","weights":{"skill:stunt":2,"skill:dexterity":1,"attr:nerves":1,"trope:free_spirit":1}},
+      {"text":"Notice the safe footing before stepping.","weights":{"skill:awareness":2,"skill:detect":1,"attr:crime":1,"trope:party_killer":1}},
+      {"text":"Guide the others out before yourself.","weights":{"skill:leadership":2,"skill:heal":1,"attr:smooth":1,"trope:good_samaritan":1}}
+    ]},
+    {"id":"q21","prompt":"The only witness is a child who refuses to speak. You…","answers":[
+      {"text":"Give them time and a safe place.","weights":{"skill:heal":2,"skill:speech":1,"attr:smooth":1,"trope:good_samaritan":1}},
+      {"text":"Find the detail they are trying to show you.","weights":{"skill:detect":2,"skill:know":1,"attr:focus":1,"trope:cool_but_distressed":1}},
+      {"text":"Ask a street contact who knows the family.","weights":{"skill:streetwise":2,"skill:leadership":1,"attr:crime":1,"trope:mentor":1}},
+      {"text":"Promise the people responsible will answer.","weights":{"skill:cool":2,"skill:force":1,"attr:nerves":1,"trope:vigilante":1}}
+    ]},
+    {"id":"q22","prompt":"Your weapon jams at the worst possible moment. You…","answers":[
+      {"text":"Clear it and fire again.","weights":{"skill:fix":2,"skill:shoot":1,"attr:focus":1,"trope:neurotic_geek":1}},
+      {"text":"Close the distance and use your fists.","weights":{"skill:fight":2,"skill:force":1,"attr:brawn":1,"trope:hunk":1}},
+      {"text":"Duck away and find another angle.","weights":{"skill:stunt":2,"skill:stealth":1,"attr:crime":1,"trope:lone_wolf":1}},
+      {"text":"Make the enemy think it was deliberate.","weights":{"skill:style":2,"skill:speech":1,"attr:smooth":1,"trope:cool_but_distressed":1}}
+    ]},
+    {"id":"q23","prompt":"A storm closes in as you cross the wilderness. You…","answers":[
+      {"text":"Read the sky and alter course.","weights":{"skill:survival":2,"skill:awareness":1,"attr:nerves":1,"trope:lone_wolf":1}},
+      {"text":"Build shelter and wait it out.","weights":{"skill:force":2,"skill:fix":1,"attr:brawn":1,"trope:last_boy_scout":1}},
+      {"text":"Keep the group calm with a story.","weights":{"skill:speech":2,"skill:style":1,"attr:smooth":1,"trope:party_killer":1}},
+      {"text":"Push on before the trail disappears.","weights":{"skill:endure":2,"skill:stunt":1,"attr:crime":1,"trope:diehard":1}}
+    ]},
+    {"id":"q24","prompt":"Your disguise is almost perfect, but the doorman asks a personal question. You…","answers":[
+      {"text":"Answer with a detail from your research.","weights":{"skill:know":2,"skill:speech":1,"attr:focus":1,"trope:cheater":1}},
+      {"text":"Turn the question into a compliment.","weights":{"skill:flirt":2,"skill:style":1,"attr:smooth":1,"trope:hot_stuff":1}},
+      {"text":"Give a different answer to each guard.","weights":{"skill:dexterity":2,"skill:stealth":1,"attr:crime":1,"trope:cheater":1}},
+      {"text":"Walk past as if you belong there.","weights":{"skill:cool":2,"skill:leadership":1,"attr:nerves":1,"trope:leader":1}}
+    ]},
+    {"id":"q25","prompt":"The villain traps your team in a burning warehouse. You…","answers":[
+      {"text":"Find the structural weakness and open a path.","weights":{"skill:fix":2,"skill:force":1,"attr:focus":1,"trope:genius_bruiser":1}},
+      {"text":"Carry the slowest teammate through the smoke.","weights":{"skill:endure":2,"skill:heal":1,"attr:brawn":1,"trope:good_samaritan":1}},
+      {"text":"Leap across the loading bay.","weights":{"skill:stunt":2,"skill:survival":1,"attr:nerves":1,"trope:free_spirit":1}},
+      {"text":"Confront the villain while others escape.","weights":{"skill:fight":2,"skill:shoot":1,"attr:crime":1,"trope:vigilante":1}}
+    ]},
+    {"id":"q26","prompt":"An encrypted file names the next target. You…","answers":[
+      {"text":"Crack the cipher and trace the source.","weights":{"skill:fix":2,"skill:know":1,"attr:focus":1,"trope:neurotic_geek":1}},
+      {"text":"Ask a contact for the missing context.","weights":{"skill:streetwise":2,"skill:speech":1,"attr:smooth":1,"trope:mentor":1}},
+      {"text":"Watch the target until their pattern breaks.","weights":{"skill:stealth":2,"skill:awareness":1,"attr:crime":1,"trope:lone_wolf":1}},
+      {"text":"Prepare a clean, direct intervention.","weights":{"skill:shoot":2,"skill:cool":1,"attr:nerves":1,"trope:diehard":1}}
+    ]},
+    {"id":"q27","prompt":"The final door has no lock, handle, or visible seam. You…","answers":[
+      {"text":"Search for the hidden mechanism.","weights":{"skill:detect":2,"skill:know":1,"attr:focus":1,"trope:cool_but_distressed":1}},
+      {"text":"Ask the building who made it.","weights":{"skill:streetwise":2,"skill:speech":1,"attr:smooth":1,"trope:mentor":1}},
+      {"text":"Try a forceful solution.","weights":{"skill:force":2,"skill:fight":1,"attr:brawn":1,"trope:hunk":1}},
+      {"text":"Find another way around.","weights":{"skill:stunt":2,"skill:stealth":1,"attr:crime":1,"trope:lone_wolf":1}}
+    ]},
+    {"id":"q28","prompt":"The team has one chance to expose the conspiracy. You…","answers":[
+      {"text":"Put the evidence where everyone can see it.","weights":{"skill:style":2,"skill:speech":1,"attr:smooth":1,"trope:hot_stuff":1}},
+      {"text":"Line up the shot that ends the threat.","weights":{"skill:shoot":2,"skill:awareness":1,"attr:nerves":1,"trope:cool_but_distressed":1}},
+      {"text":"Build the case piece by piece.","weights":{"skill:detect":2,"skill:know":1,"attr:focus":1,"trope:cool_but_distressed":1}},
+      {"text":"Break into the archive and take the proof.","weights":{"skill:dexterity":2,"skill:stealth":1,"attr:crime":1,"trope:cheater":1}}
+    ]},
+    {"id":"q29","prompt":"The getaway route is blocked by a barricade. You…","answers":[
+      {"text":"Ram it with the ride.","weights":{"skill:drive":2,"skill:force":1,"attr:nerves":1,"trope:free_spirit":1}},
+      {"text":"Climb over before anyone notices.","weights":{"skill:stunt":2,"skill:dexterity":1,"attr:brawn":1,"trope:free_spirit":1}},
+      {"text":"Talk the crew into opening a gap.","weights":{"skill:speech":2,"skill:leadership":1,"attr:smooth":1,"trope:cheater":1}},
+      {"text":"Disappear into the side streets.","weights":{"skill:streetwise":2,"skill:survival":1,"attr:crime":1,"trope:cheater":1}}
+    ]},
+    {"id":"q30","prompt":"At the showdown, the villain offers one last warning. You…","answers":[
+      {"text":"Listen for the weakness in the speech.","weights":{"skill:detect":2,"skill:cool":1,"attr:focus":1,"trope:cool_but_distressed":1}},
+      {"text":"Step forward and refuse to yield.","weights":{"skill:endure":2,"skill:fight":1,"attr:brawn":1,"trope:diehard":1}},
+      {"text":"Turn the crowd against them.","weights":{"skill:leadership":2,"skill:speech":1,"attr:smooth":1,"trope:leader":1}},
+      {"text":"Take the shot nobody else can make.","weights":{"skill:shoot":2,"skill:awareness":1,"attr:nerves":1,"trope:bad_to_the_bone":1}}
+    ]}
+  ]
+}

@@ -1,0 +1,13 @@
+import { roll } from './tables.js'
+import { pick, shuffle } from './dice.js'
+export function rollTable(rng,tables,id){ const table=tables.tables?.[id]||tables[id]; if(!table) throw new Error(`Unknown table: ${id}`); return {table:id,...roll(rng,table)} }
+const valueOf=result=>{ const row=result.row; if(result.column) return row[result.column]; const cols=Object.keys(row).filter(k=>k!=='roll'&&k!=='prompt'); return cols.length===1?row[cols[0]]:Object.fromEntries(cols.map(k=>[k,row[k]])) }
+const rolled=(rng,tables,id)=>{const result=rollTable(rng,tables,id);const value=valueOf(result);return {table:id,roll:result.roll,value:Array.isArray(value)?pick(rng,value):value,prompt:result.row.prompt||''}}
+export function generateCampaign(rng,tables){
+  const villain=rolled(rng,tables,'villain_generator'), themeCount=3+Math.floor(rng()*3), strongCount=2+Math.floor(rng()*2), weakCount=1+Math.floor(rng()*2)
+  const strongList=tables.tables.villain_strong_spots.rows[0].strong_spots, phaseList=tables.tables.campaign_phases.rows[0].phases
+  return {meta:{version:1,createdAt:new Date(0).toISOString()},name:'',setting:'',villain:{...villain,strongSpots:shuffle(rng,strongList).slice(0,strongCount).map(value=>({table:'villain_strong_spots',roll:'list',value})),weakSpots:Array.from({length:weakCount},()=>rolled(rng,tables,'enemy_weak_spots')),approaches:Array.from({length:themeCount},()=>rolled(rng,tables,'thematic_oracles'))},mission:'',stakes:'',allies:Array.from({length:2},()=>({help:rolled(rng,tables,'help'),flaw:rolled(rng,tables,'flaw')})),leads:Array.from({length:2},()=>rolled(rng,tables,'macguffin')),phases:phaseList.map((phase,i)=>({index:i+1,...phase,aim:'',hurdle:rolled(rng,tables,'hurdle'),climax:rolled(rng,tables,'climax'),twist:i===2?rolled(rng,tables,'turning_point_twists'):null}))}
+}
+export function rerollField(rng,campaign,path,tables){ const next=structuredClone(campaign), parts=path.split('.'), parent=parts.slice(0,-1).reduce((o,k)=>o[k],next), key=parts.at(-1), id=parent[key]?.table; if(!id) throw new Error('Field is not a rolled table'); parent[key]=rolled(rng,tables,id); return next }
+export function campaignMarkdown(c){ return `# ${c.name||'Untitled Campaign'}\n\n**Setting:** ${c.setting||'—'}\n\n## Villain\n${format(c.villain.value)}\n\n## Mission & Stakes\n${c.mission||'—'}\n\n${c.stakes||'—'}\n\n## Allies\n${c.allies.map((a,i)=>`${i+1}. ${format(a.help.value)} — ${format(a.flaw.value)}`).join('\n')}\n\n## Phases\n${c.phases.map(p=>`${p.index}. ${p.aim||'—'} — ${format(p.hurdle.value)} / ${format(p.climax.value)}${p.twist?` / Twist: ${format(p.twist.value)}`:''}`).join('\n')}` }
+const format=v=>typeof v==='string'?v:Object.values(v||{}).join(' / ')

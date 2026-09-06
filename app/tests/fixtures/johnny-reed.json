@@ -1,0 +1,17 @@
+{
+  "source": "Outgunned Corebook p. 19 and pre-generated sheet p. 214",
+  "pins": {
+    "role": "agent",
+    "trope": "last_boy_scout",
+    "tropeAttribute": "brawn",
+    "age": "Adult",
+    "name": "Johnny Reed",
+    "job": "Police",
+    "catchphrase": "With all due respect, to hell with the rules",
+    "flaw": "Never off the clock",
+    "roleFeats": ["gunslinger", "hard_to_kill"],
+    "tropeFeats": ["selfless"],
+    "freeSkillPoints": ["drive", "leadership"],
+    "gearIds": ["pistol", "handcuffs", "badge", "telephone"]
+  }
+}

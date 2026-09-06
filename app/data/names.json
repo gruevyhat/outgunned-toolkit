@@ -1,0 +1,14 @@
+{
+  "_meta": { "source": "Original toolkit content; Unisex Name Table: Assistant Director ENG 1.0", "transcribed": "2026-09-05" },
+  "firstNames": ["Alex","Amara","Andrew","Anika","Anthony","Ava","Beatriz","Ben","Bianca","Brandon","Camila","Carlos","Carmen","Chloe","Darius","Diana","Elena","Elias","Elliot","Emily","Erin","Faisal","Fatima","Gabriel","Grace","Hannah","Harper","Helena","Imani","Isabel","Jack","Jade","Jamal","Jasmine","Jonah","Julia","Kai","Kara","Lena","Leo","Liam","Lina","Lucas","Maya","Mia","Michael","Naomi","Nate","Nia","Noah","Nora","Omar","Priya","Rafael","Rhea","Riley","Rosa","Sasha","Sofia","Theo","Victor","Wes","Yara","Zoe"],
+  "surnames": ["Anders","Bennett","Brooks","Carter","Chen","Cole","Cruz","Dawson","Ellis","Foster","Garcia","Grant","Gray","Green","Hall","Harris","Hayes","Henderson","Holt","Jackson","James","Khan","King","Lane","Lawson","Lee","Lewis","Mason","Miller","Morgan","Morris","Nash","Nguyen","Nolan","Ortiz","Parker","Patel","Perry","Price","Reed","Reyes","Rivera","Ross","Santos","Shah","Shaw","Silva","Singh","Smith","Stone","Taylor","Thomas","Turner","Vega","Walker","Wallace","Warren","Washington","Watson","Wells","West","Williams","Wilson","Wong","Young"],
+  "unisex": ["Aiden","Clay","Kelly","Owen","River","Terry","Ali","Dylan","Kim","Pat","Rowan","Toni","Ash","Finn","Lee","Piper","Sam","Tyler","Billy","Francis","Mason","Quinn","Sean","Val","Bobby","Jack","Miller","Ray","Shay","Vic","Charlie","Jude","Nicky","Riley","Taylor","Wynn"],
+  "unisexTable": { "die":"d6x2", "pageRef":57, "source":"Assistant Director ENG 1.0", "columns":["name"], "rows":[
+    {"roll":"11","name":"Aiden"},{"roll":"12","name":"Clay"},{"roll":"13","name":"Kelly"},{"roll":"14","name":"Owen"},{"roll":"15","name":"River"},{"roll":"16","name":"Terry"},
+    {"roll":"21","name":"Ali"},{"roll":"22","name":"Dylan"},{"roll":"23","name":"Kim"},{"roll":"24","name":"Pat"},{"roll":"25","name":"Rowan"},{"roll":"26","name":"Toni"},
+    {"roll":"31","name":"Ash"},{"roll":"32","name":"Finn"},{"roll":"33","name":"Lee"},{"roll":"34","name":"Piper"},{"roll":"35","name":"Sam"},{"roll":"36","name":"Tyler"},
+    {"roll":"41","name":"Billy"},{"roll":"42","name":"Francis"},{"roll":"43","name":"Mason"},{"roll":"44","name":"Quinn"},{"roll":"45","name":"Sean"},{"roll":"46","name":"Val"},
+    {"roll":"51","name":"Bobby"},{"roll":"52","name":"Jack"},{"roll":"53","name":"Miller"},{"roll":"54","name":"Ray"},{"roll":"55","name":"Shay"},{"roll":"56","name":"Vic"},
+    {"roll":"61","name":"Charlie"},{"roll":"62","name":"Jude"},{"roll":"63","name":"Nicky"},{"roll":"64","name":"Riley"},{"roll":"65","name":"Taylor"},{"roll":"66","name":"Wynn"}
+  ]}
+}
