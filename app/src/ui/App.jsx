@@ -9,6 +9,7 @@ import Oracles from './screens/Oracles.jsx'
 import {contentPacks,gameData as coreData} from '../data.js'
 import {mergePacks} from '../packData.js'
 import {decodeHash} from '../engine/share.js'
+import {parseHeroMarkdown} from '../engine/heroMarkdown.js'
 import {validateHero} from '../engine/validate.js'
 
 export default function App(){
@@ -21,9 +22,10 @@ export default function App(){
   const home=()=>{history.replaceState(null,'',location.pathname+location.search);setShared(null);setMode('menu')}
   const togglePack=id=>{setEnabledPacks(current=>current.includes(id)?current.filter(x=>x!==id):[...current,id]);setCrew([]);setGuidedDefaults({})}
   const addToCrew=hero=>{setCrew(current=>current.some(x=>x.role===hero.role)?current:[...current,hero].slice(0,5));setMode('crew')}
-  if(mode==='menu')return <Menu onSelectMode={setMode} packs={contentPacks} enabledPacks={enabledPacks} onTogglePack={togglePack}/>
-  if(mode==='random')return <RandomHero data={data} onBack={home} initial={shared} onAddToCrew={addToCrew}/>
-  if(mode==='guided')return <GuidedHero data={data} onBack={home} defaults={guidedDefaults}/>
+  const importMarkdown=async file=>{try{const hero=parseHeroMarkdown(await file.text()),required=contentPacks.filter(pack=>JSON.stringify(hero).includes(`${pack.id}__`)).map(pack=>pack.id),nextEnabled=[...new Set([...enabledPacks,...required])],nextData=mergePacks(coreData,contentPacks,nextEnabled),errors=validateHero(hero,nextData);if(errors.length)throw new Error(errors.join(' · '));setEnabledPacks(nextEnabled);setShared(hero);setMode('random')}catch(error){if(typeof window!=='undefined')window.alert(error.message);else throw error}}
+  if(mode==='menu')return <Menu onSelectMode={setMode} packs={contentPacks} enabledPacks={enabledPacks} onTogglePack={togglePack} onImportMarkdown={importMarkdown}/>
+  if(mode==='random')return <RandomHero data={data} onBack={home} initial={shared} onAddToCrew={addToCrew} onImportMarkdown={importMarkdown}/>
+  if(mode==='guided')return <GuidedHero data={data} onBack={home} defaults={guidedDefaults} onImportMarkdown={importMarkdown}/>
   if(mode==='quiz')return <Questionnaire data={data} onBack={home} onRoll={()=>setMode('random')} onAccept={result=>{setGuidedDefaults({role:result.roles[0].id,trope:result.tropes[0].id});setMode('guided')}}/>
   if(mode==='crew')return <Crew data={data} onBack={home} initial={crew}/>
   if(mode==='mission')return <Mission data={data} onBack={home} initial={shared}/>

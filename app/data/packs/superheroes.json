@@ -235,17 +235,19 @@
       "summary": "A peerless fighter who specializes in bows, guns, or melee weapons."
     },
     "marvel": {
-      "name": "The Marvel", "pageRef": 52, "source": "Outgunned Superheroes ENG 1.0", "attributeChoices": ["brawn", "smooth"], "attributePoints": 2, "skillPoints": 12, "superpower": "invincible", "incredible": true, "actsAsTrope": true,
+      "name": "The Marvel", "pageRef": 52, "source": "Outgunned Superheroes ENG 1.0", "attributeChoices": ["brawn", "smooth"], "fixedAttributes": ["brawn", "smooth"], "attributePoints": 2, "skills": ["endure", "fight", "force", "stunt", "cool", "shoot", "flirt", "leadership", "detect", "know", "awareness", "dexterity"], "freeSkillPointCount": 8, "superpower": "invincible", "incredible": true, "actsAsTrope": true,
       "origins": ["alien", "divine", "eternal"],
       "catchphrases": ["I cannot allow this", "I can, and I will", "I am flawed too"],
       "flaws": ["I underestimate my enemies", "I cannot control my strength", "I see good in everybody"],
       "feats": ["bullseye", "detective", "foresight", "jump", "heartbreaker", "hard_to_kill", "immortality", "sonic_boom", "super_senses", "regeneration", "team_leader", "unstoppable_force"],
       "featCount": 3,
-      "summary": "An exceptional being that replaces both Role and Trope; choose three feats and assign 12 skill points."
+      "forcedFeats": ["flight", "energy_manipulation", "bulletproof", "only_weakness"],
+      "summary": "An exceptional being that replaces both Role and Trope, raises Brawn and Smooth, and gains twelve listed Skill points."
     },
     "prodigy": {
-      "name": "The Prodigy", "pageRef": 54, "source": "Outgunned Superheroes ENG 1.0", "superpower": "one_of_a_kind", "incredible": true, "nonRole": true, "extraTrope": true,
+      "name": "The Prodigy", "pageRef": 54, "source": "Outgunned Superheroes ENG 1.0", "superpower": "one_of_a_kind", "incredible": true, "nonRole": true, "extraTrope": true, "skills": [], "freeSkillPointCount": 4, "roleFeatCount": 1, "tropeFeatCount": 1, "extraFeatCount": 2, "extraFeatPool": "all",
       "origins": ["eternal", "evolved", "mutation"],
+      "catchphrases": ["I've hit the jackpot!", "Don't know. Don't care", "Do I look like a hero to you?"],
       "flaws": ["I have overwhelming responsibilities", "I lose control", "I take things too far"],
       "summary": "A non-Role: choose a second Trope, mark it as the Role followed by Prodigy, and use One of a Kind."
     }

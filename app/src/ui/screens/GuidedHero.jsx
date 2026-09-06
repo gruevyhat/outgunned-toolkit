@@ -1,17 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { makeRng } from '../../engine/dice.js'
 import { generateRandom } from '../../engine/hero.js'
-import { roleAttributeOptions } from '../../engine/build.js'
+import { featSlots, roleAttributeOptions } from '../../engine/build.js'
 import { validateHero } from '../../engine/validate.js'
 import { Dots } from '../components/index.jsx'
 import HeroSheet from './HeroSheet.jsx'
 
 const STEPS = ['Role', 'Personal Data', 'Trope', 'Free Points', 'Feats', 'Gear', 'Review']
 
-export default function GuidedHero({ data, onBack, defaults = {} }) {
+export default function GuidedHero({ data, onBack, defaults = {}, onImportMarkdown }) {
   const [step, setStep] = useState(defaults.role ? 1 : 0)
   const [form, setForm] = useState({
     role: defaults.role || Object.keys(data.roles.roles)[0],
+    roleTrope: defaults.roleTrope || Object.keys(data.tropes.tropes)[0],
     trope: defaults.trope || Object.keys(data.tropes.tropes)[0],
     roleAttribute: null,
     tropeAttribute: null,
@@ -29,17 +30,20 @@ export default function GuidedHero({ data, onBack, defaults = {} }) {
   })
 
   const role = data.roles.roles[form.role]
-  const trope = data.tropes.tropes[form.trope]
-  const roleAttrs = roleAttributeOptions(role)
+  const needsRoleTrope=role.extraTrope||role.doubleTrope,roleTropeChoices=role.doubleTrope?Object.fromEntries(Object.entries(data.tropes.tropes).filter(([,value])=>value.colorTrope)):data.tropes.tropes
+  const firstTropeId = needsRoleTrope && (form.roleTrope === form.trope || !roleTropeChoices[form.roleTrope]) ? Object.keys(roleTropeChoices).find(id => id !== form.trope) : form.roleTrope
+  const roleTrope = needsRoleTrope ? data.tropes.tropes[firstTropeId] : null
+  const trope = role.actsAsTrope ? null : data.tropes.tropes[form.trope]
+  const roleAttrs = roleAttributeOptions(roleTrope || role)
   const roleAttr = roleAttrs.includes(form.roleAttribute) ? form.roleAttribute : roleAttrs[0]
-  const legalTropeAttrs = trope.attributes.filter(attribute => attribute !== roleAttr)
-  const tropeAttr = legalTropeAttrs.includes(form.tropeAttribute) ? form.tropeAttribute : legalTropeAttrs[0] || trope.attributes[0]
-  const roleCap = form.age === 'Young' ? 1 : 2
-  const pins = { ...form, roleAttribute: roleAttr, tropeAttribute: tropeAttr }
-  if (form.freeSkillPoints.length !== 2) delete pins.freeSkillPoints
+  const legalTropeAttrs = (trope?.attributes || []).filter(attribute => attribute !== roleAttr)
+  const tropeAttr = legalTropeAttrs.includes(form.tropeAttribute) ? form.tropeAttribute : legalTropeAttrs[0] || trope?.attributes?.[0]
+  const slotPreview={personal:{age:form.age}},slots=featSlots(slotPreview,role),roleCap=slots.role,tropeCap=slots.trope,extraCap=slots.extra,freePointCount=role.freeSkillPointCount||2
+  const pins = { ...form, roleTrope:firstTropeId, roleAttribute: roleAttr, tropeAttribute: tropeAttr }
+  if (form.freeSkillPoints.length !== freePointCount) delete pins.freeSkillPoints
   if (form.roleFeats.length !== roleCap) delete pins.roleFeats
-  if (form.tropeFeats.length !== 1) delete pins.tropeFeats
-  if (form.extraFeats.length !== (form.age === 'Old' ? 1 : 0)) delete pins.extraFeats
+  if (form.tropeFeats.length !== tropeCap) delete pins.tropeFeats
+  if (form.extraFeats.length !== extraCap) delete pins.extraFeats
 
   const hero = useMemo(() => {
     try { return generateRandom(makeRng(73), data, pins) } catch { return null }
@@ -49,21 +53,22 @@ export default function GuidedHero({ data, onBack, defaults = {} }) {
     window.scrollTo(0, 0)
   }, [step])
 
-  if (step === 6 && hero) return <GuidedReview initial={hero} data={data} onHome={onBack} />
+  if (step === 6 && hero) return <GuidedReview initial={hero} data={data} onHome={onBack} onImportMarkdown={onImportMarkdown} />
 
-  const canContinue = !(step === 3 && form.freeSkillPoints.length !== 2)
-    && !(step === 4 && (form.roleFeats.length !== roleCap || form.tropeFeats.length !== 1 || (form.age === 'Old' && form.extraFeats.length !== 1)))
+  const canContinue = !(step === 3 && form.freeSkillPoints.length !== freePointCount)
+    && !(step === 4 && (form.roleFeats.length !== roleCap || form.tropeFeats.length !== tropeCap || form.extraFeats.length !== extraCap))
 
   return <main className="panel wizard">
     <button className="link" onClick={step ? () => setStep(step - 1) : onBack}>{step ? '← Back' : '← Home'}</button>
     <div className="progress" aria-label={`Step ${step + 1} of 7`}><i style={{ width: `${(step + 1) / 7 * 100}%` }} /></div>
     <p className="eyebrow">Step {step + 1} / 7</p>
     <h1>{STEPS[step]}</h1>
-    {step > 0 && <div className="wizard-summary"><span><strong>Role</strong> {role.name}</span><span><strong>Trope</strong> {trope.name}</span><span><strong>Age</strong> {form.age}</span></div>}
+    {step > 0 && <div className="wizard-summary"><span><strong>Role</strong> {needsRoleTrope?`${roleTrope.name} ${role.name.replace(/^The /,'')}`:role.name}</span><span><strong>Trope</strong> {role.actsAsTrope?role.name:trope.name}</span><span><strong>Age</strong> {form.age}</span></div>}
 
     {step === 0 && <>
-      <ChoiceGrid label="Roles" values={data.roles.roles} selected={form.role} onChange={value => setForm(current => ({ ...current, role: value, roleAttribute: null, roleFeats: [], gearChoices: [] }))} />
-      {roleAttrs.length > 1 && <><h2>Role Attribute</h2><div className="choices">{roleAttrs.map(attribute => <button key={attribute} className={roleAttr === attribute ? 'selected' : ''} onClick={() => set('roleAttribute', attribute)}>{attribute}</button>)}</div></>}
+      <ChoiceGrid label="Roles" values={data.roles.roles} selected={form.role} onChange={value => setForm(current => ({ ...current, role: value, roleAttribute: null, roleFeats: [], tropeFeats:[], extraFeats:[], freeSkillPoints:[], gearChoices: [] }))} />
+      {needsRoleTrope&&<><h2>{role.doubleTrope?'Color Trope':'Prodigy Role Trope'}</h2><p>{role.doubleTrope?'Every Power Guardian first chooses one of the six Color Tropes.':'This first Trope is written as your Role, followed by “Prodigy.”'}</p><ChoiceGrid label="Role Tropes" values={roleTropeChoices} selected={firstTropeId} onChange={value=>setForm(current=>({...current,roleTrope:value,roleAttribute:null,roleFeats:[],freeSkillPoints:[]}))}/></>}
+      {role.fixedAttributes?.length?<p><strong>Raised Attributes:</strong> {role.fixedAttributes.join(' and ')}</p>:roleAttrs.length > 1 && <><h2>Role Attribute</h2><div className="choices">{roleAttrs.map(attribute => <button key={attribute} className={roleAttr === attribute ? 'selected' : ''} onClick={() => set('roleAttribute', attribute)}>{attribute}</button>)}</div></>}
     </>}
 
     {step === 1 && <div className="form-grid">
@@ -75,18 +80,16 @@ export default function GuidedHero({ data, onBack, defaults = {} }) {
     </div>}
 
     {step === 2 && <>
-      <ChoiceGrid label="Tropes" values={data.tropes.tropes} selected={form.trope} onChange={value => setForm(current => ({ ...current, trope: value, tropeAttribute: null, tropeFeats: [], extraFeats: [] }))} />
-      <h2>Raised Attribute</h2>
-      <div className="choices">{trope.attributes.map(attribute => <button disabled={attribute === roleAttr} className={tropeAttr === attribute ? 'selected' : ''} onClick={() => set('tropeAttribute', attribute)} key={attribute}>{attribute}{attribute === roleAttr ? ' · already raised' : ''}</button>)}</div>
+      {role.actsAsTrope?<p>This Special Role also acts as your Trope, so no separate Trope is chosen.</p>:<><ChoiceGrid label="Tropes" values={needsRoleTrope?Object.fromEntries(Object.entries(data.tropes.tropes).filter(([id,value])=>id!==firstTropeId&&(!role.doubleTrope||!value.colorTrope))):data.tropes.tropes} selected={form.trope} onChange={value => setForm(current => ({ ...current, trope: value, tropeAttribute: null, tropeFeats: [], extraFeats: [] }))} /><h2>Raised Attribute</h2><div className="choices">{trope.attributes.map(attribute => <button disabled={attribute === roleAttr} className={tropeAttr === attribute ? 'selected' : ''} onClick={() => set('tropeAttribute', attribute)} key={attribute}>{attribute}{attribute === roleAttr ? ' · already raised' : ''}</button>)}</div></>}
     </>}
 
-    {step === 3 && <FreeSkills form={form} role={role} trope={trope} hero={hero} set={set} />}
+    {step === 3 && <FreeSkills form={form} role={role.doubleTrope?{skills:[...role.skills,...roleTrope.skills]}:roleTrope||role} trope={trope} hero={hero} set={set} count={freePointCount} />}
 
     {step === 4 && <>
-      <p>{form.age === 'Young' ? 'Choose one Role Feat and one Trope Feat. Too Young to Die is automatic.' : form.age === 'Old' ? 'Choose two Role Feats, one Trope Feat, and one extra Feat.' : 'Choose two Role Feats and one Trope Feat.'}</p>
-      <FeatPicker title={`Role Feats · ${form.roleFeats.length}/${roleCap}`} ids={role.feats} chosen={form.roleFeats} taken={[...form.tropeFeats,...form.extraFeats]} cap={roleCap} data={data} onChange={value => set('roleFeats', value)} />
-      <FeatPicker title={`Trope Feat · ${form.tropeFeats.length}/1`} ids={trope.feats} chosen={form.tropeFeats} taken={[...form.roleFeats,...form.extraFeats]} cap={1} data={data} onChange={value => set('tropeFeats', value)} />
-      {form.age === 'Old' && <FeatPicker title={`Extra Feat · ${form.extraFeats.length}/1`} ids={[...new Set([...role.feats, ...trope.feats])].filter(id => data.feats.feats[id]?.repeatable || ![...form.roleFeats, ...form.tropeFeats].includes(id))} chosen={form.extraFeats} taken={[...form.roleFeats,...form.tropeFeats]} cap={1} data={data} onChange={value => set('extraFeats', value)} />}
+      <p>{role.actsAsTrope?'Choose three Special Role Feats; any listed automatic Feats are added for you.':role.extraTrope?'Choose one Feat from each Trope and two additional Feats for One of a Kind.':role.doubleTrope?'Choose two Power Guardian Feats from your Color Trope and one Feat from your second Trope. Transformation is automatic.':'Choose the Feats granted by your Role, Trope, and Age.'}</p>
+      {roleCap>0&&<FeatPicker title={`Role Feats · ${form.roleFeats.length}/${roleCap}`} ids={(roleTrope||role).feats||[]} chosen={form.roleFeats} taken={[...form.tropeFeats,...form.extraFeats,...slots.forced]} cap={roleCap} data={data} onChange={value => set('roleFeats', value)} />}
+      {tropeCap>0&&<FeatPicker title={`Trope Feat · ${form.tropeFeats.length}/${tropeCap}`} ids={trope.feats} chosen={form.tropeFeats} taken={[...form.roleFeats,...form.extraFeats,...slots.forced]} cap={tropeCap} data={data} onChange={value => set('tropeFeats', value)} />}
+      {extraCap>0&&<FeatPicker title={`Additional Feats · ${form.extraFeats.length}/${extraCap}`} ids={(role.extraFeatPool==='all'?Object.keys(data.feats.feats):[...new Set([...(role.feats||[]),...(trope?.feats||[])])]).filter(id => data.feats.feats[id]?.repeatable || ![...form.roleFeats, ...form.tropeFeats].includes(id))} chosen={form.extraFeats} taken={[...form.roleFeats,...form.tropeFeats,...slots.forced]} cap={extraCap} data={data} onChange={value => set('extraFeats', value)} />}
     </>}
 
     {step === 5 && <>
@@ -99,7 +102,7 @@ export default function GuidedHero({ data, onBack, defaults = {} }) {
   </main>
 }
 
-export function GuidedReview({ initial, data, onHome }) {
+export function GuidedReview({ initial, data, onHome, onImportMarkdown }) {
   const [hero, setHero] = useState(() => structuredClone(initial))
   const [editing, setEditing] = useState(false)
   const edit = (field, value) => {
@@ -114,7 +117,7 @@ export function GuidedReview({ initial, data, onHome }) {
     parent[parts.at(-1)] = value
     if (!validateHero(next, data).length) setHero(next)
   }
-  return <HeroSheet hero={hero} data={data} mode={editing ? 'edit' : 'play'} onHome={onHome} onEdit={edit} onWorkingChange={setHero} onToggleEdit={() => setEditing(value => !value)} />
+  return <HeroSheet hero={hero} data={data} mode={editing ? 'edit' : 'play'} onHome={onHome} onEdit={edit} onWorkingChange={setHero} onToggleEdit={() => setEditing(value => !value)} onImportMarkdown={onImportMarkdown} />
 }
 
 function ChoiceGrid({ label, values, selected, onChange }) {
@@ -136,16 +139,16 @@ function ChoiceGrid({ label, values, selected, onChange }) {
   </>
 }
 
-function FreeSkills({ form, role, trope, hero, set }) {
+function FreeSkills({ form, role, trope, hero, set, count=2 }) {
   return <>
-    <p>Choose exactly two points. A Skill cannot exceed 3.</p>
+    <p>Choose exactly {count} points. A Skill cannot exceed 3.</p>
     <div className="skill-grid free-points-grid">{Object.keys(hero?.skills || {}).map(skill => {
       const picked = form.freeSkillPoints.filter(value => value === skill).length
-      const base = 1 + (role.skills.includes(skill) ? 1 : 0) + (trope.skills.includes(skill) ? 1 : 0)
-      const disabled = form.freeSkillPoints.length >= 2 || base + picked >= 3
+      const base = 1 + ((role.skills||[]).includes(skill) ? 1 : 0) + ((trope?.skills||[]).includes(skill) ? 1 : 0)
+      const disabled = form.freeSkillPoints.length >= count || base + picked >= 3
       return <button key={skill} disabled={disabled && !picked} className={picked ? 'selected' : ''} onClick={() => set('freeSkillPoints', picked ? form.freeSkillPoints.filter((value, index) => value !== skill || index !== form.freeSkillPoints.lastIndexOf(skill)) : [...form.freeSkillPoints, skill])}><span>{skill}</span><Dots value={base + picked} max={3} label={skill} className="skill-dots" /></button>
     })}</div>
-    <strong className="points-status">{2 - form.freeSkillPoints.length} points remaining</strong>
+    <strong className="points-status">{count - form.freeSkillPoints.length} points remaining</strong>
   </>
 }
 

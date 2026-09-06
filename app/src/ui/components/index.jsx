@@ -8,6 +8,7 @@ export function Dots({ value = 0, max = 3, label, className = '' }) {
       {Array.from({ length: max }, (_, i) => (
         <span
           key={i}
+          className={i < count ? 'is-filled' : ''}
           aria-hidden="true"
           style={{
             display: 'inline-block',
@@ -25,10 +26,11 @@ export function Dots({ value = 0, max = 3, label, className = '' }) {
   );
 }
 
-export function Tracker({ value = 0, max = 1, label, filled = '✓', onChange }) {
+export function Tracker({ value = 0, max = 1, label, filled = '✓', onChange, variant = 'default' }) {
   const count = Math.max(0, Math.min(Number(value) || 0, max));
+  if(variant==='roulette')return <span className="roulette-tracker" aria-label={`${label || 'Death Roulette'} ${count} of ${max}`}><span className="roulette-skull" aria-hidden="true">☠</span>{Array.from({length:max},(_,i)=><button type="button" key={i} aria-label={`${label||'Death Roulette'} chamber ${i+1}`} aria-pressed={i<count} disabled={!onChange} onClick={()=>onChange?.(i<count?i:i+1)} style={{'--chamber':i}}>{i+1}</button>)}</span>
   return (
-    <span aria-label={`${label || 'Tracker'} ${count} of ${max}`} style={{display:'inline-grid',gridTemplateColumns:`repeat(${max}, 20px)`,alignItems:'center',gap:4,lineHeight:1}}>
+    <span className={`tracker tracker--${variant}`} aria-label={`${label || 'Tracker'} ${count} of ${max}`} style={{'--tracker-columns':max}}>
       {Array.from({ length: max }, (_, i) => (
         <button
           type="button"
@@ -37,26 +39,8 @@ export function Tracker({ value = 0, max = 1, label, filled = '✓', onChange })
           aria-pressed={i < count}
           disabled={!onChange}
           onClick={()=>onChange?.(i < count ? i : i + 1)}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 20,
-            height: 20,
-            margin: 0,
-            padding: 0,
-            border: `1.5px solid ${theme.colors.ink}`,
-            borderRadius: 2,
-            fontSize: 13,
-            fontWeight: 900,
-            lineHeight: 1,
-            color: i < count ? theme.colors.white : 'transparent',
-            background: i < count ? theme.colors.redDark : theme.colors.white,
-            cursor: onChange ? 'pointer' : 'default',
-            opacity: 1,
-          }}
         >
-          {i < count ? filled : ' '}
+          {variant==='adrenaline'?'ϟ':i < count ? filled : ' '}
         </button>
       ))}
     </span>

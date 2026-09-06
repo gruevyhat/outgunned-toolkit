@@ -168,6 +168,36 @@ function drawCircleTracker(page, x, y, count, max, radius = 5) {
   }
 }
 
+function drawGritTracker(page, x, y, count, max = 12) {
+  const filled = Math.max(0, Math.min(max, Math.floor(numeric(count))));
+  for (let i = 0; i < max; i += 1) {
+    page.drawSvgPath('M 0 12 L 5 15 L 10 12 L 9 5 L 5 0 L 1 5 Z', { x: x + i * 12, y, borderColor: RED, borderWidth: 1, color: i < filled ? RED : PAPER });
+  }
+}
+
+function drawAdrenalineTracker(page, x, y, count, max = 6) {
+  const filled = Math.max(0, Math.min(max, Math.floor(numeric(count))));
+  for (let i = 0; i < max; i += 1) {
+    const px = x + i * 13;
+    page.drawRectangle({ x: px, y, width: 10, height: 15, borderColor: RED, borderWidth: 1, color: i < filled ? RED : PAPER });
+    page.drawLine({ start: { x: px + 6, y: y + 12 }, end: { x: px + 4, y: y + 8 }, thickness: 1.1, color: i < filled ? PAPER : RED });
+    page.drawLine({ start: { x: px + 4, y: y + 8 }, end: { x: px + 7, y: y + 8 }, thickness: 1.1, color: i < filled ? PAPER : RED });
+    page.drawLine({ start: { x: px + 7, y: y + 8 }, end: { x: px + 4, y: y + 3 }, thickness: 1.1, color: i < filled ? PAPER : RED });
+  }
+}
+
+function drawRouletteTracker(page, font, x, y, count) {
+  const filled = Math.max(0, Math.min(6, Math.floor(numeric(count))));
+  const cx = x + 19, cy = y + 8;
+  page.drawCircle({ x: cx, y: cy, size: 18, color: RED });
+  for (let i = 0; i < 6; i += 1) {
+    const angle = Math.PI / 3 * i, chamberX = cx + Math.cos(angle) * 11, chamberY = cy + Math.sin(angle) * 11;
+    page.drawCircle({ x: chamberX, y: chamberY, size: 4.2, borderColor: PAPER, borderWidth: .75, color: i < filled ? INK : PAPER_ALT });
+  }
+  page.drawCircle({ x: cx, y: cy, size: 4.3, color: INK });
+  page.drawText('X', { x: cx - 2.3, y: cy - 2.5, size: 5.5, font, color: PAPER });
+}
+
 function gunName(data, gun) {
   return text(gun?.name, valueName(data, 'gear', gun?.id));
 }
@@ -217,8 +247,10 @@ export async function drawHeroSheet(hero = {}, data = {}) {
   attrKeys.forEach((attr, index) => {
     const x = attrsBox.x + 8 + index * colW;
     if (index > 0) page.drawLine({ start: { x, y: attrsBox.y + 8 }, end: { x, y: attrsBox.y + attrsBox.h - 18 }, thickness: 0.5, color: LINE });
-    page.drawText(attr.toUpperCase(), { x: x + 7, y: attrsBox.y + attrsBox.h - 30, size: 10, font: bold, color: INK, characterSpacing: 0.5 });
-    drawCircleTracker(page, x + 8, attrsBox.y + attrsBox.h - 43, attrs[attr], 3, 4.2);
+    page.drawRectangle({ x: x + 4, y: attrsBox.y + attrsBox.h - 48, width: colW - 8, height: 25, color: RED });
+    page.drawText(attr.toUpperCase(), { x: x + 9, y: attrsBox.y + attrsBox.h - 34, size: 9.5, font: bold, color: PAPER, characterSpacing: 0.5 });
+    const attributeCount = Math.max(0, Math.min(3, Math.floor(numeric(attrs[attr]))));
+    for (let dot = 0; dot < 3; dot += 1) page.drawCircle({ x: x + colW - 47 + dot * 12, y: attrsBox.y + attrsBox.h - 35, size: 4.3, borderColor: PAPER, borderWidth: .8, color: dot < attributeCount ? PAPER : RED });
     ATTRIBUTE_SKILLS[attr].forEach((skill, skillIndex) => {
       const sy = attrsBox.y + attrsBox.h - 64 - skillIndex * 18;
       page.drawText(titleCase(skill), { x: x + 7, y: sy, size: 7.2, font: regular, color: INK });
@@ -259,7 +291,7 @@ export async function drawHeroSheet(hero = {}, data = {}) {
   // Grit is a track of twelve empty boxes on the printed sheet.  A caller may
   // provide gritFilled/gritUsed for an in-progress sheet, but the engine's
   // `grit: 12` is a capacity and must not render twelve spent boxes.
-  drawTracker(page, resourcesBox.x + 8, resourcesBox.y + 13, hero.resources?.gritFilled ?? hero.resources?.gritUsed ?? 0, 12, { width: 10, height: 13, gap: 2 });
+  drawGritTracker(page, resourcesBox.x + 8, resourcesBox.y + 11, hero.resources?.gritFilled ?? hero.resources?.gritUsed ?? 0);
   const resourceLabels = [
     [hero.superpower ? 'Power' : 'Adrenaline', hero.superpower ? hero.resources?.power : hero.resources?.adrenaline, 6],
     ['Spotlight', hero.resources?.spotlight, 3],
@@ -269,7 +301,9 @@ export async function drawHeroSheet(hero = {}, data = {}) {
   let rx = resourcesBox.x + 170;
   resourceLabels.forEach(([label, count, max]) => {
     drawLabel(page, regular, label, rx, resourcesBox.y + 34, 6.5, MUTED);
-    drawTracker(page, rx, resourcesBox.y + 13, count, max, { width: 9, height: 13, gap: 2 });
+    if (label === 'Adrenaline') drawAdrenalineTracker(page, rx, resourcesBox.y + 11, count, max);
+    else if (label === 'Death Roulette') drawRouletteTracker(page, bold, rx + 70, resourcesBox.y + 12, count);
+    else drawTracker(page, rx, resourcesBox.y + 13, count, max, { width: 9, height: 13, gap: 2 });
     rx += max * 11 + 35;
   });
 
