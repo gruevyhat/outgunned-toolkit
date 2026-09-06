@@ -14,6 +14,9 @@ import {validateHero} from '../engine/validate.js'
 export default function App(){
   const [mode,setMode]=useState('menu'),[shared,setShared]=useState(null),[guidedDefaults,setGuidedDefaults]=useState({}),[crew,setCrew]=useState([]),[enabledPacks,setEnabledPacks]=useState([])
   const data=useMemo(()=>mergePacks(coreData,contentPacks,enabledPacks),[enabledPacks])
+  useEffect(()=>{
+    window.scrollTo(0,0)
+  },[mode])
   useEffect(()=>{const raw=decodeHash(location.hash);if(raw?.type==='hero'){const packId=raw.value.role?.split('__')[0];if(contentPacks.some(pack=>pack.id===packId)&&!enabledPacks.includes(packId)){setEnabledPacks(current=>[...current,packId]);return}}const decoded=decodeHash(location.hash,validateHero,data);if(decoded?.type==='hero'){setShared(decoded.value);setMode('random')}else if(decoded?.type==='campaign'){setShared(decoded.value);setMode('mission')}},[data,enabledPacks])
   const home=()=>{history.replaceState(null,'',location.pathname+location.search);setShared(null);setMode('menu')}
   const togglePack=id=>{setEnabledPacks(current=>current.includes(id)?current.filter(x=>x!==id):[...current,id]);setCrew([]);setGuidedDefaults({})}

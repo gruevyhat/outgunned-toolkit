@@ -1,2 +1,37 @@
-import React,{useState} from 'react'; import { makeRng } from '../../engine/dice.js'; import { rollTable } from '../../engine/mission.js'
-export default function Oracles({data,onBack}){const [log,setLog]=useState([]); const ids=Object.keys(data.missionTables.tables); const run=id=>{const r=rollTable(makeRng(Date.now()),data.missionTables,id), cols=Object.entries(r.row).filter(([k])=>k!=='roll').map(([,v])=>v).join(' / ');setLog(x=>[{id,roll:Array.isArray(r.roll)?r.roll.join(', '):r.roll,value:cols},...x].slice(0,30))}; return <main className="panel"><button className="link" onClick={onBack}>← Menu</button><h1>Oracles</h1><div className="oracle-grid">{ids.map(id=><button key={id} onClick={()=>run(id)}>🎲 {id.replaceAll('_',' ')}</button>)}</div><div className="log">{log.map((x,i)=><p key={i}><strong>{x.id.replaceAll('_',' ')} [{x.roll}]</strong><br/>{x.value}</p>)}</div></main>}
+import React, { useMemo, useState } from 'react'
+import { makeRng } from '../../engine/dice.js'
+import { rollTable } from '../../engine/mission.js'
+
+const CATEGORY_RULES = [
+  ['Story', /thematic|general_clues|mission_generator|scene_drama|yes_no|scene_prompts|turning_point/],
+  ['People', /villain_generator|help|flaw|unisex_names/],
+  ['Places', /locations|store|skyscraper|world_region|desert_jungle/],
+  ['Danger', /hurdle|climax|strong_spots|weak_spots/],
+  ['Campaign', /campaign_phases|macguffin/],
+]
+const title = id => id.replaceAll('_', ' ')
+
+export default function Oracles({ data, onBack }) {
+  const [log, setLog] = useState([])
+  const [query, setQuery] = useState('')
+  const ids = Object.keys(data.missionTables.tables)
+  const groups = useMemo(() => CATEGORY_RULES.map(([name, pattern]) => [name, ids.filter(id => pattern.test(id) && title(id).includes(query.toLowerCase()))]).filter(([, values]) => values.length), [data, query])
+  const run = id => {
+    const result = rollTable(makeRng(Date.now()), data.missionTables, id)
+    const value = Object.entries(result.row).filter(([key]) => key !== 'roll').map(([, item]) => item).join(' / ')
+    setLog(current => [{ id, roll: Array.isArray(result.roll) ? result.roll.join(', ') : result.roll, value }, ...current].slice(0, 30))
+  }
+  const current = log[0]
+
+  return <main className="panel">
+    <button className="link" onClick={onBack}>← Home</button>
+    <div className="tool-intro"><div><p className="eyebrow">Instant inspiration</p><h1>Oracles</h1></div></div>
+    <input className="oracle-search" aria-label="Search oracles" placeholder="Find an oracle…" value={query} onChange={event => setQuery(event.target.value.toLowerCase())} />
+
+    {current && <section className="oracle-current"><small>{title(current.id)} · roll {current.roll}</small><strong>{current.value}</strong></section>}
+
+    {groups.map(([name, values]) => <section className="oracle-section" key={name}><h2>{name}</h2><div className="oracle-grid">{values.map(id => <button key={id} onClick={() => run(id)}>↻ {title(id)}</button>)}</div></section>)}
+
+    {log.length > 1 && <section className="log"><div className="log-header"><h2>Recent rolls</h2><button className="link" onClick={() => setLog(current ? [current] : [])}>Clear history</button></div>{log.slice(1).map((item, index) => <p key={`${item.id}-${index}`}><strong>{title(item.id)} [{item.roll}]</strong><br />{item.value}</p>)}</section>}
+  </main>
+}

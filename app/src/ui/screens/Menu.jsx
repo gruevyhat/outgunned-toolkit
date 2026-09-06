@@ -14,10 +14,10 @@ const OPTIONS = [
 export default function Menu({ onNavigate, onSelectMode = onNavigate, packs = [], enabledPacks = [], onTogglePack }) {
   const navigate = onSelectMode || onNavigate || (() => {});
   return (
-    <main style={{ ...styles.page, display: 'grid', gap: theme.space.xl }}>
+    <main className="menu-page" style={{ ...styles.page, display: 'grid', gap: theme.space.xl }}>
       <header style={{ display: 'grid', gap: theme.space.sm, maxWidth: 700 }}>
         <Banner as="div" style={{ justifySelf: 'start', fontSize: 13 }}>Outgunned toolkit</Banner>
-        <h1 style={{ ...styles.display, fontSize: 'clamp(42px, 10vw, 86px)', lineHeight: .86, margin: 0 }}>
+        <h1 style={{ ...styles.display, fontSize: 'clamp(36px, 10vw, 86px)', lineHeight: .86, margin: 0 }}>
           Make trouble.<br /><span style={{ color: theme.colors.red }}>Look cool.</span>
         </h1>
         <p style={{ color: theme.colors.muted, fontSize: 17, lineHeight: 1.45, margin: 0, maxWidth: 560 }}>
@@ -25,7 +25,7 @@ export default function Menu({ onNavigate, onSelectMode = onNavigate, packs = []
         </p>
       </header>
 
-      {packs.length ? <section style={styles.card} aria-labelledby="books-in-play"><Banner id="books-in-play" as="h2">Books in play</Banner><p style={{color:theme.colors.muted}}>Core action is always available. Add any genre books or supplements you want in the character pool.</p><div className="pack-grid"><div className="pack-option is-checked"><span aria-hidden="true">✓</span><strong>Outgunned Corebook</strong><small>Always on</small></div>{packs.map(pack=>{const checked=enabledPacks.includes(pack.id);return <button type="button" key={pack.id} aria-pressed={checked} className={`pack-option ${checked?'is-checked':''}`} onClick={()=>onTogglePack?.(pack.id)}><span aria-hidden="true">{checked?'✓':''}</span><strong>{pack.name}</strong><small>{Object.keys(pack.roles).length} Roles · {Object.keys(pack.tropes).length} Tropes</small></button>})}</div></section> : null}
+      {packs.length ? <details className="books-card" style={styles.card}><summary id="books-in-play">Books in play · {enabledPacks.length+1} active</summary><div className="books-content"><p style={{color:theme.colors.muted}}>Core action is always available. Add genre books or supplements to every character-creation tool.</p><div className="pack-grid"><div className="pack-option is-checked"><span aria-hidden="true">✓</span><strong>Outgunned Corebook</strong><small>Always on</small></div>{packs.map(pack=>{const checked=enabledPacks.includes(pack.id);return <button type="button" key={pack.id} aria-pressed={checked} className={`pack-option ${checked?'is-checked':''}`} onClick={()=>onTogglePack?.(pack.id)}><span aria-hidden="true">{checked?'✓':''}</span><strong>{pack.name}</strong><small>{Object.keys(pack.roles).length} Roles · {Object.keys(pack.tropes).length} Tropes</small></button>})}</div></div></details> : null}
 
       <nav aria-label="Toolkit modes" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: theme.space.md }}>
         {OPTIONS.map(([mode, title, description], index) => (
@@ -47,7 +47,7 @@ export default function Menu({ onNavigate, onSelectMode = onNavigate, packs = []
             <span style={{ ...styles.display, color: index === 0 ? theme.colors.red : theme.colors.ink, fontSize: 22 }}>
               {title}
             </span>
-            <span style={{ color: theme.colors.muted, lineHeight: 1.4 }}>{description}</span>
+            <span style={{ color: theme.colors.muted, lineHeight: 1.4, textTransform: 'none' }}>{description}</span>
             <span style={{ ...styles.display, color: theme.colors.red, fontSize: 12 }}>Open  →</span>
           </button>
         ))}
