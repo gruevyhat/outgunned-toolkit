@@ -9,8 +9,10 @@ export function heroMarkdown(hero, data = {}) {
   const attributes = Object.entries(hero.attributes || {}).map(([id, value]) => `- **${title(id)}:** ${dots(value)} (${value})`).join('\n')
   const skills = Object.entries(hero.skills || {}).map(([id, value]) => `- **${title(id)}:** ${dots(value)} (${value})`).join('\n')
   const feats = groupFeatIds(hero.feats).map(({id,count}) => `- ${nameOf(data.feats?.feats, id)}${count > 1 ? ` (×${count})` : ''}`).join('\n') || '- —'
-  const guns = (hero.gear?.guns || []).map(item => `- ${item.name || nameOf(data.gear?.gear, item.id)} — ${item.mags ?? 0} Mags`).join('\n') || '- —'
-  const gear = (hero.gear?.items || []).map(item => `- ${item.name || nameOf(data.gear?.gear, item.id)}${item.bag ? ' (in bag)' : ''}`).join('\n') || '- —'
+  const isMelee = item => item.kind === 'melee' || item.kind === 'weapon' || !!(item.id && data.gear?.weapons?.[item.id] && !data.gear?.guns?.[item.id])
+  const melee = (hero.gear?.items || []).filter(isMelee)
+  const weapons = [...(hero.gear?.guns || []).map(item => `- ${item.name || nameOf(data.gear?.gear, item.id)} — ${item.mags ?? 0} Mags`), ...melee.map(item => `- ${item.name || nameOf(data.gear?.gear, item.id)} — Melee`)].join('\n') || '- —'
+  const gear = (hero.gear?.items || []).filter(item => !isMelee(item)).map(item => `- ${item.name || nameOf(data.gear?.gear, item.id)}${item.bag ? ' (in bag)' : ''}`).join('\n') || '- —'
   const experiences = (hero.experiences || []).map(value => `- ${value}`).join('\n') || '- —'
   const resources = hero.resources || {}
   return `# ${hero.personal?.name || 'Unnamed Hero'}
@@ -44,9 +46,9 @@ ${feats}
 - **Cash:** ${resources.cash || 0} / 5
 - **Death Roulette:** ${resources.lethalBullets || 0} / 6
 
-## Guns
+## Weapons
 
-${guns}
+${weapons}
 
 ## Gear
 

@@ -10,9 +10,12 @@ import superheroesDocument from '../data/packs/superheroes.json'
 import supplementsDocument from '../data/packs/supplements.json'
 import {normalizePack} from './packData.js'
 const allGear=gearDocument.gear||{}
+const isRangedWeapon=item=>item.kind==='gun'||!!item.range
+const isMeleeWeapon=item=>item.kind==='melee'||item.kind==='weapon'
 const gear={...gearDocument,
-  items:Object.fromEntries(Object.entries(allGear).filter(([,x])=>x.kind!=='gun'&&x.kind!=='ride')),
-  guns:Object.fromEntries(Object.entries(allGear).filter(([,x])=>x.kind==='gun'||x.range)),
+  items:Object.fromEntries(Object.entries(allGear).filter(([,x])=>!isRangedWeapon(x)&&!isMeleeWeapon(x)&&x.kind!=='ride')),
+  guns:Object.fromEntries(Object.entries(allGear).filter(([,x])=>isRangedWeapon(x))),
+  weapons:Object.fromEntries(Object.entries(allGear).filter(([,x])=>isRangedWeapon(x)||isMeleeWeapon(x))),
   rides:Object.fromEntries(Object.entries(allGear).filter(([,x])=>x.kind==='ride'))
 }
 export const gameData={roles,tropes,feats,gear,names,questionnaire,missionTables,superpowers:{}}

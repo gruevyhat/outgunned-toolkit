@@ -71,8 +71,17 @@ function getGuns(hero) {
   return Array.isArray(hero?.gear?.guns) ? hero.gear.guns : [];
 }
 
-function getItems(hero) {
-  return Array.isArray(hero?.gear?.items) ? hero.gear.items : [];
+function isMeleeWeapon(item, data) {
+  return item?.kind === 'melee' || item?.kind === 'weapon' || Boolean(item?.id && data?.gear?.weapons?.[item.id] && !data?.gear?.guns?.[item.id]);
+}
+
+function getItems(hero, data) {
+  return Array.isArray(hero?.gear?.items) ? hero.gear.items.filter(item => !isMeleeWeapon(item, data)) : [];
+}
+
+function getWeapons(hero, data) {
+  const melee = Array.isArray(hero?.gear?.items) ? hero.gear.items.filter(item => isMeleeWeapon(item, data)) : [];
+  return [...getGuns(hero), ...melee];
 }
 
 function checkRect(label, rect) {
@@ -358,24 +367,26 @@ export async function drawHeroSheet(hero = {}, data = {}) {
     storyX += width;
   });
 
-  // Guns table.
+  // Weapons table. Melee weapons share the box but do not use ranges or mags.
   const gunsBox = SHEET_LAYOUT.guns;
   drawBox(page, 'guns', gunsBox, { color: PAPER });
-  drawLabel(page, bold, 'Guns', gunsBox.x + 8, gunsBox.y + gunsBox.h - 12, 8, RED);
+  drawLabel(page, bold, 'Weapons', gunsBox.x + 8, gunsBox.y + gunsBox.h - 12, 8, RED);
   const gx = gunsBox.x + 8;
   const gunCols = [110, 52, 52, 52, 52, 58];
   const headings = ['Name', 'Melee', 'Close', 'Medium', 'Long', 'Mags'];
   let cursor = gx;
   headings.forEach((heading, index) => { drawLabel(page, regular, heading, cursor, gunsBox.y + gunsBox.h - 27, 6.2); cursor += gunCols[index]; });
   page.drawLine({ start: { x: gx, y: gunsBox.y + gunsBox.h - 31 }, end: { x: gunsBox.x + gunsBox.w - 8, y: gunsBox.y + gunsBox.h - 31 }, thickness: 0.6, color: LINE });
-  getGuns(hero).slice(0, 3).forEach((gun, index) => {
+  getWeapons(hero, data).slice(0, 3).forEach((gun, index) => {
     const gy = gunsBox.y + gunsBox.h - 47 - index * 28;
     let x = gx;
-    const vals = [gunName(data, gun), rangeValue(gun, 'melee'), rangeValue(gun, 'close'), rangeValue(gun, 'medium'), rangeValue(gun, 'long')];
+    const melee = isMeleeWeapon(gun, data);
+    const vals = [gunName(data, gun), melee ? 'Fight' : rangeValue(gun, 'melee'), melee ? '-' : rangeValue(gun, 'close'), melee ? '-' : rangeValue(gun, 'medium'), melee ? '-' : rangeValue(gun, 'long')];
     vals.forEach((val, valIndex) => { drawFittedLine(page, regular, val, x, gy, gunCols[valIndex] - 7, 7); x += gunCols[valIndex]; });
-    drawTracker(page, x, gy - 4, numeric(gun.mags, 2), 3, { width: 11, height: 11, gap: 2 });
+    if (melee) drawFittedLine(page, regular, '-', x, gy, gunCols[5] - 7, 7);
+    else drawTracker(page, x, gy - 4, numeric(gun.mags, 2), 3, { width: 11, height: 11, gap: 2 });
   });
-  for (let index = getGuns(hero).length; index < 3; index += 1) {
+  for (let index = getWeapons(hero, data).length; index < 3; index += 1) {
     const gy = gunsBox.y + gunsBox.h - 47 - index * 28;
     page.drawLine({ start: { x: gx, y: gy - 5 }, end: { x: gunsBox.x + gunsBox.w - 8, y: gy - 5 }, thickness: 0.4, color: LINE });
   }
@@ -384,7 +395,7 @@ export async function drawHeroSheet(hero = {}, data = {}) {
   const gearBox = SHEET_LAYOUT.gear;
   drawBox(page, 'gear', gearBox, { color: PAPER });
   drawLabel(page, bold, 'Gear', gearBox.x + 8, gearBox.y + gearBox.h - 12, 8, RED);
-  getItems(hero).slice(0, 5).forEach((item, index) => {
+  getItems(hero, data).slice(0, 5).forEach((item, index) => {
     const iy = gearBox.y + gearBox.h - 28 - index * 16;
     drawFittedLine(page, regular, text(item?.name, valueName(data, 'gear', item)), gearBox.x + 8, iy, 115, 7.2);
     page.drawRectangle({ x: gearBox.x + gearBox.w - 20, y: iy - 2, width: 9, height: 9, borderColor: INK, borderWidth: 0.6, color: item?.bag ? RED : PAPER });

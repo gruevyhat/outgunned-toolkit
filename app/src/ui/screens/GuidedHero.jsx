@@ -170,10 +170,10 @@ function FeatPicker({ title, ids, chosen, taken = [], cap, data, onChange }) {
 
 function GearChoice({ index, spec, data, value, onChange }) {
   let ids = []
-  const all = [...Object.entries(data.gear.items), ...Object.entries(data.gear.guns)]
+  const all = [...Object.entries(data.gear.items), ...Object.entries(data.gear.weapons || data.gear.guns)]
   if (Array.isArray(spec.choice)) ids = spec.choice
   else if (spec.choice === 'any_gun') ids = Object.keys(data.gear.guns)
-  else if (spec.choice === 'any_weapon') ids = [...Object.keys(data.gear.guns), ...Object.entries(data.gear.items).filter(([, item]) => item.kind === 'melee').map(([id]) => id)]
+  else if (spec.choice === 'any_weapon') ids = Object.keys(data.gear.weapons || data.gear.guns)
   else if (spec.choice === 'any_1cash_item') ids = all.filter(([, item]) => item.cost === 1).map(([id]) => id)
   else if (spec.choice === 'any_2cash_item') ids = all.filter(([, item]) => item.cost === 2).map(([id]) => id)
   else if (spec.choice === 'any_precious_item' || spec.choice === 'precious_item') ids = Object.entries(data.gear.items).filter(([, item]) => item.precious || item.cost >= 3).map(([id]) => id)

@@ -28,6 +28,7 @@ export function normalizePack(document){
 export function mergePacks(base,packs,enabledIds){
   const enabled=packs.filter(pack=>enabledIds.includes(pack.id)),allGear={...base.gear.gear},roles={...base.roles.roles},tropes={...base.tropes.tropes},feats={...base.feats.feats},superpowers={},tags={},forms={}
   for(const pack of enabled){Object.assign(roles,pack.roles);Object.assign(tropes,pack.tropes);Object.assign(feats,pack.feats);Object.assign(allGear,pack.gear);Object.assign(superpowers,pack.superpowers);Object.assign(tags,pack.tags);Object.assign(forms,pack.forms)}
-  const gear={...base.gear,gear:allGear,items:Object.fromEntries(Object.entries(allGear).filter(([,x])=>x.kind!=='gun'&&x.kind!=='ride'&&!x.range)),guns:Object.fromEntries(Object.entries(allGear).filter(([,x])=>x.kind==='gun'||x.range)),rides:Object.fromEntries(Object.entries(allGear).filter(([,x])=>x.kind==='ride'))}
+  const isRangedWeapon=item=>item.kind==='gun'||!!item.range,isMeleeWeapon=item=>item.kind==='melee'||item.kind==='weapon'
+  const gear={...base.gear,gear:allGear,items:Object.fromEntries(Object.entries(allGear).filter(([,x])=>!isRangedWeapon(x)&&!isMeleeWeapon(x)&&x.kind!=='ride')),guns:Object.fromEntries(Object.entries(allGear).filter(([,x])=>isRangedWeapon(x))),weapons:Object.fromEntries(Object.entries(allGear).filter(([,x])=>isRangedWeapon(x)||isMeleeWeapon(x))),rides:Object.fromEntries(Object.entries(allGear).filter(([,x])=>x.kind==='ride'))}
   return {...base,roles:{...base.roles,roles},tropes:{...base.tropes,tropes},feats:{...base.feats,feats},gear,superpowers,tags,forms}
 }

@@ -13,12 +13,22 @@ describe('character Markdown',()=>{
     const markdown=heroMarkdown(hero,gameData)
     expect(markdown).toContain(`# ${hero.personal.name}`)
     expect(markdown).toContain('## Attributes')
+    expect(markdown).toContain('## Weapons')
+    expect(markdown).not.toContain('## Guns')
     expect(markdown).toContain('**Death Roulette:**')
     expect(parseHeroMarkdown(markdown)).toEqual(hero)
   })
 
   it('rejects ordinary Markdown without an embedded character',()=>{
     expect(()=>parseHeroMarkdown('# Just some notes')).toThrow(/does not contain an Outgunned character/)
+  })
+
+  it('moves legacy melee gear into the Weapons section',()=>{
+    const hero=generateRandom(makeRng(41),gameData)
+    hero.gear.items=[{id:'knife',name:'Knife/Sword',kind:'tool'},{id:'camera',name:'Camera',kind:'tool'}]
+    const markdown=heroMarkdown(hero,gameData)
+    expect(markdown).toMatch(/## Weapons[\s\S]*Knife\/Sword — Melee[\s\S]*## Gear/)
+    expect(markdown).toMatch(/## Gear[\s\S]*- Camera/)
   })
 
   it('consolidates repeated Feats for reading without losing their ranks',()=>{

@@ -190,6 +190,9 @@ textarea { min-height: 104px; resize: vertical; }
 .inventory-adder select, .inventory-adder button, .ride-picker select { padding: .48rem; font-size: .75rem; }
 .inventory-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; min-height: 34px; border-bottom: 1px solid #b9ad9b; font-size: 12px; }
 .remove-control { width: 25px; height: 25px; margin-left: .2rem; padding: 0; border-color: #941726; color: #941726; line-height: 1; }
+.weapon-roll { min-width: 34px; padding: .28rem .4rem; border: 1px solid #941726; border-radius: 4px; background: #fffaf0; color: #941726; font-size: .7rem; font-weight: 900; text-transform: none; }
+.weapon-roll:hover:not(:disabled), .weapon-roll:focus-visible { background: #941726; color: #fffaf0; }
+.weapon-roll:disabled { border-color: transparent; background: transparent; color: #6b6660; opacity: 1; }
 .ride-picker { display: grid; gap: .3rem; margin-bottom: .8rem; }
 .dice-modal-backdrop { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 1rem; background: rgba(23, 22, 26, .76); backdrop-filter: blur(3px); }
 .dice-modal-backdrop[hidden] { display: none; }

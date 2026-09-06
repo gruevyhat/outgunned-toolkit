@@ -15,8 +15,8 @@ function resolveSpec(rng,spec,gear,pinned) {
   if(spec.item) return [spec.item]
   if(spec.choice) {
     if(Array.isArray(spec.choice)) return [pinned && spec.choice.includes(pinned) ? pinned : pick(rng,spec.choice)]
-    const items=entries(gear.items), guns=entries(gear.guns)
-    const weapons=[...guns,...items.filter(x=>x.kind==='melee')],all=[...items,...guns];const pools={any_gun:guns,any_weapon:weapons,any_item:all,any_1cash_item:all.filter(x=>x.cost===1),any_2cash_item:all.filter(x=>x.cost===2),any_precious_item:items.filter(x=>x.precious||x.cost>=3),precious_item:items.filter(x=>x.precious||x.cost>=3)}
+    const items=entries(gear.items), guns=entries(gear.guns),weapons=entries(gear.weapons||gear.guns)
+    const all=[...items,...weapons];const pools={any_gun:guns,any_weapon:weapons,any_item:all,any_1cash_item:all.filter(x=>x.cost===1),any_2cash_item:all.filter(x=>x.cost===2),any_precious_item:items.filter(x=>x.precious||x.cost>=3),precious_item:items.filter(x=>x.precious||x.cost>=3)}
     const cashBudget=spec.choice.match(/^any_(\d+)cash_items$/);if(cashBudget){const result=chooseCashBudget(rng,all,Number(cashBudget[1]));if(!result.length)throw new Error(`No gear matches ${spec.choice}`);return result}
     const gearCount=spec.choice.match(/^any_(\d+)_gear$/);if(gearCount){const result=shuffle(rng,all).slice(0,Number(gearCount[1])).map(x=>x.id);if(result.length<Number(gearCount[1]))throw new Error(`No gear matches ${spec.choice}`);return result}
     const pool=pools[spec.choice]||[]; if(!pool.length) throw new Error(`No gear matches ${spec.choice}`); return [pinned&&pool.some(x=>x.id===pinned)?pinned:pick(rng,pool).id]
