@@ -1,4 +1,5 @@
 import { encodeHero } from './share.js'
+import { groupFeatIds } from './build.js'
 
 const title = value => String(value || '').replace(/[_-]+/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase())
 const dots = (value, max = 3) => `${'●'.repeat(Math.max(0, Number(value) || 0))}${'○'.repeat(Math.max(0, max - (Number(value) || 0)))}`
@@ -7,7 +8,7 @@ const nameOf = (catalog, id) => catalog?.[id]?.name || title(id || '—')
 export function heroMarkdown(hero, data = {}) {
   const attributes = Object.entries(hero.attributes || {}).map(([id, value]) => `- **${title(id)}:** ${dots(value)} (${value})`).join('\n')
   const skills = Object.entries(hero.skills || {}).map(([id, value]) => `- **${title(id)}:** ${dots(value)} (${value})`).join('\n')
-  const feats = (hero.feats || []).map(id => `- ${nameOf(data.feats?.feats, id)}`).join('\n') || '- —'
+  const feats = groupFeatIds(hero.feats).map(({id,count}) => `- ${nameOf(data.feats?.feats, id)}${count > 1 ? ` (×${count})` : ''}`).join('\n') || '- —'
   const guns = (hero.gear?.guns || []).map(item => `- ${item.name || nameOf(data.gear?.gear, item.id)} — ${item.mags ?? 0} Mags`).join('\n') || '- —'
   const gear = (hero.gear?.items || []).map(item => `- ${item.name || nameOf(data.gear?.gear, item.id)}${item.bag ? ' (in bag)' : ''}`).join('\n') || '- —'
   const experiences = (hero.experiences || []).map(value => `- ${value}`).join('\n') || '- —'

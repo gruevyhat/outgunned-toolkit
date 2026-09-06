@@ -29,6 +29,7 @@ export function Dots({ value = 0, max = 3, label, className = '' }) {
 export function Tracker({ value = 0, max = 1, label, filled = '✓', onChange, variant = 'default' }) {
   const count = Math.max(0, Math.min(Number(value) || 0, max));
   if(variant==='roulette')return <span className="roulette-tracker" aria-label={`${label || 'Death Roulette'} ${count} of ${max}`}><span className="roulette-skull" aria-hidden="true">☠</span>{Array.from({length:max},(_,i)=><button type="button" key={i} aria-label={`${label||'Death Roulette'} chamber ${i+1}`} aria-pressed={i<count} disabled={!onChange} onClick={()=>onChange?.(i<count?i:i+1)} style={{'--chamber':i}}>{i+1}</button>)}</span>
+  if(variant==='grit')return <span className="grit-tracker" aria-label={`${label || 'Grit'} ${count} of ${max}`}>{Array.from({length:max},(_,i)=>{const state=i===7?'bad':i===max-1?'hot':null,labelText=state==='bad'?'Bad!':state==='hot'?'Hot!':'';return <span key={i} className={`grit-stop${state?` is-${state}`:''}`}><button type="button" aria-label={`${label||'Grit'} ${i+1}${state==='bad'?' · Bad! Suffer a Condition':state==='hot'?' · Hot! Gain 2 Adrenaline':''}`} aria-pressed={i<count} disabled={!onChange} onClick={()=>onChange?.(i<count?i:i+1)}>{state==='bad'?'×':state==='hot'?'!':i<count?filled:' '}</button>{labelText&&<small aria-hidden="true">{labelText}</small>}</span>})}</span>
   return (
     <span className={`tracker tracker--${variant}`} aria-label={`${label || 'Tracker'} ${count} of ${max}`} style={{'--tracker-columns':max}}>
       {Array.from({ length: max }, (_, i) => (
@@ -40,7 +41,7 @@ export function Tracker({ value = 0, max = 1, label, filled = '✓', onChange, v
           disabled={!onChange}
           onClick={()=>onChange?.(i < count ? i : i + 1)}
         >
-          {variant==='adrenaline'?'ϟ':i < count ? filled : ' '}
+          {variant==='adrenaline'?'ϟ':variant==='spotlight'?'★':variant==='cash'?'$':i < count ? filled : ' '}
         </button>
       ))}
     </span>

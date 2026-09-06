@@ -1,5 +1,6 @@
 export const ATTRIBUTES = ['brawn','nerves','smooth','focus','crime']
 export const SKILLS = ['endure','fight','force','stunt','cool','drive','shoot','survival','flirt','leadership','speech','style','detect','fix','heal','know','awareness','dexterity','stealth','streetwise']
+export function groupFeatIds(ids=[]){return ids.reduce((groups,id)=>{const existing=groups.find(group=>group.id===id);if(existing)existing.count++;else groups.push({id,count:1});return groups},[])}
 export class RuleError extends Error { constructor(message) { super(message); this.name = 'RuleError' } }
 const clone = value => structuredClone(value)
 export function baseHero() {

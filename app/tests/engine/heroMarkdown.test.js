@@ -20,4 +20,13 @@ describe('character Markdown',()=>{
   it('rejects ordinary Markdown without an embedded character',()=>{
     expect(()=>parseHeroMarkdown('# Just some notes')).toThrow(/does not contain an Outgunned character/)
   })
+
+  it('consolidates repeated Feats for reading without losing their ranks',()=>{
+    const hero=generateRandom(makeRng(41),gameData)
+    hero.feats=['gunslinger','gunslinger','hard_to_kill']
+    const markdown=heroMarkdown(hero,gameData)
+    expect(markdown).toContain('Gunslinger (×2)')
+    expect(markdown.match(/^- Gunslinger/gm)).toHaveLength(1)
+    expect(parseHeroMarkdown(markdown).feats).toEqual(hero.feats)
+  })
 })

@@ -1,4 +1,5 @@
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
+import { groupFeatIds } from '../engine/build.js';
 
 const PAGE = Object.freeze({ width: 792, height: 612 }); // landscape Letter, points
 const MARGIN = 24;
@@ -168,10 +169,22 @@ function drawCircleTracker(page, x, y, count, max, radius = 5) {
   }
 }
 
-function drawGritTracker(page, x, y, count, max = 12) {
+function drawGritTracker(page, font, x, y, count, max = 12) {
   const filled = Math.max(0, Math.min(max, Math.floor(numeric(count))));
   for (let i = 0; i < max; i += 1) {
-    page.drawSvgPath('M 0 12 L 5 15 L 10 12 L 9 5 L 5 0 L 1 5 Z', { x: x + i * 12, y, borderColor: RED, borderWidth: 1, color: i < filled ? RED : PAPER });
+    const px = x + i * 12;
+    if (i === 7) {
+      page.drawCircle({ x: px + 5, y: y - 7.5, size: 5.5, borderColor: MUTED, borderWidth: 1, color: i < filled ? INK : PAPER_ALT });
+      page.drawLine({ start: { x: px + 1.5, y: y - 11 }, end: { x: px + 8.5, y: y - 4 }, thickness: 1, color: i < filled ? PAPER : MUTED });
+      page.drawLine({ start: { x: px + 8.5, y: y - 11 }, end: { x: px + 1.5, y: y - 4 }, thickness: 1, color: i < filled ? PAPER : MUTED });
+      page.drawText('BAD!', { x: px - 2, y: y + 3, size: 4.7, font, color: MUTED });
+    } else {
+      page.drawSvgPath('M 0 12 L 5 15 L 10 12 L 9 5 L 5 0 L 1 5 Z', { x: px, y, borderColor: RED, borderWidth: 1, color: i < filled ? RED : PAPER });
+      if (i === max - 1) {
+        page.drawText('!', { x: px + 3.6, y: y + 4.5, size: 8, font, color: i < filled ? PAPER : RED });
+        page.drawText('HOT!', { x: px - 2, y: y + 3, size: 4.7, font, color: RED });
+      }
+    }
   }
 }
 
@@ -196,6 +209,24 @@ function drawRouletteTracker(page, font, x, y, count) {
   }
   page.drawCircle({ x: cx, y: cy, size: 4.3, color: INK });
   page.drawText('X', { x: cx - 2.3, y: cy - 2.5, size: 5.5, font, color: PAPER });
+}
+
+function drawSpotlightTracker(page, font, x, y, count, max = 3) {
+  const filled = Math.max(0, Math.min(max, Math.floor(numeric(count))));
+  for (let i = 0; i < max; i += 1) {
+    const cx = x + 6 + i * 15;
+    page.drawCircle({ x: cx, y: y + 6, size: 6, borderColor: RED, borderWidth: 1.1, color: i < filled ? RED : PAPER });
+    page.drawText('*', { x: cx - 2.3, y: y + 2.7, size: 8, font, color: i < filled ? PAPER : RED });
+  }
+}
+
+function drawCashTracker(page, font, x, y, count, max = 5) {
+  const filled = Math.max(0, Math.min(max, Math.floor(numeric(count))));
+  for (let i = 0; i < max; i += 1) {
+    const cx = x + 5.5 + i * 13;
+    page.drawCircle({ x: cx, y: y + 5.5, size: 5.5, borderColor: INK, borderWidth: 1, color: i < filled ? RED : PAPER });
+    page.drawText('$', { x: cx - 2.2, y: y + 2.4, size: 5.8, font, color: i < filled ? PAPER : INK });
+  }
 }
 
 function gunName(data, gun) {
@@ -262,17 +293,18 @@ export async function drawHeroSheet(hero = {}, data = {}) {
   const featsBox = SHEET_LAYOUT.feats;
   drawBox(page, 'feats', featsBox, { color: PAPER_ALT });
   drawLabel(page, bold, 'Feats', featsBox.x + 8, featsBox.y + featsBox.h - 12, 8, RED);
-  const featValues = Array.isArray(hero.feats) ? hero.feats : [];
+  const featValues = groupFeatIds(Array.isArray(hero.feats) ? hero.feats : []);
   const featCols = 3;
   const featW = (featsBox.w - 20) / featCols;
   const featH = 42;
-  featValues.slice(0, 6).forEach((feat, index) => {
+  featValues.slice(0, 6).forEach(({ id: feat, count }, index) => {
     const col = index % featCols;
     const row = Math.floor(index / featCols);
     const x = featsBox.x + 8 + col * featW;
     const y = featsBox.y + featsBox.h - 21 - row * featH;
     const record = lookup(data, 'feats', feat);
-    const featName = text(feat?.name, valueName(data, 'feats', feat));
+    const baseFeatName = text(feat?.name, valueName(data, 'feats', feat));
+    const featName = `${baseFeatName}${count > 1 ? ` (x${count})` : ''}`;
     drawFittedLine(page, bold, featName, x, y, featW - 12, 8.2);
     drawWrapped(page, regular, text(record.summary, '-'), x, y - 10, featW - 12, 2, 6.6, { label: `feat ${featName}`, lineHeight: 8 });
   });
@@ -291,7 +323,7 @@ export async function drawHeroSheet(hero = {}, data = {}) {
   // Grit is a track of twelve empty boxes on the printed sheet.  A caller may
   // provide gritFilled/gritUsed for an in-progress sheet, but the engine's
   // `grit: 12` is a capacity and must not render twelve spent boxes.
-  drawGritTracker(page, resourcesBox.x + 8, resourcesBox.y + 11, hero.resources?.gritFilled ?? hero.resources?.gritUsed ?? 0);
+  drawGritTracker(page, bold, resourcesBox.x + 8, resourcesBox.y + 18, hero.resources?.gritFilled ?? hero.resources?.gritUsed ?? 0);
   const resourceLabels = [
     [hero.superpower ? 'Power' : 'Adrenaline', hero.superpower ? hero.resources?.power : hero.resources?.adrenaline, 6],
     ['Spotlight', hero.resources?.spotlight, 3],
@@ -302,6 +334,8 @@ export async function drawHeroSheet(hero = {}, data = {}) {
   resourceLabels.forEach(([label, count, max]) => {
     drawLabel(page, regular, label, rx, resourcesBox.y + 34, 6.5, MUTED);
     if (label === 'Adrenaline') drawAdrenalineTracker(page, rx, resourcesBox.y + 11, count, max);
+    else if (label === 'Spotlight') drawSpotlightTracker(page, bold, rx, resourcesBox.y + 13, count, max);
+    else if (label === 'Cash') drawCashTracker(page, bold, rx, resourcesBox.y + 13, count, max);
     else if (label === 'Death Roulette') drawRouletteTracker(page, bold, rx + 70, resourcesBox.y + 12, count);
     else drawTracker(page, rx, resourcesBox.y + 13, count, max, { width: 9, height: 13, gap: 2 });
     rx += max * 11 + 35;
