@@ -171,9 +171,13 @@ textarea { min-height: 104px; resize: vertical; }
 
 .condition-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(125px, 1fr)); gap: .5rem; }
 .condition { display: flex; align-items: center; gap: .5rem; min-width: 0; text-align: left; text-transform: none; background: #fffaf0; color: #17161a; }
-.condition span { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; flex: 0 0 20px; border: 2px solid #17161a; background: #fffaf0; color: transparent; }
+.condition > span:first-child { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; flex: 0 0 20px; border: 2px solid #17161a; background: #fffaf0; color: transparent; }
 .condition.is-checked { background: #941726; color: #fffaf0; border-color: #941726; }
-.condition.is-checked span { background: #17161a; color: #fffaf0; border-color: #fffaf0; }
+.condition.is-checked > span:first-child { background: #17161a; color: #fffaf0; border-color: #fffaf0; }
+.condition-copy { display: grid; gap: .08rem; min-width: 0; }
+.condition-copy b { font-size: .78rem; line-height: 1.1; }
+.condition-copy small { color: #6b6660; font-size: .62rem; line-height: 1.15; }
+.condition.is-checked .condition-copy small { color: #f3ede0; }
 .sheet-lower { align-items: start; }
 .sheet-lower textarea { width: 100%; min-height: 70px; background: #fffaf0; color: #17161a; border: 1px solid #6b6660; }
 .table-scroll { overflow-x: auto; }
@@ -204,6 +208,7 @@ textarea { min-height: 104px; resize: vertical; }
 .dice-controls select { min-width: 0; padding: .58rem; background: #fffaf0; border: 1px solid #6b6660; color: #17161a; text-transform: capitalize; }
 .dice-plus { align-self: end; padding-bottom: .55rem; color: #941726; font-size: 1.2rem; font-weight: 900; }
 .dice-roll-button { min-height: 39px; padding-inline: 1.2rem; background: #c8202f; border-color: #c8202f; color: #fffaf0; }
+.dice-condition-penalty { display: block; margin-top: .55rem; color: #941726; font-weight: 800; }
 .dice-probability { display: flex; align-items: baseline; gap: .55rem; margin-top: .75rem; padding: .55rem .7rem; border-left: 4px solid #c8202f; background: rgba(255,250,240,.72); }
 .dice-probability span { color: #6b6660; font-family: "Arial Narrow", Impact, sans-serif; font-size: .72rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
 .dice-probability strong { color: #941726; font-size: 1.3rem; }

@@ -7,6 +7,23 @@ export const DIFFICULTIES = [
   { value: 5, label: 'Impossible' },
 ]
 
+export const CONDITION_EFFECTS = {
+  Hurt: { attribute: 'brawn', text: '−1 to Brawn rolls' },
+  Nervous: { attribute: 'nerves', text: '−1 to Nerves rolls' },
+  'Like a Fool': { attribute: 'smooth', text: '−1 to Smooth rolls' },
+  Distracted: { attribute: 'focus', text: '−1 to Focus rolls' },
+  Scared: { attribute: 'crime', text: '−1 to Crime rolls' },
+  Tired: { attribute: null, text: 'No roll penalty' },
+  Broken: { attribute: '*', text: '−1 to all rolls' },
+}
+
+export function conditionPenalty(conditions = [], attribute = '') {
+  return conditions.reduce((penalty, condition) => {
+    const affected = CONDITION_EFFECTS[condition]?.attribute
+    return penalty - (affected === '*' || affected === attribute ? 1 : 0)
+  }, 0)
+}
+
 const levelName = count => count >= 6 ? 'Jackpot!' : `${DIFFICULTIES.find(level => level.value === count)?.label || 'Basic'} Success`
 const unitsFor = count => count >= 6 ? Infinity : 3 ** (count - 2)
 
