@@ -83,9 +83,9 @@ export default function GuidedHero({ data, onBack, defaults = {} }) {
 
     {step === 4 && <>
       <p>{form.age === 'Young' ? 'Choose one Role Feat and one Trope Feat. Too Young to Die is automatic.' : form.age === 'Old' ? 'Choose two Role Feats, one Trope Feat, and one extra Feat.' : 'Choose two Role Feats and one Trope Feat.'}</p>
-      <FeatPicker title={`Role Feats · ${form.roleFeats.length}/${roleCap}`} ids={role.feats} chosen={form.roleFeats} cap={roleCap} data={data} onChange={value => set('roleFeats', value)} />
-      <FeatPicker title={`Trope Feat · ${form.tropeFeats.length}/1`} ids={trope.feats} chosen={form.tropeFeats} cap={1} data={data} onChange={value => set('tropeFeats', value)} />
-      {form.age === 'Old' && <FeatPicker title={`Extra Feat · ${form.extraFeats.length}/1`} ids={[...new Set([...role.feats, ...trope.feats])].filter(id => ![...form.roleFeats, ...form.tropeFeats].includes(id))} chosen={form.extraFeats} cap={1} data={data} onChange={value => set('extraFeats', value)} />}
+      <FeatPicker title={`Role Feats · ${form.roleFeats.length}/${roleCap}`} ids={role.feats} chosen={form.roleFeats} taken={[...form.tropeFeats,...form.extraFeats]} cap={roleCap} data={data} onChange={value => set('roleFeats', value)} />
+      <FeatPicker title={`Trope Feat · ${form.tropeFeats.length}/1`} ids={trope.feats} chosen={form.tropeFeats} taken={[...form.roleFeats,...form.extraFeats]} cap={1} data={data} onChange={value => set('tropeFeats', value)} />
+      {form.age === 'Old' && <FeatPicker title={`Extra Feat · ${form.extraFeats.length}/1`} ids={[...new Set([...role.feats, ...trope.feats])].filter(id => data.feats.feats[id]?.repeatable || ![...form.roleFeats, ...form.tropeFeats].includes(id))} chosen={form.extraFeats} taken={[...form.roleFeats,...form.tropeFeats]} cap={1} data={data} onChange={value => set('extraFeats', value)} />}
     </>}
 
     {step === 5 && <>
@@ -130,8 +130,12 @@ function FreeSkills({ form, role, trope, hero, set }) {
   </>
 }
 
-function FeatPicker({ title, ids, chosen, cap, data, onChange }) {
-  return <section><h2>{title}</h2><div className="feat-grid">{ids.map(id => { const feat = data.feats.feats[id] || {}; return <button key={id} disabled={!chosen.includes(id) && chosen.length >= cap} className={`feat-card ${chosen.includes(id) ? 'selected' : ''}`} onClick={() => onChange(chosen.includes(id) ? chosen.filter(value => value !== id) : [...chosen, id])}><strong>{feat.name || id}</strong><small>{feat.summary || 'No summary available.'}</small></button> })}</div></section>
+function FeatPicker({ title, ids, chosen, taken = [], cap, data, onChange }) {
+  return <section><h2>{title}</h2><div className="feat-grid">{ids.map(id => {
+    const feat = data.feats.feats[id] || {}, count = chosen.filter(value => value === id).length, otherCount = taken.filter(value => value === id).length, limit = feat.repeatable ? (feat.maxRanks || cap + taken.length) : 1
+    if (feat.repeatable) return <article key={id} className={`feat-card repeatable-feat ${count ? 'selected' : ''}`}><strong>{feat.name || id}</strong><small>{feat.summary || 'No summary available.'}</small><div><button type="button" aria-label={`Remove ${feat.name || id}`} disabled={!count} onClick={() => { const index = chosen.lastIndexOf(id); onChange(chosen.filter((_, chosenIndex) => chosenIndex !== index)) }}>−</button><b>{count}× <span>Repeatable</span></b><button type="button" aria-label={`Add ${feat.name || id}`} disabled={chosen.length >= cap || count + otherCount >= limit} onClick={() => onChange([...chosen, id])}>+</button></div></article>
+    return <button key={id} disabled={!count && (chosen.length >= cap || otherCount > 0)} className={`feat-card ${count ? 'selected' : ''}`} onClick={() => onChange(count ? chosen.filter(value => value !== id) : [...chosen, id])}><strong>{feat.name || id}</strong><small>{feat.summary || 'No summary available.'}</small></button>
+  })}</div></section>
 }
 
 function GearChoice({ index, spec, data, value, onChange }) {

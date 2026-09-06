@@ -21,7 +21,7 @@ export function validateHero(hero,data){
   if(hero.personal?.age==='Young'&&!hero.feats.includes('too_young_to_die')) errors.push('Young heroes require Too Young to Die')
   if(hero.personal?.age==='Young'&&hero.resources?.adrenaline!==2) errors.push('Young heroes start with 2 Adrenaline')
   if(hero.personal?.age==='Old'&&hero.resources?.lethalBullets!==2) errors.push('Old heroes start with 2 Lethal Bullets')
-  if(new Set(hero.feats||[]).size!==(hero.feats||[]).length) errors.push('Duplicate feats')
+  const featCounts=Object.fromEntries((hero.feats||[]).map(id=>[id,(hero.feats||[]).filter(value=>value===id).length]));for(const [id,count] of Object.entries(featCounts)){const feat=data.feats.feats[id]||{},limit=feat.repeatable?(feat.maxRanks||Infinity):1;if(count>limit)errors.push(`Feat cannot be taken ${count} times: ${id}`)}
   if((hero.gear?.guns||[]).some(g=>!Number.isInteger(g.mags)||g.mags<0||g.mags>3)) errors.push('Gun Mags must be 0–3')
   for(const [key,max] of Object.entries({adrenaline:6,spotlight:3,cash:5,lethalBullets:6,gritUsed:12,...(hero.superpower?{power:6}:{})})){const value=hero.resources?.[key]??0;if(!Number.isInteger(value)||value<0||value>max)errors.push(`${key} must be 0–${max}`)}
   return [...new Set(errors)]

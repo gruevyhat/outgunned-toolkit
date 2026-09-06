@@ -38,7 +38,7 @@ export function generateRandom(rng,data,pins={}) {
   const roleFeats=pins.roleFeats||shuffle(rng,role.feats.filter(x=>!tropeFeats.includes(x))).slice(0,slots.role)
   const extraPool=[...new Set([...role.feats,...trope.feats])].filter(x=>![...roleFeats,...tropeFeats].includes(x))
   const extraFeats=pins.extraFeats || shuffle(rng,extraPool).slice(0,slots.extra)
-  hero=applyFeats(hero,{role:roleFeats,trope:tropeFeats,extra:extraFeats},role,trope)
+  hero=applyFeats(hero,{role:roleFeats,trope:tropeFeats,extra:extraFeats},role,trope,data.feats.feats)
   const gearIds=pins.gearIds||resolveSpecs(rng,role.gear||[],data.gear,pins.gearChoices); hero=resolveGear(hero,gearIds,data.gear)
   const first=()=>pick(rng,data.names.first||data.names.firstNames||['Alex']), last=()=>pick(rng,data.names.last||data.names.surnames||['Reed'])
   const jobs=role.jobs||role.origins||[''];hero.personal={...hero.personal,name:pins.name||`${first()} ${last()}`,job:pins.job||pick(rng,jobs),catchphrase:pins.catchphrase||pick(rng,role.catchphrases||['']),flaw:pins.flaw||pick(rng,role.flaws||['']),portraitDataUrl:pins.portraitDataUrl||null}
