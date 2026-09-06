@@ -27,8 +27,6 @@ export default function Menu({ onNavigate, onSelectMode = onNavigate, packs = []
 
       {packs.length ? <details className="books-card" style={styles.card}><summary id="books-in-play">Books in play · {enabledPacks.length+1} active</summary><div className="books-content"><p style={{color:theme.colors.muted}}>Core action is always available. Add genre books or supplements to every character-creation tool.</p><div className="pack-grid"><div className="pack-option is-checked"><span aria-hidden="true">✓</span><strong>Outgunned Corebook</strong><small>Always on</small></div>{packs.map(pack=>{const checked=enabledPacks.includes(pack.id);return <button type="button" key={pack.id} aria-pressed={checked} className={`pack-option ${checked?'is-checked':''}`} onClick={()=>onTogglePack?.(pack.id)}><span aria-hidden="true">{checked?'✓':''}</span><strong>{pack.name}</strong><small>{Object.keys(pack.roles).length} Roles · {Object.keys(pack.tropes).length} Tropes</small></button>})}</div></div></details> : null}
 
-      {onImportMarkdown&&<section className="character-import"><div><strong>Continue a character</strong><small>Upload a Markdown sheet exported by this toolkit. Its source books are enabled automatically.</small></div><label className="file-button">Upload Markdown<input type="file" accept=".md,text/markdown,text/plain" onChange={event=>{const file=event.target.files?.[0];if(file)onImportMarkdown(file);event.target.value='' }}/></label></section>}
-
       <nav aria-label="Toolkit modes" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: theme.space.md }}>
         {OPTIONS.map(([mode, title, description], index) => (
           <button
@@ -54,6 +52,8 @@ export default function Menu({ onNavigate, onSelectMode = onNavigate, packs = []
           </button>
         ))}
       </nav>
+
+      {onImportMarkdown&&<section className="character-import"><div><strong>Continue a character</strong><small>Upload a Markdown sheet exported by this toolkit. Its source books are enabled automatically.</small></div><label className="file-button">Upload Markdown<input type="file" accept=".md,text/markdown,text/plain" onChange={event=>{const file=event.target.files?.[0];if(file)onImportMarkdown(file);event.target.value='' }}/></label></section>}
 
       <footer style={{ color: theme.colors.muted, fontSize: 11, lineHeight: 1.5, maxWidth: 760 }}>
         Outgunned is a game by Two Little Mice. This is an unofficial fan-made toolkit; it is not affiliated with or endorsed by the publisher.
