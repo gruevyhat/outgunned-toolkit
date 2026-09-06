@@ -15,8 +15,8 @@ export function Dots({ value = 0, max = 3, label, className = '' }) {
             height: 11,
             boxSizing: 'border-box',
             borderRadius: '50%',
-            border: `1.5px solid ${theme.colors.ink}`,
-            background: i < count ? theme.colors.ink : 'transparent',
+            border: `1.5px solid var(--dot-color, ${theme.colors.ink})`,
+            background: i < count ? `var(--dot-fill, ${theme.colors.ink})` : 'transparent',
             flex: '0 0 auto',
           }}
         />

@@ -55,6 +55,9 @@ textarea { min-height: 104px; resize: vertical; }
 .wizard-summary span { padding: .35rem .55rem; border-left: 3px solid #c8202f; background: #fffaf0; font-size: .75rem; }
 .skill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .55rem; }
 .skill-grid button { display: flex; justify-content: space-between; }
+.free-points-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.free-points-grid button { align-items: center; gap: .65rem; text-align: left; }
+.free-points-grid .selected { --dot-color: #fffaf0; --dot-fill: #fffaf0; }
 .points-status { display: inline-block; margin-top: .85rem; padding: .45rem .65rem; background: #17161a; color: #fffaf0; }
 .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .65rem; }
 .feat-card { min-height: 98px; text-align: left; text-transform: none; }
@@ -75,6 +78,7 @@ textarea { min-height: 104px; resize: vertical; }
 .score { display: grid; grid-template-columns: minmax(120px, 1fr) 2fr auto; gap: .7rem; align-items: center; margin: .65rem 0; }
 .score-track { height: 10px; overflow: hidden; background: #d4ccbd; border-radius: 999px; }
 .score b { color: #6b6660; font-size: .76rem; }
+.result-name small { display: block; margin-top: .2rem; color: #6b6660; font-size: .62rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
 
 .crew-toolbar { display: flex; align-items: end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding: 1rem; border: 1px solid #b9ad9b; border-radius: 6px; background: rgba(255,250,240,.76); }
 .size-picker { display: flex; gap: .35rem; margin-top: .35rem; }
@@ -107,7 +111,7 @@ textarea { min-height: 104px; resize: vertical; }
 .oracle-grid button { min-height: 58px; background: rgba(255,250,240,.72); }
 .oracle-current { margin: 1.25rem 0; padding: 1.2rem; border-left: 7px solid #c8202f; background: #17161a; color: #fffaf0; }
 .oracle-current small { color: #e5dac5; text-transform: uppercase; }
-.oracle-current strong { display: block; margin-top: .4rem; font-size: 1.25rem; }
+.oracle-current strong { display: block; margin-top: .4rem; font-size: 1.25rem; line-height: 1.45; white-space: pre-line; }
 .log { margin-top: 1rem; }
 .log-header { display: flex; align-items: center; justify-content: space-between; }
 .log p { padding: .8rem 0; border-bottom: 1px solid #c9c0b1; }
@@ -121,6 +125,16 @@ textarea { min-height: 104px; resize: vertical; }
 .sheet-lower textarea { width: 100%; min-height: 70px; background: #fffaf0; color: #17161a; border: 1px solid #6b6660; }
 .table-scroll { overflow-x: auto; }
 .scroll-hint { display: none; margin-top: .4rem; color: #6b6660; }
+.edit-notice { display: flex; align-items: baseline; gap: .75rem; flex-wrap: wrap; padding: .8rem 1rem; border-left: 6px solid #c8202f; background: #17161a; color: #fffaf0; }
+.edit-notice span { color: #e5dac5; font-size: .82rem; }
+.inline-editor { display: flex; align-items: center; gap: .35rem; min-width: 0; }
+.inline-editor input, .inline-editor select { min-width: 0; padding: .45rem .55rem; border: 1.5px solid #c8202f; }
+.feat-editor { margin-bottom: .4rem; padding: .42rem; border-color: #c8202f; font-weight: 800; }
+.inventory-adder { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .4rem; margin-bottom: .7rem; }
+.inventory-adder select, .inventory-adder button, .ride-picker select { padding: .48rem; font-size: .75rem; }
+.inventory-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; min-height: 34px; border-bottom: 1px solid #b9ad9b; font-size: 12px; }
+.remove-control { width: 25px; height: 25px; margin-left: .2rem; padding: 0; border-color: #941726; color: #941726; line-height: 1; }
+.ride-picker { display: grid; gap: .3rem; margin-bottom: .8rem; }
 
 .pack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .6rem; margin-top: 1rem; }
 .pack-option { display: grid; grid-template-columns: 24px 1fr; grid-template-rows: auto auto; align-items: center; gap: 2px 8px; padding: .75rem 1rem; text-align: left; text-transform: none; background: #fffaf0; color: #17161a; border: 2px solid #6b6660; }

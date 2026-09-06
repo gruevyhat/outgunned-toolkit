@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { makeRng } from '../../engine/dice.js'
 import { generateRandom } from '../../engine/hero.js'
 import { roleAttributeOptions } from '../../engine/build.js'
+import { Dots } from '../components/index.jsx'
 import HeroSheet from './HeroSheet.jsx'
 
 const STEPS = ['Role', 'Personal Data', 'Trope', 'Free Points', 'Feats', 'Gear', 'Review']
@@ -119,11 +120,11 @@ function ChoiceGrid({ label, values, selected, onChange }) {
 function FreeSkills({ form, role, trope, hero, set }) {
   return <>
     <p>Choose exactly two points. A Skill cannot exceed 3.</p>
-    <div className="skill-grid">{Object.keys(hero?.skills || {}).map(skill => {
+    <div className="skill-grid free-points-grid">{Object.keys(hero?.skills || {}).map(skill => {
       const picked = form.freeSkillPoints.filter(value => value === skill).length
       const base = 1 + (role.skills.includes(skill) ? 1 : 0) + (trope.skills.includes(skill) ? 1 : 0)
       const disabled = form.freeSkillPoints.length >= 2 || base + picked >= 3
-      return <button key={skill} disabled={disabled && !picked} className={picked ? 'selected' : ''} onClick={() => set('freeSkillPoints', picked ? form.freeSkillPoints.filter((value, index) => value !== skill || index !== form.freeSkillPoints.lastIndexOf(skill)) : [...form.freeSkillPoints, skill])}><span>{skill}</span><strong>{base + picked}/3</strong></button>
+      return <button key={skill} disabled={disabled && !picked} className={picked ? 'selected' : ''} onClick={() => set('freeSkillPoints', picked ? form.freeSkillPoints.filter((value, index) => value !== skill || index !== form.freeSkillPoints.lastIndexOf(skill)) : [...form.freeSkillPoints, skill])}><span>{skill}</span><Dots value={base + picked} max={3} label={skill} className="skill-dots" /></button>
     })}</div>
     <strong className="points-status">{2 - form.freeSkillPoints.length} points remaining</strong>
   </>

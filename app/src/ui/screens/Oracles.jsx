@@ -10,6 +10,14 @@ const CATEGORY_RULES = [
   ['Campaign', /campaign_phases|macguffin/],
 ]
 const title = id => id.replaceAll('_', ' ')
+export const formatOracleValue = value => {
+  if (Array.isArray(value)) return value.map((item, index) => {
+    if (item && typeof item === 'object') return `${index + 1}. ${item.name || `Phase ${index + 1}`} — ${[item.shots, item.purpose].filter(Boolean).join(': ')}`
+    return String(item)
+  }).join('\n')
+  if (value && typeof value === 'object') return Object.values(value).map(formatOracleValue).join(' / ')
+  return String(value ?? '—')
+}
 
 export default function Oracles({ data, onBack }) {
   const [log, setLog] = useState([])
@@ -18,7 +26,7 @@ export default function Oracles({ data, onBack }) {
   const groups = useMemo(() => CATEGORY_RULES.map(([name, pattern]) => [name, ids.filter(id => pattern.test(id) && title(id).includes(query.toLowerCase()))]).filter(([, values]) => values.length), [data, query])
   const run = id => {
     const result = rollTable(makeRng(Date.now()), data.missionTables, id)
-    const value = Object.entries(result.row).filter(([key]) => key !== 'roll').map(([, item]) => item).join(' / ')
+    const value = Object.entries(result.row).filter(([key]) => key !== 'roll').map(([, item]) => formatOracleValue(item)).join(' / ')
     setLog(current => [{ id, roll: Array.isArray(result.roll) ? result.roll.join(', ') : result.roll, value }, ...current].slice(0, 30))
   }
   const current = log[0]

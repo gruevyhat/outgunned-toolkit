@@ -5,19 +5,21 @@ const MARGIN = 24;
 const INK = rgb(0.09, 0.086, 0.102);
 const MUTED = rgb(0.42, 0.40, 0.38);
 const PAPER = rgb(0.953, 0.929, 0.878);
+const PAPER_ALT = rgb(0.98, 0.965, 0.93);
 const RED = rgb(0.784, 0.125, 0.184);
 const LINE = rgb(0.60, 0.56, 0.50);
 
 /** Named regions are exported for visual tests and future alternate themes. */
 export const SHEET_LAYOUT = Object.freeze({
   page: PAGE,
-  identity: { x: 24, y: 536, w: 744, h: 52 },
-  attributes: { x: 24, y: 381, w: 744, h: 148 },
-  feats: { x: 24, y: 266, w: 744, h: 108 },
-  resources: { x: 24, y: 207, w: 744, h: 51 },
-  guns: { x: 24, y: 24, w: 410, h: 171 },
-  gear: { x: 442, y: 24, w: 166, h: 171 },
-  ride: { x: 616, y: 24, w: 152, h: 171 },
+  identity: { x: 24, y: 532, w: 744, h: 56 },
+  attributes: { x: 24, y: 378, w: 744, h: 146 },
+  feats: { x: 24, y: 264, w: 744, h: 106 },
+  resources: { x: 24, y: 205, w: 744, h: 51 },
+  story: { x: 24, y: 166, w: 744, h: 31 },
+  guns: { x: 24, y: 24, w: 410, h: 134 },
+  gear: { x: 442, y: 24, w: 166, h: 134 },
+  ride: { x: 616, y: 24, w: 152, h: 134 },
 });
 
 const ATTRIBUTE_SKILLS = {
@@ -61,7 +63,7 @@ function numeric(value, fallback = 0) {
 
 function rangeValue(gun, key) {
   const ranges = gun?.range || gun?.ranges || {};
-  return text(ranges[key], '—');
+  return text(ranges[key], '-');
 }
 
 function getGuns(hero) {
@@ -125,6 +127,17 @@ function drawWrapped(page, font, value, x, y, maxWidth, maxLines, size, options 
   return lines.length;
 }
 
+function fittedLine(font, value, size, maxWidth) {
+  let output = text(value);
+  if (font.widthOfTextAtSize(output, size) <= maxWidth) return output;
+  while (output.length && font.widthOfTextAtSize(`${output}...`, size) > maxWidth) output = output.slice(0, -1);
+  return `${output.trim()}...`;
+}
+
+function drawFittedLine(page, font, value, x, y, maxWidth, size, color = INK) {
+  page.drawText(fittedLine(font, value, size, maxWidth), { x, y, size, font, color });
+}
+
 function drawLabel(page, font, value, x, y, size = 7, color = MUTED) {
   page.drawText(text(value).toUpperCase(), { x, y, size, font, color, characterSpacing: 0.5 });
 }
@@ -175,27 +188,27 @@ export async function drawHeroSheet(hero = {}, data = {}) {
 
   // Identity strip.
   const identity = SHEET_LAYOUT.identity;
-  drawBox(page, 'identity', identity, { color: PAPER });
+  drawBox(page, 'identity', identity, { color: PAPER_ALT });
   page.drawRectangle({ x: identity.x, y: identity.y + identity.h - 13, width: identity.w, height: 13, color: RED });
   page.drawText('OUTGUNNED // HERO SHEET', { x: identity.x + 8, y: identity.y + identity.h - 10, size: 8, font: bold, color: PAPER, characterSpacing: 0.6 });
   const personal = hero.personal || {};
   const name = text(personal.name, 'Unnamed Hero');
-  drawWrapped(page, bold, name, identity.x + 8, identity.y + 27, 190, 1, 16, { label: 'identity name' });
+  drawFittedLine(page, bold, name, identity.x + 8, identity.y + 28, 190, 16);
   drawLabel(page, regular, 'Name', identity.x + 8, identity.y + 8);
   const roleName = valueName(data, 'roles', hero.role);
   const tropeName = valueName(data, 'tropes', hero.trope);
-  drawWrapped(page, bold, roleName, identity.x + 215, identity.y + 29, 150, 1, 11, { label: 'role' });
+  drawFittedLine(page, bold, roleName, identity.x + 215, identity.y + 30, 150, 11);
   drawLabel(page, regular, 'Role', identity.x + 215, identity.y + 14);
-  drawWrapped(page, bold, tropeName, identity.x + 380, identity.y + 29, 155, 1, 11, { label: 'trope' });
+  drawFittedLine(page, bold, tropeName, identity.x + 380, identity.y + 30, 155, 11);
   drawLabel(page, regular, 'Trope', identity.x + 380, identity.y + 14);
   const personalLine = [personal.job, personal.age, personal.catchphrase].filter(Boolean).map(text).join('  |  ');
   drawWrapped(page, regular, personalLine || 'Job  |  Age  |  Catchphrase', identity.x + 550, identity.y + 30, 184, 2, 7, { label: 'personal data', lineHeight: 8 });
-  drawWrapped(page, regular, `Flaw: ${text(personal.flaw, '—')}`, identity.x + 550, identity.y + 14, 184, 1, 7.5, { label: 'flaw' });
-  drawLabel(page, regular, `You Look: ${text(hero.conditions?.join?.(', ') || hero.youLook || personal.youLook, '—')}`, identity.x + 215, identity.y + 8, 6.5);
+  drawFittedLine(page, regular, `Flaw: ${text(personal.flaw, '-')}`, identity.x + 550, identity.y + 14, 184, 7.5);
+  drawLabel(page, regular, `You Look: ${text(hero.conditions?.join?.(', ') || hero.youLook || personal.youLook, '-')}`, identity.x + 215, identity.y + 8, 6.5);
 
   // Attributes and their four skills.
   const attrsBox = SHEET_LAYOUT.attributes;
-  drawBox(page, 'attributes', attrsBox, { color: PAPER });
+  drawBox(page, 'attributes', attrsBox, { color: PAPER_ALT });
   drawLabel(page, bold, 'Attributes & Skills', attrsBox.x + 8, attrsBox.y + attrsBox.h - 12, 8, RED);
   const attrs = hero.attributes || {};
   const skills = hero.skills || {};
@@ -215,7 +228,7 @@ export async function drawHeroSheet(hero = {}, data = {}) {
 
   // Feats, with enough room for the four-feat Old hero and the young hero's special feat.
   const featsBox = SHEET_LAYOUT.feats;
-  drawBox(page, 'feats', featsBox, { color: PAPER });
+  drawBox(page, 'feats', featsBox, { color: PAPER_ALT });
   drawLabel(page, bold, 'Feats', featsBox.x + 8, featsBox.y + featsBox.h - 12, 8, RED);
   const featValues = Array.isArray(hero.feats) ? hero.feats : [];
   const featCols = 3;
@@ -228,8 +241,8 @@ export async function drawHeroSheet(hero = {}, data = {}) {
     const y = featsBox.y + featsBox.h - 21 - row * featH;
     const record = lookup(data, 'feats', feat);
     const featName = text(feat?.name, valueName(data, 'feats', feat));
-    page.drawText(featName, { x, y, size: 8.2, font: bold, color: INK });
-    drawWrapped(page, regular, text(record.summary, '—'), x, y - 10, featW - 12, 2, 6.6, { label: `feat ${featName}`, lineHeight: 8 });
+    drawFittedLine(page, bold, featName, x, y, featW - 12, 8.2);
+    drawWrapped(page, regular, text(record.summary, '-'), x, y - 10, featW - 12, 2, 6.6, { label: `feat ${featName}`, lineHeight: 8 });
   });
   for (let index = featValues.length; index < 6; index += 1) {
     const col = index % featCols;
@@ -241,7 +254,7 @@ export async function drawHeroSheet(hero = {}, data = {}) {
 
   // Resource strip and all empty trackers.
   const resourcesBox = SHEET_LAYOUT.resources;
-  drawBox(page, 'resources', resourcesBox, { color: PAPER });
+  drawBox(page, 'resources', resourcesBox, { color: PAPER_ALT });
   drawLabel(page, bold, 'Grit', resourcesBox.x + 8, resourcesBox.y + 34, 7, RED);
   // Grit is a track of twelve empty boxes on the printed sheet.  A caller may
   // provide gritFilled/gritUsed for an in-progress sheet, but the engine's
@@ -260,6 +273,23 @@ export async function drawHeroSheet(hero = {}, data = {}) {
     rx += max * 11 + 35;
   });
 
+  // Story strip keeps active-play notes on the printed sheet instead of
+  // dropping information that is present in the interactive version.
+  const storyBox = SHEET_LAYOUT.story;
+  drawBox(page, 'story', storyBox, { color: PAPER_ALT });
+  const storyColumns = [
+    ['Mission', hero.mission, 350],
+    ['Experiences', (hero.experiences || []).join(', '), 230],
+    ['Conditions', (hero.conditions || []).join(', '), 130],
+  ];
+  let storyX = storyBox.x + 8;
+  storyColumns.forEach(([label, value, width], index) => {
+    if (index) page.drawLine({ start: { x: storyX - 7, y: storyBox.y + 5 }, end: { x: storyX - 7, y: storyBox.y + storyBox.h - 5 }, thickness: 0.45, color: LINE });
+    drawLabel(page, bold, label, storyX, storyBox.y + 19, 6.2, RED);
+    drawFittedLine(page, regular, text(value, '-'), storyX, storyBox.y + 7, width - 12, 6.7);
+    storyX += width;
+  });
+
   // Guns table.
   const gunsBox = SHEET_LAYOUT.guns;
   drawBox(page, 'guns', gunsBox, { color: PAPER });
@@ -271,14 +301,14 @@ export async function drawHeroSheet(hero = {}, data = {}) {
   headings.forEach((heading, index) => { drawLabel(page, regular, heading, cursor, gunsBox.y + gunsBox.h - 27, 6.2); cursor += gunCols[index]; });
   page.drawLine({ start: { x: gx, y: gunsBox.y + gunsBox.h - 31 }, end: { x: gunsBox.x + gunsBox.w - 8, y: gunsBox.y + gunsBox.h - 31 }, thickness: 0.6, color: LINE });
   getGuns(hero).slice(0, 3).forEach((gun, index) => {
-    const gy = gunsBox.y + gunsBox.h - 49 - index * 32;
+    const gy = gunsBox.y + gunsBox.h - 47 - index * 28;
     let x = gx;
     const vals = [gunName(data, gun), rangeValue(gun, 'melee'), rangeValue(gun, 'close'), rangeValue(gun, 'medium'), rangeValue(gun, 'long')];
-    vals.forEach((val, valIndex) => { drawWrapped(page, regular, val, x, gy, gunCols[valIndex] - 7, 1, 7, { label: `gun ${vals[0]}` }); x += gunCols[valIndex]; });
+    vals.forEach((val, valIndex) => { drawFittedLine(page, regular, val, x, gy, gunCols[valIndex] - 7, 7); x += gunCols[valIndex]; });
     drawTracker(page, x, gy - 4, numeric(gun.mags, 2), 3, { width: 11, height: 11, gap: 2 });
   });
   for (let index = getGuns(hero).length; index < 3; index += 1) {
-    const gy = gunsBox.y + gunsBox.h - 49 - index * 32;
+    const gy = gunsBox.y + gunsBox.h - 47 - index * 28;
     page.drawLine({ start: { x: gx, y: gy - 5 }, end: { x: gunsBox.x + gunsBox.w - 8, y: gy - 5 }, thickness: 0.4, color: LINE });
   }
 
@@ -287,25 +317,25 @@ export async function drawHeroSheet(hero = {}, data = {}) {
   drawBox(page, 'gear', gearBox, { color: PAPER });
   drawLabel(page, bold, 'Gear', gearBox.x + 8, gearBox.y + gearBox.h - 12, 8, RED);
   getItems(hero).slice(0, 5).forEach((item, index) => {
-    const iy = gearBox.y + gearBox.h - 29 - index * 19;
-    drawWrapped(page, regular, text(item?.name, valueName(data, 'gear', item)), gearBox.x + 8, iy, 115, 1, 7.2, { label: 'gear item' });
+    const iy = gearBox.y + gearBox.h - 28 - index * 16;
+    drawFittedLine(page, regular, text(item?.name, valueName(data, 'gear', item)), gearBox.x + 8, iy, 115, 7.2);
     page.drawRectangle({ x: gearBox.x + gearBox.w - 20, y: iy - 2, width: 9, height: 9, borderColor: INK, borderWidth: 0.6, color: item?.bag ? RED : PAPER });
   });
-  drawLabel(page, regular, 'Storage', gearBox.x + 8, gearBox.y + 24, 6.5);
-  drawWrapped(page, regular, Array.isArray(hero.gear?.storage) ? hero.gear.storage.map(text).join(', ') : '—', gearBox.x + 8, gearBox.y + 13, gearBox.w - 16, 1, 6.6, { label: 'storage' });
+  drawLabel(page, regular, 'Storage', gearBox.x + 8, gearBox.y + 19, 6.5);
+  drawFittedLine(page, regular, Array.isArray(hero.gear?.storage) ? hero.gear.storage.map(text).join(', ') : '-', gearBox.x + 8, gearBox.y + 8, gearBox.w - 16, 6.6);
 
   // Ride: name, speed, type and the two three-box shield tracks.
   const rideBox = SHEET_LAYOUT.ride;
   drawBox(page, 'ride', rideBox, { color: PAPER });
   drawLabel(page, bold, 'Ride', rideBox.x + 8, rideBox.y + rideBox.h - 12, 8, RED);
   const ride = hero.gear?.ride;
-  drawWrapped(page, regular, text(ride?.name, '—'), rideBox.x + 8, rideBox.y + rideBox.h - 31, rideBox.w - 16, 1, 8, { label: 'ride name' });
-  drawLabel(page, regular, `Speed ${text(ride?.speed, '—')}`, rideBox.x + 8, rideBox.y + rideBox.h - 45, 6.7);
-  drawLabel(page, regular, 'Shields', rideBox.x + 8, rideBox.y + rideBox.h - 63, 6.5);
-  drawTracker(page, rideBox.x + 8, rideBox.y + rideBox.h - 82, ride?.shields ?? ride?.shield, 3, { width: 13, height: 13, gap: 3 });
-  drawTracker(page, rideBox.x + 8, rideBox.y + rideBox.h - 103, ride?.shields2, 3, { width: 13, height: 13, gap: 3 });
-  drawLabel(page, regular, 'Type', rideBox.x + 8, rideBox.y + 55, 6.5);
-  drawWrapped(page, regular, Array.isArray(ride?.types) ? ride.types.join(', ') : text(ride?.type, '—'), rideBox.x + 8, rideBox.y + 42, rideBox.w - 16, 3, 6.5, { label: 'ride type', lineHeight: 8 });
+  drawFittedLine(page, regular, text(ride?.name, '-'), rideBox.x + 8, rideBox.y + rideBox.h - 29, rideBox.w - 16, 8);
+  drawLabel(page, regular, `Speed ${text(ride?.speed, '-')}`, rideBox.x + 8, rideBox.y + rideBox.h - 43, 6.7);
+  drawLabel(page, regular, 'Shields', rideBox.x + 8, rideBox.y + 73, 6.5);
+  drawTracker(page, rideBox.x + 8, rideBox.y + 53, ride?.shields ?? ride?.shield, 3, { width: 13, height: 13, gap: 3 });
+  drawTracker(page, rideBox.x + 62, rideBox.y + 53, ride?.shields2, 3, { width: 13, height: 13, gap: 3 });
+  drawLabel(page, regular, 'Type', rideBox.x + 8, rideBox.y + 35, 6.5);
+  drawWrapped(page, regular, Array.isArray(ride?.types) ? ride.types.join(', ') : text(ride?.type, '-'), rideBox.x + 8, rideBox.y + 23, rideBox.w - 16, 2, 6.5, { label: 'ride type', lineHeight: 8 });
 
   return pdf.save();
 }

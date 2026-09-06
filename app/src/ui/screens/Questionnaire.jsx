@@ -14,7 +14,7 @@ export default function Questionnaire({ data, onBack, onAccept, onRoll }) {
     return <main className="panel">
       <button className="link" onClick={onBack}>← Home</button>
       <div className="tool-intro"><div><p className="eyebrow">Your shortlist</p><h1>Who are you?</h1></div></div>
-      <p>These are your strongest matches. Use the leading Role and Trope to continue building, or let the dice take over.</p>
+      <p>These are your strongest matches from every book currently in play. Use the leading Role and Trope to continue building, or let the dice take over.</p>
       <div className="results-grid"><Results title="Roles" values={result.roles} /><Results title="Tropes" values={result.tropes} /></div>
       <div className="actions"><button className="primary" onClick={() => onAccept(result)}>Use these choices</button><button onClick={onRoll}>Just roll it</button></div>
     </main>
@@ -32,5 +32,5 @@ export default function Questionnaire({ data, onBack, onAccept, onRoll }) {
 
 function Results({ title, values }) {
   const max = Math.max(1, ...values.map(value => value.score))
-  return <section className="result-card"><h2>{title}</h2>{values.map((value, index) => <div className="score" key={value.id}><span>{index === 0 ? '★ ' : ''}{value.name}</span><span className="score-track"><i style={{ width: `${value.score / max * 100}%` }} /></span><b>{value.score}</b></div>)}</section>
+  return <section className="result-card"><h2>{title}</h2>{values.map((value, index) => <div className="score" key={value.id}><span className="result-name">{index === 0 ? '★ ' : ''}{value.name}<small>{value.source}</small></span><span className="score-track"><i style={{ width: `${value.score / max * 100}%` }} /></span><b>{value.score}</b></div>)}</section>
 }
