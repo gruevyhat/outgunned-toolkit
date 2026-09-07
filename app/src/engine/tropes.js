@@ -1,6 +1,7 @@
 export function isTropeAvailableToRole(trope,role,placement='trope'){
   if(!trope)return false
-  if(trope.colorTrope)return placement==='role'&&Boolean(role?.doubleTrope)
+  if(placement==='role'&&role?.doubleTrope)return Boolean(trope.colorTrope)
+  if(trope.colorTrope)return false
   return true
 }
 

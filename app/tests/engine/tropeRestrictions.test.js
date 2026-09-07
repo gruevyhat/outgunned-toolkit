@@ -9,6 +9,7 @@ const data=mergePacks(gameData,contentPacks,['supplements'])
 const commando=data.roles.roles.commando
 const guardian=data.roles.roles.supplements__power_guardian
 const red='supplements__red'
+const ordinary='supplements__grumpy_rebel'
 
 describe('Role-specific Tropes',()=>{
   it('hides Color Tropes from ordinary Roles and ordinary Trope slots',()=>{
@@ -17,7 +18,9 @@ describe('Role-specific Tropes',()=>{
   })
 
   it('offers Color Tropes only in the Power Guardian Role slot',()=>{
-    expect(availableTropes(data.tropes.tropes,guardian,'role')).toHaveProperty(red)
+    const choices=availableTropes(data.tropes.tropes,guardian,'role')
+    expect(choices).toHaveProperty(red)
+    expect(choices).not.toHaveProperty(ordinary)
     expect(availableTropes(data.tropes.tropes,commando,'role')).not.toHaveProperty(red)
   })
 
