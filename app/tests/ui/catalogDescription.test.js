@@ -25,6 +25,32 @@ describe('guided catalog descriptions',()=>{
     for(const trope of catalogs.flatMap(catalog=>Object.values(catalog))){const description=catalogDescription(trope);expect(description,trope.name).toBe(description.toUpperCase())}
   })
 
+  it('uses authored color instead of mechanical fallback text for every built-in Trope',()=>{
+    const tropes=[...Object.values(gameData.tropes.tropes),...contentPacks.flatMap(pack=>Object.values(pack.tropes))]
+    for(const trope of tropes){
+      expect(trope.blurb||trope.tagline||trope.prompt||trope.summary,trope.name).toBeTruthy()
+      expect(catalogDescription(trope),trope.name).not.toMatch(/DRIVEN BY|SKILLED AT/)
+    }
+  })
+
+  it('does not repeat Action Flick Trope names in their blurbs',()=>{
+    const tropes=contentPacks.find(pack=>pack.id==='supplements').tropes
+    for(const trope of Object.values(tropes).filter(value=>value.source.startsWith('OG_Action_Flicks'))){
+      const name=trope.name.toUpperCase().replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/[’']/g,"[’']")
+      expect(catalogDescription(trope),trope.name).not.toMatch(new RegExp(`(^|[^A-Z0-9])${name}([^A-Z0-9]|$)`))
+    }
+  })
+
+  it('uses source-informed expansion Trope taglines',()=>{
+    const adventure=contentPacks.find(pack=>pack.id==='adventure').tropes
+    const superheroes=contentPacks.find(pack=>pack.id==='superheroes').tropes
+    const supplements=contentPacks.find(pack=>pack.id==='supplements').tropes
+    expect(catalogDescription(adventure.adventure__action_archeologist)).toBe('BODY AND MIND IN BALANCE. THEORY MEETS FIELDWORK. EVERY TREASURE BELONGS IN A MUSEUM.')
+    expect(catalogDescription(superheroes.superheroes__anti_hero)).toBe('SELF-SERVING HERO. STILL FINDS THE COURAGE TO DO RIGHT WHEN NEEDED.')
+    expect(catalogDescription(supplements.supplements__logical_thinker)).toBe('CALM UNDER PRESSURE. COLDLY RATIONAL. DOES WHAT LOGIC DEMANDS.')
+    expect(catalogDescription(supplements.supplements__world_of_killers_battle_butler)).toBe('IMPECCABLE SERVICE. BRUTAL FISTICUFFS. PERFECT FOR GALAS AND BARROOM BRAWLS.')
+  })
+
   it('uses curated clipped taglines for superhero Roles',()=>{
     const armored=contentPacks.find(pack=>pack.id==='superheroes').roles.superheroes__armored
     expect(catalogDescription(armored)).toBe('ARMORED. HIGH-TECH. ALWAYS PREPARED.')
