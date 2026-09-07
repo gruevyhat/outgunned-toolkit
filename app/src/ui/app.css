@@ -244,6 +244,83 @@ textarea { min-height: 104px; resize: vertical; }
 .file-button { display:inline-flex; align-items:center; min-height:43px; padding:.7rem .95rem; border:1.5px solid #17161a; border-radius:3px; background:#f3ede0; color:#17161a; cursor:pointer; font-size:.83rem; font-weight:800; text-transform:uppercase; }
 .file-button input { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
 
+.npc-intro { max-width:650px; margin:.5rem 0 0; color:#6b6660; font-size:1rem; line-height:1.45; }
+.npc-tabs { display:flex; gap:.5rem; margin:1rem 0; border-bottom:3px solid #17161a; }
+.npc-tabs button { margin-bottom:-3px; border-bottom-width:3px; }
+.npc-controls { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); align-items:end; gap:.65rem; padding:1rem; border:1px solid #b9ad9b; border-left:7px solid #c8202f; border-radius:6px; background:rgba(255,250,240,.8); }
+.npc-controls label { min-width:0; color:#514d49; }
+.npc-controls select { min-width:0; margin-top:.35rem; }
+.npc-check { display:flex; align-items:center; gap:.5rem; min-height:42px; padding:.55rem; border:1px solid #8d857b; border-radius:3px; background:#fffaf0; }
+.npc-check input { width:18px; height:18px; margin:0; }
+.npc-ally-controls { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.npc-actions { display:flex; flex-wrap:wrap; gap:.55rem; margin:1rem 0; }
+.npc-card { display:grid; gap:1.15rem; padding:clamp(1rem,3vw,1.5rem); border:2px solid #17161a; border-left:10px solid #c8202f; border-radius:7px; background:#fffaf0; box-shadow:5px 5px 0 rgba(23,22,26,.16); }
+.npc-card > header { display:flex; align-items:start; justify-content:space-between; gap:1rem; padding-bottom:1rem; border-bottom:3px solid #17161a; }
+.npc-card header small { color:#941726; font-weight:900; letter-spacing:.07em; text-transform:uppercase; }
+.npc-card header h2 { margin:.2rem 0; font-size:clamp(1.8rem,4vw,3rem); }
+.npc-card header p { margin:.25rem 0 0; color:#514d49; font-size:1rem; }
+.npc-card section h3 { margin-bottom:.55rem; color:#941726; font-size:.9rem; letter-spacing:.07em; text-transform:uppercase; }
+.enemy-stat-row { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.6rem; }
+.enemy-stat-row > div { padding:.75rem; border-left:5px solid #c8202f; background:#e5dac5; }
+.enemy-stat-row small, .enemy-stat-row strong { display:block; }
+.enemy-stat-row small { color:#6b6660; font-size:.66rem; font-weight:900; letter-spacing:.06em; text-transform:uppercase; }
+.enemy-stat-row strong { margin-top:.25rem; font-family:"Arial Narrow",Impact,sans-serif; font-size:1.2rem; text-transform:uppercase; }
+.enemy-grit { display:flex; flex-wrap:wrap; gap:.35rem; }
+.enemy-grit span { display:grid; place-items:center; width:31px; height:31px; border:2px solid #17161a; background:#fff; color:#fffaf0; font-size:.75rem; }
+.enemy-grit span.is-hot { border-color:#c8202f; background:#c8202f; transform:rotate(45deg) scale(.78); }
+.enemy-grit span.is-hot::first-line { transform:rotate(-45deg); }
+.npc-rule-note { display:block; margin-top:.55rem; color:#6b6660; }
+.npc-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:.55rem; }
+.npc-list article { padding:.75rem; border:1px solid #b9ad9b; border-radius:4px; background:#f3ede0; }
+.npc-list article > div { display:flex; justify-content:space-between; gap:.5rem; }
+.npc-list article b { display:grid; place-items:center; width:24px; height:24px; flex:0 0 24px; border-radius:50%; background:#17161a; color:#fffaf0; }
+.npc-list p { margin:.4rem 0 0; color:#514d49; font-size:.82rem; line-height:1.35; }
+.npc-empty { margin:0; color:#6b6660; font-style:italic; }
+.ally-hooks { display:grid; grid-template-columns:1fr 1fr; gap:.7rem; }
+.ally-hooks p { margin:0; padding:.8rem; border-left:5px solid #c8202f; background:#e5dac5; font-size:1.1rem; }
+.ally-hooks strong { display:block; margin-bottom:.25rem; color:#6b6660; font-size:.68rem; letter-spacing:.07em; text-transform:uppercase; }
+.ally-attributes { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:.5rem; }
+.ally-attributes div { display:flex; align-items:center; justify-content:space-between; gap:.5rem; padding:.7rem; border:1px solid #b9ad9b; background:#f3ede0; }
+.ally-attributes span { font-size:.72rem; font-weight:900; text-transform:uppercase; }
+.ally-attributes strong { color:#941726; font-size:1.3rem; }
+
+.probability-intro { max-width:650px; margin:.5rem 0 0; color:#6b6660; font-size:1rem; line-height:1.45; }
+.probability-chart { margin-top:1rem; padding:clamp(.8rem,2vw,1.25rem); border:1px solid #b9ad9b; border-left:7px solid #c8202f; border-radius:6px; background:rgba(255,250,240,.8); }
+.probability-chart h2 { margin:0 0 .65rem; }
+.probability-legend { display:flex; flex-wrap:wrap; gap:.5rem 1.25rem; margin-bottom:.35rem; color:#514d49; font-size:.78rem; font-weight:800; text-transform:uppercase; }
+.probability-key { display:inline-flex; align-items:center; gap:.4rem; }
+.probability-key i { display:block; width:24px; height:4px; border-radius:2px; background:currentColor; }
+.probability-plot-wrap { position:relative; }
+.probability-chart svg { display:block; width:100%; height:auto; overflow:visible; }
+.probability-chart svg text { fill:#514d49; font-family:Arial,Helvetica,sans-serif; font-size:15px; }
+.probability-gridline line { stroke:#b9ad9b; stroke-width:1; opacity:.55; }
+.probability-axis, .probability-x-tick line { stroke:#6b6660; stroke-width:1.5; }
+.probability-axis-title { fill:#17161a !important; font-size:17px !important; font-weight:800; }
+.probability-line polyline { fill:none; stroke:currentColor; stroke-width:5; stroke-linecap:round; stroke-linejoin:round; vector-effect:non-scaling-stroke; }
+.probability-line circle { fill:currentColor; stroke:#fffaf0; stroke-width:2.5; vector-effect:non-scaling-stroke; }
+.probability-hover-guide { stroke:#17161a; stroke-width:2; stroke-dasharray:7 6; opacity:.62; pointer-events:none; vector-effect:non-scaling-stroke; }
+.probability-hit { fill:transparent; cursor:crosshair; outline:none; pointer-events:all; }
+.probability-hit:focus { fill:rgba(23,22,26,.04); stroke:#17161a; stroke-width:2; stroke-dasharray:5 5; vector-effect:non-scaling-stroke; }
+.probability-tooltip { position:absolute; z-index:2; display:grid; gap:.2rem; min-width:170px; padding:.55rem .7rem; border:2px solid #17161a; border-radius:4px; background:#17161a; color:#fffaf0; box-shadow:3px 3px 0 rgba(23,22,26,.22); pointer-events:none; }
+.probability-tooltip > strong { padding-bottom:.2rem; border-bottom:1px solid #6b6660; color:#fffaf0; font-family:"Arial Narrow",Impact,sans-serif; font-size:.84rem; letter-spacing:.05em; text-transform:uppercase; }
+.probability-tooltip-row { display:grid; grid-template-columns:9px 1fr auto; align-items:center; gap:.4rem; color:#fffaf0 !important; font-size:.72rem; font-weight:800; text-transform:uppercase; }
+.probability-tooltip-row i { width:8px; height:8px; border-radius:50%; background:currentColor; }
+.probability-tooltip-row b { color:#fffaf0; font-size:.78rem; }
+.probability-series-1 { color:#2674a8; }
+.probability-series-2 { color:#d35e1b; }
+.probability-series-3 { color:#367b3f; }
+.probability-series-4 { color:#9d3d75; }
+.probability-rule { margin:1rem 0 0; padding:.8rem 1rem; border-left:5px solid #17161a; background:#e5dac5; line-height:1.45; }
+
+@media (max-width:560px) {
+  .probability-chart { padding:.75rem .35rem .45rem; border-left-width:4px; }
+  .probability-chart h2, .probability-legend { margin-left:.45rem; margin-right:.45rem; }
+  .probability-chart svg text { font-size:29px; }
+  .probability-axis-title { font-size:31px !important; }
+  .probability-line polyline { stroke-width:3.5; }
+  .probability-line circle { stroke-width:2; }
+}
+
 @media (max-width: 700px) {
   .sheet-lower { grid-template-columns: 1fr !important; }
   .results-grid, .mission-grid { grid-template-columns: 1fr; }
@@ -254,10 +331,17 @@ textarea { min-height: 104px; resize: vertical; }
   .dice-result { align-items: flex-start; flex-direction: column; }
   .dice-tray { justify-content: flex-start; }
   .personal-data-grid { grid-template-columns:1fr; }
+  .npc-controls { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .npc-ally-controls { grid-template-columns:1fr; }
+  .enemy-stat-row { grid-template-columns:1fr; }
+  .ally-attributes { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 
 @media (max-width: 560px) {
   .panel { padding: 1rem; }
+  .npc-tabs button { flex:1; padding:.65rem .45rem; font-size:.78rem; }
+  .npc-actions button { flex:1 1 140px; }
+  .ally-hooks { grid-template-columns:1fr; }
   .panel h1 { font-size: clamp(2.45rem, 12vw, 3.35rem); line-height: .92; }
   .quiz h1 { font-size: clamp(2.25rem, 11vw, 3.1rem); line-height: .93; }
   .score { grid-template-columns: minmax(105px, 1fr) 1.3fr auto; }

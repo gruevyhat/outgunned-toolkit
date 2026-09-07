@@ -8,7 +8,9 @@ const OPTIONS = [
   ['quiz', 'Who Are You?', 'Answer a few questions and find your fit.'],
   ['crew', 'Assemble a Crew', 'Put together a team with no duplicate Roles.'],
   ['mission', 'New Mission', 'Give the Director a mission worth remembering.'],
+  ['npc', 'NPC Generator', 'Roll an Enemy or Supporting Character for the next scene.'],
   ['oracles', 'Oracles', 'Roll the tables when the story needs a push.'],
+  ['probability', 'Never Tell Me the Odds', 'See how every dice pool fares against each difficulty.'],
 ];
 
 export default function Menu({ onNavigate, onSelectMode = onNavigate, packs = [], enabledPacks = [], onTogglePack, onImportMarkdown }) {

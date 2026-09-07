@@ -69,7 +69,7 @@ export const styles = {
   },
   primaryButton: {
     background: theme.colors.red,
-    borderColor: theme.colors.red,
+    border: `1px solid ${theme.colors.red}`,
     color: theme.colors.white,
   },
 };
