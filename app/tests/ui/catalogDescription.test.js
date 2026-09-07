@@ -8,10 +8,15 @@ describe('guided catalog descriptions',()=>{
     for(const catalog of catalogs)for(const [id,item] of Object.entries(catalog))expect(catalogDescription(item),id).toBeTruthy()
   })
 
-  it('uses authored summaries and specific fallbacks',()=>{
+  it('gives every guided Role an authored description',()=>{
+    const roles=[...Object.values(gameData.roles.roles),...contentPacks.flatMap(pack=>Object.values(pack.roles))]
+    for(const role of roles)expect(role.tagline||role.blurb||role.summary,role.name).toBeTruthy()
+  })
+
+  it('uses authored summaries and curated supplement blurbs',()=>{
     const armored=contentPacks.find(pack=>pack.id==='superheroes').roles.superheroes__armored
     const starRaider=contentPacks.find(pack=>pack.id==='supplements').roles.supplements__star_raider
     expect(catalogDescription(armored)).toBe(armored.summary)
-    expect(catalogDescription(starRaider)).toContain('Star Raider driven by Nerves')
+    expect(catalogDescription(starRaider)).toBe('A daring space pilot, smuggler, or captain who lives for freedom among the stars.')
   })
 })
