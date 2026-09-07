@@ -1,5 +1,6 @@
 import { pick, shuffle } from './dice.js'
 import { applyAge, applyFeats, applyFreeSkillPoints, applyProdigyRole, applyRole, applyTrope, baseHero, featSlots, finalize, freeSkillTargets, resolveGear, roleAttributeOptions, tropeAttributeOptions } from './build.js'
+import { isTropeAvailableToRole } from './tropes.js'
 
 const entries = object => Object.entries(object || {}).map(([id,value])=>({id,...value}))
 function chooseCashBudget(rng,all,budget) {
@@ -29,12 +30,13 @@ function resolveSpecs(rng,specs=[],gear,pins=[]) { return specs.flatMap((spec,i)
 export function generateRandom(rng,data,pins={}) {
   const role= pins.role ? {id:pins.role,...data.roles.roles[pins.role]} : pick(rng,entries(data.roles.roles))
   if(!role?.name)throw new Error('Unknown role')
-  const tropePool=entries(data.tropes.tropes),needsRoleTrope=role.extraTrope||role.doubleTrope,roleTropePool=role.doubleTrope?tropePool.filter(item=>item.colorTrope):tropePool,roleTrope=needsRoleTrope?(pins.roleTrope?{id:pins.roleTrope,...data.tropes.tropes[pins.roleTrope]}:pick(rng,roleTropePool)):null
+  const tropePool=entries(data.tropes.tropes),needsRoleTrope=role.extraTrope||role.doubleTrope,roleTropePool=tropePool.filter(item=>isTropeAvailableToRole(item,role,'role')),roleTrope=needsRoleTrope?(pins.roleTrope?{id:pins.roleTrope,...data.tropes.tropes[pins.roleTrope]}:pick(rng,roleTropePool)):null
   if(needsRoleTrope&&!roleTrope?.name)throw new Error('Unknown additional Role Trope')
-  if(role.doubleTrope&&!roleTrope.colorTrope)throw new Error('Power Guardian requires a Color Trope')
-  const availableTropes=needsRoleTrope?tropePool.filter(item=>item.id!==roleTrope.id&&(!role.doubleTrope||!item.colorTrope)):tropePool
+  if(needsRoleTrope&&!isTropeAvailableToRole(roleTrope,role,'role'))throw new Error('Trope is not available to this Role')
+  const availableTropes=tropePool.filter(item=>item.id!==roleTrope?.id&&isTropeAvailableToRole(item,role,'trope'))
   const trope=role.actsAsTrope?null:(pins.trope?{id:pins.trope,...data.tropes.tropes[pins.trope]}:pick(rng,availableTropes))
   if(!role.actsAsTrope&&!trope?.name)throw new Error('Unknown trope')
+  if(trope&&!isTropeAvailableToRole(trope,role,'trope'))throw new Error('Trope is not available to this Role')
   const roleSource=roleTrope||role,roleOptions=roleAttributeOptions(roleSource),rolePoints=needsRoleTrope?1:role.attributePoints??1,fixed=needsRoleTrope?[]:role.fixedAttributes||[],pinnedRoleAttributes=pins.roleAttributes||(pins.roleAttribute?[pins.roleAttribute]:[]),roleAttributes=[...new Set([...fixed,...pinnedRoleAttributes])];while(roleAttributes.length<rolePoints){const option=pick(rng,roleOptions.filter(value=>!roleAttributes.includes(value)));if(!option)throw new Error('Not enough Role attribute choices');roleAttributes.push(option)}const roleAttribute=roleAttributes.length>1?roleAttributes:roleAttributes[0];let hero;if(role.doubleTrope){hero=applyRole(baseHero(),role,role.id,[]);hero=applyProdigyRole(hero,roleTrope,role,role.id,roleAttribute)}else hero=role.extraTrope?applyProdigyRole(baseHero(),roleTrope,role,role.id,roleAttribute):applyRole(baseHero(),role,role.id,roleAttribute)
   if(trope){const attr=pins.tropeAttribute || pick(rng,tropeAttributeOptions(hero,trope)); hero=applyTrope(hero,trope,attr,trope.id)}
   const ages=['Young',...Array(6).fill('Adult'),'Old']; hero=applyAge(hero,pins.age||pick(rng,ages))

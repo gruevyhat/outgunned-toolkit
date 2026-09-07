@@ -1,10 +1,11 @@
 import { ATTRIBUTES, SKILLS, featSlots, roleAttributeOptions } from './build.js'
+import { isTropeAvailableToRole } from './tropes.js'
 import {usesMags} from './gearCatalog.js'
 export function validateHero(hero,data){
   const errors=[]
   if(!hero||typeof hero!=='object') return ['Hero is required']
   const role=data.roles.roles[hero.role], trope=data.tropes.tropes[hero.trope],roleTrope=data.tropes.tropes[hero.roleTrope]
-  if(!role) errors.push('Unknown role'); if(!trope&&!role?.actsAsTrope) errors.push('Unknown trope');if((role?.extraTrope||role?.doubleTrope)&&!roleTrope)errors.push('Unknown additional Role Trope');if((role?.extraTrope||role?.doubleTrope)&&hero.roleTrope===hero.trope)errors.push('Special Role requires two different Tropes');if(role?.doubleTrope&&roleTrope&&!roleTrope.colorTrope)errors.push('Power Guardian requires a Color Trope')
+  if(!role) errors.push('Unknown role'); if(!trope&&!role?.actsAsTrope) errors.push('Unknown trope');if((role?.extraTrope||role?.doubleTrope)&&!roleTrope)errors.push('Unknown additional Role Trope');if((role?.extraTrope||role?.doubleTrope)&&hero.roleTrope===hero.trope)errors.push('Special Role requires two different Tropes');if(roleTrope&&!isTropeAvailableToRole(roleTrope,role,'role'))errors.push('Additional Trope is not available to this Role');if(trope&&!isTropeAvailableToRole(trope,role,'trope'))errors.push('Trope is not available to this Role')
   const roleAttribute=hero.roleAttribute||role?.attribute
   const roleSource=role?.extraTrope||role?.doubleTrope?roleTrope:role
   const roleAttributes=hero.roleAttributes||[roleAttribute]

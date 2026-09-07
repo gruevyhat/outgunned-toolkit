@@ -3,8 +3,10 @@ import { makeRng } from '../../engine/dice.js'
 import { generateRandom } from '../../engine/hero.js'
 import { randomPersonalValue } from '../../engine/personal.js'
 import { featSlots, roleAttributeOptions } from '../../engine/build.js'
+import { availableTropes } from '../../engine/tropes.js'
 import { validateHero } from '../../engine/validate.js'
 import { Dots } from '../components/index.jsx'
+import { catalogDescription } from '../catalogDescription.js'
 import HeroSheet from './HeroSheet.jsx'
 
 const STEPS = ['Role', 'Trope', 'Personal Data', 'Free Points', 'Feats', 'Gear', 'Review']
@@ -33,16 +35,17 @@ export default function GuidedHero({ data, onBack, defaults = {}, onImportMarkdo
   })
 
   const role = data.roles.roles[form.role]
-  const needsRoleTrope=role.extraTrope||role.doubleTrope,roleTropeChoices=role.doubleTrope?Object.fromEntries(Object.entries(data.tropes.tropes).filter(([,value])=>value.colorTrope)):data.tropes.tropes
-  const firstTropeId = needsRoleTrope && (form.roleTrope === form.trope || !roleTropeChoices[form.roleTrope]) ? Object.keys(roleTropeChoices).find(id => id !== form.trope) : form.roleTrope
+  const tropeChoices=availableTropes(data.tropes.tropes,role),selectedTropeId=tropeChoices[form.trope]?form.trope:Object.keys(tropeChoices)[0]
+  const needsRoleTrope=role.extraTrope||role.doubleTrope,roleTropeChoices=availableTropes(data.tropes.tropes,role,'role')
+  const firstTropeId = needsRoleTrope && (form.roleTrope === selectedTropeId || !roleTropeChoices[form.roleTrope]) ? Object.keys(roleTropeChoices).find(id => id !== selectedTropeId) : form.roleTrope
   const roleTrope = needsRoleTrope ? data.tropes.tropes[firstTropeId] : null
-  const trope = role.actsAsTrope ? null : data.tropes.tropes[form.trope]
+  const trope = role.actsAsTrope ? null : data.tropes.tropes[selectedTropeId]
   const roleAttrs = roleAttributeOptions(roleTrope || role)
   const roleAttr = roleAttrs.includes(form.roleAttribute) ? form.roleAttribute : roleAttrs[0]
   const legalTropeAttrs = (trope?.attributes || []).filter(attribute => attribute !== roleAttr)
   const tropeAttr = legalTropeAttrs.includes(form.tropeAttribute) ? form.tropeAttribute : legalTropeAttrs[0] || trope?.attributes?.[0]
   const slotPreview={personal:{age:form.age}},slots=featSlots(slotPreview,role),roleCap=slots.role,tropeCap=slots.trope,extraCap=slots.extra,freePointCount=role.freeSkillPointCount||2
-  const pins = { ...form, roleTrope:firstTropeId, roleAttribute: roleAttr, tropeAttribute: tropeAttr }
+  const pins = { ...form, trope:selectedTropeId, roleTrope:firstTropeId, roleAttribute: roleAttr, tropeAttribute: tropeAttr }
   if (form.freeSkillPoints.length !== freePointCount) delete pins.freeSkillPoints
   if (form.roleFeats.length !== roleCap) delete pins.roleFeats
   if (form.tropeFeats.length !== tropeCap) delete pins.tropeFeats
@@ -76,7 +79,7 @@ export default function GuidedHero({ data, onBack, defaults = {}, onImportMarkdo
     </>}
 
     {step === 1 && <>
-      {role.actsAsTrope?<p>This Special Role also acts as your Trope, so no separate Trope is chosen.</p>:<><ChoiceGrid label="Tropes" values={needsRoleTrope?Object.fromEntries(Object.entries(data.tropes.tropes).filter(([id,value])=>id!==firstTropeId&&(!role.doubleTrope||!value.colorTrope))):data.tropes.tropes} selected={form.trope} onChange={value => setForm(current => ({ ...current, trope: value, tropeAttribute: null, tropeFeats: [], extraFeats: [] }))} /><h2>Raised Attribute</h2><div className="choices">{trope.attributes.map(attribute => <button disabled={attribute === roleAttr} className={tropeAttr === attribute ? 'selected' : ''} onClick={() => set('tropeAttribute', attribute)} key={attribute}>{attribute}{attribute === roleAttr ? ' · already raised' : ''}</button>)}</div></>}
+      {role.actsAsTrope?<p>This Special Role also acts as your Trope, so no separate Trope is chosen.</p>:<><ChoiceGrid label="Tropes" values={Object.fromEntries(Object.entries(tropeChoices).filter(([id])=>id!==firstTropeId))} selected={selectedTropeId} onChange={value => setForm(current => ({ ...current, trope: value, tropeAttribute: null, tropeFeats: [], extraFeats: [] }))} /><h2>Raised Attribute</h2><div className="choices">{trope.attributes.map(attribute => <button disabled={attribute === roleAttr} className={tropeAttr === attribute ? 'selected' : ''} onClick={() => set('tropeAttribute', attribute)} key={attribute}>{attribute}{attribute === roleAttr ? ' · already raised' : ''}</button>)}</div></>}
     </>}
 
     {step === 2 && <div className="form-grid personal-data-grid">
@@ -130,7 +133,7 @@ function ChoiceGrid({ label, values, selected, onChange, alphabetical = false })
   const sources = ['All books', ...new Set(Object.values(values).map(value => value.packName || 'Corebook'))]
   const matches = Object.entries(values).filter(([, value]) => {
     const inSource = source === 'All books' || (value.packName || 'Corebook') === source
-    const words = `${value.name} ${value.tagline || ''} ${value.blurb || ''}`.toLowerCase()
+    const words = `${value.name} ${catalogDescription(value)}`.toLowerCase()
     return inSource && words.includes(query.toLowerCase())
   }).sort(alphabetical ? byName : () => 0)
   return <>
@@ -139,7 +142,7 @@ function ChoiceGrid({ label, values, selected, onChange, alphabetical = false })
       {sources.length > 2 && <div className="source-filter">{sources.map(name => <button key={name} className={source === name ? 'selected' : ''} onClick={() => setSource(name)}>{name}</button>)}</div>}
       <span className="choice-count">Showing {matches.length} of {Object.keys(values).length}</span>
     </div>
-    <div className="card-grid">{matches.map(([id, value]) => <button key={id} className={`choice-card ${id === selected ? 'selected' : ''}`} onClick={() => onChange(id)}><strong>{value.name}</strong><small>{value.tagline || value.blurb}</small><small className="source">{value.packName || 'Corebook'}</small></button>)}</div>
+    <div className="card-grid">{matches.map(([id, value]) => <button key={id} className={`choice-card ${id === selected ? 'selected' : ''}`} onClick={() => onChange(id)}><strong>{value.name}</strong><small>{catalogDescription(value)}</small><small className="source">{value.packName || 'Corebook'}</small></button>)}</div>
   </>
 }
 

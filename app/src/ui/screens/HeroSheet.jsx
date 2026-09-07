@@ -4,6 +4,7 @@ import {actionSuccessProbability,CONDITION_EFFECTS,conditionPenalty,DIFFICULTIES
 import {heroMarkdown} from '../../engine/heroMarkdown.js'
 import {groupFeatIds} from '../../engine/build.js'
 import {isMeleeWeapon,isRangedWeapon,usesMags,weaponModifier} from '../../engine/gearCatalog.js'
+import { availableTropes } from '../../engine/tropes.js'
 import {Banner,Button,Dots,Section,Tracker} from '../components/index.jsx'
 import {describeJob} from '../jobDescriptions.js'
 import {styles,theme} from '../theme.js'
@@ -40,7 +41,7 @@ export default function HeroSheet({hero:incomingHero={},data={},mode='play',onRe
   const roleBase=record(data,'roles',hero.role),role=useMemo(()=>(roleBase.extraTrope||roleBase.doubleTrope)&&hero.roleTrope?`${nameOf(data,'tropes',hero.roleTrope)} ${roleBase.name.replace(/^The /,'')}`:nameOf(data,'roles',hero.role),[data,hero.role,hero.roleTrope]),trope=useMemo(()=>roleBase.actsAsTrope?nameOf(data,'roles',hero.role):nameOf(data,'tropes',hero.trope),[data,hero.role,hero.trope])
   const roleDescription=catalogDescription(roleBase,role),tropeBase=roleBase.actsAsTrope?roleBase:record(data,'tropes',hero.trope),tropeDescription=catalogDescription(tropeBase,trope),jobDescription=describeJob(personal.job)
   const update=(path,value)=>{const next=structuredClone(hero),parts=path.split('.');let parent=next;for(const part of parts.slice(0,-1)){if(parent[part]==null)parent[part]={};parent=parent[part]}parent[parts.at(-1)]=typeof value==='function'?value(parent[parts.at(-1)]):value;setHero(next);onWorkingChange?.(next)}
-  const roleOptions=Object.entries(data.roles?.roles||{}).map(([id,item])=>({id,name:item.name,source:item.packName||'Corebook'})).sort((a,b)=>a.name.localeCompare(b.name,undefined,{sensitivity:'base',numeric:true})),tropeOptions=Object.entries(data.tropes?.tropes||{}).map(([id,item])=>({id,name:item.name,source:item.packName||'Corebook'}))
+  const roleOptions=Object.entries(data.roles?.roles||{}).map(([id,item])=>({id,name:item.name,source:item.packName||'Corebook'})).sort((a,b)=>a.name.localeCompare(b.name,undefined,{sensitivity:'base',numeric:true})),tropeOptions=Object.entries(availableTropes(data.tropes?.tropes,roleBase)).map(([id,item])=>({id,name:item.name,source:item.packName||'Corebook'}))
   const roleRecord=roleBase,tropeRecord=record(data,'tropes',hero.trope),roleTropeRecord=record(data,'tropes',hero.roleTrope),allowedFeats=[...new Set([...(roleRecord.feats||[]),...(roleTropeRecord.feats||[]),...(tropeRecord.feats||[]),...(roleRecord.extraFeatPool==='all'?Object.keys(data.feats?.feats||{}):[]),...feats.filter(id=>id==='too_young_to_die')])]
   const openDice=(preset=null)=>{setDicePreset(preset);setDiceOpen(true)}
   const addWeapon=id=>{const item=structuredClone(data.gear?.weapons?.[id]||data.gear?.gear?.[id]);if(!item)return;if(isRangedWeapon(item))update('gear.guns',[...guns,{id,...item,...(usesMags(item)?{mags:2}:{})}]);else update('gear.items',[...items,{id,...item,bag:false}])}
