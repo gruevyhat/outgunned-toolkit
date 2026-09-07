@@ -6,6 +6,7 @@ import {groupFeatIds} from '../../engine/build.js'
 import {isMeleeWeapon,isRangedWeapon,usesMags,weaponModifier} from '../../engine/gearCatalog.js'
 import { availableTropes } from '../../engine/tropes.js'
 import {Banner,Button,Dots,Section,Tracker} from '../components/index.jsx'
+import {catalogDescription} from '../catalogDescription.js'
 import {describeJob} from '../jobDescriptions.js'
 import {styles,theme} from '../theme.js'
 
@@ -19,13 +20,6 @@ const savedWeaponType=(item,data)=>isRangedWeapon(item)||isRangedWeapon(catalogI
 const groupBy=(values,key)=>values.reduce((groups,value)=>{const group=key(value);(groups[group]??=[]).push(value);return groups},{})
 function record(data,collection,value){const id=typeof value==='string'?value:value?.id,group=data?.[collection]||{},source=group[collection]||group.gear||group;return source[id]||value||{}}
 const nameOf=(data,collection,value)=>display(record(data,collection,value).name,display(value).replace(/[_-]+/g,' '))
-const words=value=>String(value||'').replace(/[_-]+/g,' ').replace(/\b\w/g,letter=>letter.toUpperCase())
-const shortList=values=>values.length<2?values[0]||'':values.length===2?values.join(' and '):`${values.slice(0,-1).join(', ')}, and ${values.at(-1)}`
-function catalogDescription(item,name){
-  if(item.blurb||item.tagline||item.summary)return item.blurb||item.tagline||item.summary
-  const attributes=[...(item.attributes||item.attributeChoices||[]),...(item.attribute?[item.attribute]:[]),...Object.keys(item.fixedAttributes||{})].map(words),skills=(item.skills||[]).slice(0,3).map(words),strengths=[attributes.length&&`${shortList(attributes)}-driven`,skills.length&&`skilled at ${shortList(skills)}`].filter(Boolean)
-  return strengths.length?`${display(name,'This Hero').replace(/^The /,'')}: ${strengths.join(', ')}.`:`${display(name,'This Hero').replace(/^The /,'')} through and through.`
-}
 function encodedHero(hero){if(typeof btoa!=='function')return '';return btoa(unescape(encodeURIComponent(JSON.stringify(hero)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
 
 function EditValue({value,field,editable,onEdit,onReroll}){const [draft,setDraft]=useState(()=>display(value,''));useEffect(()=>setDraft(display(value,'')),[value]);if(editable)return <span className="inline-editor"><input value={draft} aria-label={`Edit ${field}`} onChange={event=>setDraft(event.target.value)} onBlur={()=>onEdit?.(field,draft)} onKeyDown={event=>{if(event.key==='Enter')event.currentTarget.blur();if(event.key==='Escape'){setDraft(display(value,''));event.currentTarget.blur()}}}/>{onReroll&&<button type="button" onClick={()=>onReroll(field)} aria-label={`Reroll ${field}`} style={iconButton}>↻</button>}</span>;return <span style={{display:'inline-flex',alignItems:'center',gap:5,minWidth:0}}><span style={{overflow:'hidden',textOverflow:'ellipsis'}}>{display(value)}</span>{onReroll&&<button type="button" onClick={()=>onReroll(field)} aria-label={`Reroll ${field}`} style={iconButton}>↻</button>}</span>}
@@ -39,7 +33,7 @@ export default function HeroSheet({hero:incomingHero={},data={},mode='play',onRe
   const editing=mode==='edit', personal=hero.personal||{},attrs=hero.attributes||{},skills=hero.skills||{},feats=hero.feats||[],featGroups=groupFeatIds(hero.feats),guns=hero.gear?.guns||[],items=hero.gear?.items||[]
   const itemWeapons=items.map((item,index)=>({item,index,type:savedWeaponType(item,data),collection:'items'})).filter(entry=>entry.type),gearItems=items.map((item,index)=>({item,index})).filter(({item})=>!savedWeaponType(item,data)),weapons=[...guns.map((item,index)=>({item,index,type:'ranged',collection:'guns'})),...itemWeapons]
   const roleBase=record(data,'roles',hero.role),role=useMemo(()=>(roleBase.extraTrope||roleBase.doubleTrope)&&hero.roleTrope?`${nameOf(data,'tropes',hero.roleTrope)} ${roleBase.name.replace(/^The /,'')}`:nameOf(data,'roles',hero.role),[data,hero.role,hero.roleTrope]),trope=useMemo(()=>roleBase.actsAsTrope?nameOf(data,'roles',hero.role):nameOf(data,'tropes',hero.trope),[data,hero.role,hero.trope])
-  const roleDescription=catalogDescription(roleBase,role),tropeBase=roleBase.actsAsTrope?roleBase:record(data,'tropes',hero.trope),tropeDescription=catalogDescription(tropeBase,trope),jobDescription=describeJob(personal.job)
+  const roleDescription=catalogDescription(roleBase),tropeBase=roleBase.actsAsTrope?roleBase:record(data,'tropes',hero.trope),tropeDescription=catalogDescription(tropeBase),jobDescription=describeJob(personal.job)
   const update=(path,value)=>{const next=structuredClone(hero),parts=path.split('.');let parent=next;for(const part of parts.slice(0,-1)){if(parent[part]==null)parent[part]={};parent=parent[part]}parent[parts.at(-1)]=typeof value==='function'?value(parent[parts.at(-1)]):value;setHero(next);onWorkingChange?.(next)}
   const roleOptions=Object.entries(data.roles?.roles||{}).map(([id,item])=>({id,name:item.name,source:item.packName||'Corebook'})).sort((a,b)=>a.name.localeCompare(b.name,undefined,{sensitivity:'base',numeric:true})),tropeOptions=Object.entries(availableTropes(data.tropes?.tropes,roleBase)).map(([id,item])=>({id,name:item.name,source:item.packName||'Corebook'}))
   const roleRecord=roleBase,tropeRecord=record(data,'tropes',hero.trope),roleTropeRecord=record(data,'tropes',hero.roleTrope),allowedFeats=[...new Set([...(roleRecord.feats||[]),...(roleTropeRecord.feats||[]),...(tropeRecord.feats||[]),...(roleRecord.extraFeatPool==='all'?Object.keys(data.feats?.feats||{}):[]),...feats.filter(id=>id==='too_young_to_die')])]

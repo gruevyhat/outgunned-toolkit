@@ -13,14 +13,22 @@ describe('guided catalog descriptions',()=>{
     for(const role of roles)expect(role.tagline||role.blurb||role.summary,role.name).toBeTruthy()
   })
 
-  it('normalizes all-caps taglines to sentence case',()=>{
-    expect(catalogDescription(gameData.roles.roles.commando)).toBe('Strong. Well trained. Unstoppable.')
+  it('keeps the clipped all-caps Role tagline style',()=>{
+    expect(catalogDescription(gameData.roles.roles.commando)).toBe('STRONG. WELL TRAINED. UNSTOPPABLE.')
+    const roles=contentPacks.flatMap(pack=>Object.values(pack.roles))
+    for(const role of roles){const description=catalogDescription(role);expect(description,role.name).toBe(description.toUpperCase());expect(description.match(/\./g)?.length,role.name).toBeGreaterThanOrEqual(3)}
   })
 
-  it('uses authored summaries and curated supplement blurbs',()=>{
+  it('renders Trope descriptions as clipped all-caps taglines',()=>{
+    expect(catalogDescription(gameData.tropes.tropes.bad_to_the_bone)).toBe('DANGEROUS. ARROGANT TROUBLEMAKER. MAY STILL CHOOSE TO DO THE RIGHT THING.')
+    const catalogs=[gameData.tropes.tropes,...contentPacks.map(pack=>pack.tropes)]
+    for(const trope of catalogs.flatMap(catalog=>Object.values(catalog))){const description=catalogDescription(trope);expect(description,trope.name).toBe(description.toUpperCase())}
+  })
+
+  it('uses curated clipped taglines for expansion Roles',()=>{
     const armored=contentPacks.find(pack=>pack.id==='superheroes').roles.superheroes__armored
     const starRaider=contentPacks.find(pack=>pack.id==='supplements').roles.supplements__star_raider
-    expect(catalogDescription(armored)).toBe(armored.summary)
-    expect(catalogDescription(starRaider)).toBe('A daring space pilot, smuggler, or captain who lives for freedom among the stars.')
+    expect(catalogDescription(armored)).toBe('ARMORED. HIGH-TECH. ALWAYS PREPARED.')
+    expect(catalogDescription(starRaider)).toBe('DARING PILOT. FREEDOM SEEKER. AT HOME AMONG THE STARS.')
   })
 })
