@@ -1,27 +1,36 @@
 import React from 'react';
 import { styles, theme } from '../theme.js';
 
-export function Dots({ value = 0, max = 3, label, className = '' }) {
+export function Dots({ value = 0, min = 0, max = 3, label, className = '', onChange }) {
   const count = Math.max(0, Math.min(Number(value) || 0, max));
   return (
     <span className={`dots ${className}`} aria-label={`${label || 'Score'} ${count} of ${max}`} style={{display:'inline-flex',alignItems:'center',gap:4,lineHeight:1}}>
-      {Array.from({ length: max }, (_, i) => (
-        <span
+      {Array.from({ length: max }, (_, i) => {
+        const score=i+1,interactive=Boolean(onChange)&&score>=min,Tag=interactive?'button':'span'
+        return <Tag
+          type={interactive?'button':undefined}
           key={i}
           className={i < count ? 'is-filled' : ''}
-          aria-hidden="true"
+          aria-hidden={interactive?undefined:'true'}
+          aria-label={interactive?`Set ${label||'score'} to ${score}`:undefined}
+          aria-pressed={interactive?count===score:undefined}
+          onClick={interactive?()=>onChange(score):undefined}
           style={{
+            appearance: 'none',
             display: 'inline-block',
             width: 11,
             height: 11,
+            margin: 0,
+            padding: 0,
             boxSizing: 'border-box',
             borderRadius: '50%',
             border: `1.5px solid var(--dot-color, ${theme.colors.ink})`,
             background: i < count ? `var(--dot-fill, ${theme.colors.ink})` : 'transparent',
+            cursor: interactive ? 'pointer' : undefined,
             flex: '0 0 auto',
           }}
         />
-      ))}
+      })}
     </span>
   );
 }
