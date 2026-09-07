@@ -5,6 +5,7 @@ import {heroMarkdown} from '../../engine/heroMarkdown.js'
 import {groupFeatIds} from '../../engine/build.js'
 import {isMeleeWeapon,isRangedWeapon,usesMags,weaponModifier} from '../../engine/gearCatalog.js'
 import {Banner,Button,Dots,Section,Tracker} from '../components/index.jsx'
+import {describeJob} from '../jobDescriptions.js'
 import {styles,theme} from '../theme.js'
 
 const ATTRIBUTE_SKILLS={brawn:['endure','fight','force','stunt'],nerves:['cool','drive','shoot','survival'],smooth:['flirt','leadership','speech','style'],focus:['detect','fix','heal','know'],crime:['awareness','dexterity','stealth','streetwise']}
@@ -37,7 +38,7 @@ export default function HeroSheet({hero:incomingHero={},data={},mode='play',onRe
   const editing=mode==='edit', personal=hero.personal||{},attrs=hero.attributes||{},skills=hero.skills||{},feats=hero.feats||[],featGroups=groupFeatIds(hero.feats),guns=hero.gear?.guns||[],items=hero.gear?.items||[]
   const itemWeapons=items.map((item,index)=>({item,index,type:savedWeaponType(item,data),collection:'items'})).filter(entry=>entry.type),gearItems=items.map((item,index)=>({item,index})).filter(({item})=>!savedWeaponType(item,data)),weapons=[...guns.map((item,index)=>({item,index,type:'ranged',collection:'guns'})),...itemWeapons]
   const roleBase=record(data,'roles',hero.role),role=useMemo(()=>(roleBase.extraTrope||roleBase.doubleTrope)&&hero.roleTrope?`${nameOf(data,'tropes',hero.roleTrope)} ${roleBase.name.replace(/^The /,'')}`:nameOf(data,'roles',hero.role),[data,hero.role,hero.roleTrope]),trope=useMemo(()=>roleBase.actsAsTrope?nameOf(data,'roles',hero.role):nameOf(data,'tropes',hero.trope),[data,hero.role,hero.trope])
-  const roleDescription=catalogDescription(roleBase,role),tropeBase=roleBase.actsAsTrope?roleBase:record(data,'tropes',hero.trope),tropeDescription=catalogDescription(tropeBase,trope),jobDescription=personal.job?`${display(personal.name,'This Hero')} works as ${personal.job}, bringing that experience to every mission.`:'No day job has been chosen yet.'
+  const roleDescription=catalogDescription(roleBase,role),tropeBase=roleBase.actsAsTrope?roleBase:record(data,'tropes',hero.trope),tropeDescription=catalogDescription(tropeBase,trope),jobDescription=describeJob(personal.job)
   const update=(path,value)=>{const next=structuredClone(hero),parts=path.split('.');let parent=next;for(const part of parts.slice(0,-1)){if(parent[part]==null)parent[part]={};parent=parent[part]}parent[parts.at(-1)]=typeof value==='function'?value(parent[parts.at(-1)]):value;setHero(next);onWorkingChange?.(next)}
   const roleOptions=Object.entries(data.roles?.roles||{}).map(([id,item])=>({id,name:item.name,source:item.packName||'Corebook'})).sort((a,b)=>a.name.localeCompare(b.name,undefined,{sensitivity:'base',numeric:true})),tropeOptions=Object.entries(data.tropes?.tropes||{}).map(([id,item])=>({id,name:item.name,source:item.packName||'Corebook'}))
   const roleRecord=roleBase,tropeRecord=record(data,'tropes',hero.trope),roleTropeRecord=record(data,'tropes',hero.roleTrope),allowedFeats=[...new Set([...(roleRecord.feats||[]),...(roleTropeRecord.feats||[]),...(tropeRecord.feats||[]),...(roleRecord.extraFeatPool==='all'?Object.keys(data.feats?.feats||{}):[]),...feats.filter(id=>id==='too_young_to_die')])]
