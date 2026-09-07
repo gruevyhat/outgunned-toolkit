@@ -137,7 +137,8 @@ textarea { min-height: 104px; resize: vertical; }
 .attribute-score { min-height:26px; padding:0 5px; background:#b72b22; color:#fff; clip-path:polygon(0 0,94% 0,100% 50%,94% 100%,0 100%); }
 .attribute-dots > span { width:13px !important; height:13px !important; border-radius:1px !important; transform:rotate(45deg); }
 .attribute-score .attribute-dots { --dot-color:#fff; --dot-fill:#fff; margin-right:10px; }
-.skill-score { border-bottom:1px solid rgba(36,33,29,.12); }
+.skill-score { appearance:none; display:flex; justify-content:space-between; align-items:center; width:100%; padding:6px 0 0; border:0; border-bottom:1px solid rgba(36,33,29,.12); border-radius:0; background:transparent; color:inherit; cursor:pointer; font:inherit; text-align:left; text-transform:none; }
+.skill-score:hover, .skill-score:focus-visible { border-bottom-color:#b72b22; background:rgba(183,43,34,.08); color:#941726; }
 .skill-score .skill-dots > span { width:9px !important; height:9px !important; }
 .empty-state { margin-top: 1rem; padding: 2rem; border: 1px dashed #8d857b; text-align: center; color: #6b6660; }
 
