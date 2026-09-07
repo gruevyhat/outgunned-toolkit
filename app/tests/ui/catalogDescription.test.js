@@ -13,6 +13,10 @@ describe('guided catalog descriptions',()=>{
     for(const role of roles)expect(role.tagline||role.blurb||role.summary,role.name).toBeTruthy()
   })
 
+  it('normalizes all-caps taglines to sentence case',()=>{
+    expect(catalogDescription(gameData.roles.roles.commando)).toBe('Strong. Well trained. Unstoppable.')
+  })
+
   it('uses authored summaries and curated supplement blurbs',()=>{
     const armored=contentPacks.find(pack=>pack.id==='superheroes').roles.superheroes__armored
     const starRaider=contentPacks.find(pack=>pack.id==='supplements').roles.supplements__star_raider
