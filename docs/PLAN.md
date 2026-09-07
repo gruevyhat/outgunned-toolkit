@@ -245,12 +245,13 @@ One landscape Letter page from a `SHEET_LAYOUT` spec of named boxes (points). Re
 
 ## 6. UI spec
 
-- **Shell** (`App.jsx`): `mode: 'menu'|'random'|'guided'|'quiz'|'crew'|'mission'|'oracles'`; hash decode on boot.
-- **Menu**: RANDOM HERO · GUIDED HERO · WHO ARE YOU? · ASSEMBLE A CREW · NEW MISSION · ORACLES. Footer legal line (§10).
+- **Shell** (`App.jsx`): `mode: 'menu'|'random'|'guided'|'quiz'|'crew'|'mission'|'npc'|'combat'|'oracles'`; hash decode on boot; Crew and Combat Simulator share crew state.
+- **Menu**: RANDOM HERO · GUIDED HERO · WHO ARE YOU? · ASSEMBLE A CREW · NEW MISSION · NPC GENERATOR · COMBAT SIMULATOR · ORACLES. Footer legal line (§10).
 - **HeroSheet**: identity strip → attribute blocks with dots → feats → resources row → guns & gear → ride. Fields carry ↻ in random mode and ✎ in edit mode. Buttons: EXPORT PDF, COPY LINK, NEW HERO, ADD TO CREW. Usable at 390 px.
 - **GuidedHero**: 7 steps (§1.2); header shows Role / Trope / points remaining; Trope step greys the Role's attribute with the reason; free-points step blocks maxed Skills; Feats step shows the age-correct slot count; Gear step renders each choice as a picker.
 - **Questionnaire**: one question per screen, progress bar; result screen with score bars and ACCEPT & FINISH (into the wizard at step 2) or JUST ROLL IT.
 - **Crew**: size 2–5, compact cards, per-member open/reroll, export = one PDF per hero.
+- **Combat Simulator**: shared crew builder, Enemy generator controls, configurable scene and table policies, seeded multi-fight report, Markdown export, and a sample combat log. Its pure rules engine and interpretation notes are specified in `COMBAT_SIMULATOR.md`.
 - **Mission**: form mirroring the Assistant Director Sheet with 🎲 beside every rolled field and ROLL EVERYTHING; phase cards; COPY MARKDOWN, COPY LINK.
 - **Oracles**: the standalone rollers with a result log; phone-friendly.
 - **Theme** (`theme.js`): paper `#f3ede0`, ink `#17161a`, red `#c8202f` for banners and primary buttons, muted `#6b6660`; condensed display face (`"Arial Narrow", Impact, sans-serif`), humanist body; diagonal red section banners via `clip-path`; faint film grain via CSS gradient. No external fonts, images or publisher marks.
@@ -304,7 +305,10 @@ T3.1 `mission.js` by TDD; T3.2 Mission screen; T3.3 Oracles screen; T3.4 Markdow
 ### M4 — Crew and polish
 T4.1 `crew.js` + Crew screen; T4.2 edit mode with validation; T4.3 mobile pass; T4.4 single-file build re-verified offline. **Gate**: crew of 5 exports five PDFs; `play/outgunned-tools.html` works from `file://` with zero network requests.
 
-### M5+ — Backlog (each its own milestone when picked up)
+### M5 — Combat Simulator
+T5.1 pure combat engine and rule interpretations; T5.2 deterministic, fuzz and aggregate tests; T5.3 shared Crew/Enemy UI and report; T5.4 responsive browser pass and Markdown export. **Gate**: full test suite and production build are green; 500 fights, sample log and 390 px layout work without console errors or page overflow.
+
+### M6+ — Backlog (each its own milestone when picked up)
 Content packs with a "books in play" selector and `source` on every record: World of Killers (5 Roles, 9 Tropes, Special Roles), Action Flicks 1–3, Outgunned Adventure (own Roles, Fortune Seeker, Adventure generator), Superheroes. Optional fill of the official fillable Hero Sheet from a user-supplied blank (field map in `docs/`). Mission one-pager PDF. Portrait generation (cy_borg pipeline). Advancement tracking.
 
 ---

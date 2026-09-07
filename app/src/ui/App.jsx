@@ -8,6 +8,7 @@ import Mission from './screens/Mission.jsx'
 import Oracles from './screens/Oracles.jsx'
 import Probability from './screens/Probability.jsx'
 import NpcGenerator from './screens/NpcGenerator.jsx'
+import CombatSim from './screens/CombatSim.jsx'
 import {contentPacks,gameData as coreData} from '../data.js'
 import {mergePacks} from '../packData.js'
 import {decodeHash} from '../engine/share.js'
@@ -40,7 +41,8 @@ export default function App(){
   if(mode==='random')return <RandomHero data={data} onBack={home} initial={shared} onAddToCrew={addToCrew} onImportMarkdown={importMarkdown}/>
   if(mode==='guided')return <GuidedHero data={data} onBack={home} defaults={guidedDefaults} onImportMarkdown={importMarkdown}/>
   if(mode==='quiz')return <Questionnaire data={data} onBack={home} onRoll={()=>setMode('random')} onAccept={result=>{setGuidedDefaults({role:result.roles[0].id,trope:result.tropes[0].id});setMode('guided')}}/>
-  if(mode==='crew')return <Crew data={data} onBack={home} initial={crew}/>
+  if(mode==='crew')return <Crew data={data} onBack={home} initial={crew} onChange={setCrew}/>
+  if(mode==='combat')return <CombatSim data={data} onBack={home} crew={crew} onCrewChange={setCrew}/>
   if(mode==='mission')return <Mission data={data} onBack={home} initial={shared}/>
   if(mode==='probability')return <Probability onBack={home}/>
   if(mode==='npc')return <NpcGenerator data={data} onBack={home}/>

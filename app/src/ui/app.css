@@ -353,3 +353,75 @@ textarea { min-height: 104px; resize: vertical; }
   .identity-grid > * { grid-column: auto !important; }
   .random-personal-field button span { display:none; }
 }
+
+/* Combat Simulator */
+.combat-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.25rem; margin-top:.5rem; }
+.combat-side { display:grid; gap:.85rem; align-content:start; min-width:0; }
+.combat-side-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.6rem; }
+.combat-side-header h2 { margin:0; }
+.combat-crew { display:grid; gap:.6rem; }
+.combat-hero { gap:.45rem; padding:.85rem; }
+.combat-hero-head { display:flex; align-items:start; justify-content:space-between; gap:.6rem; }
+.combat-hero-head h3 { margin:0; font-size:1.25rem; }
+.combat-hero-head small { color:#941726; font-weight:900; letter-spacing:.06em; text-transform:uppercase; font-size:.68rem; }
+.combat-hero-head .actions { gap:.3rem; }
+.combat-hero-pools { display:flex; flex-wrap:wrap; gap:.35rem .9rem; color:#514d49; font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em; }
+.combat-hero-pools b { margin-right:.25rem; color:#17161a; font-size:1.05rem; }
+.combat-hero-gear { color:#6b6660; }
+.combat-enemy-controls { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.combat-scenario { margin-top:1.5rem; padding:1rem; border:1px solid #b9ad9b; border-left:7px solid #17161a; border-radius:6px; background:rgba(255,250,240,.8); }
+.combat-scenario h2 { margin-top:0; }
+.combat-scenario h3 { margin:1rem 0 .5rem; color:#941726; font-size:.9rem; letter-spacing:.07em; text-transform:uppercase; }
+.combat-options { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.65rem; }
+.combat-options label { min-width:0; color:#514d49; }
+.combat-options select { width:100%; min-width:0; margin-top:.35rem; }
+.combat-run { font-size:1.05rem; }
+.combat-report { display:grid; gap:1rem; margin-top:1.5rem; padding:clamp(1rem,3vw,1.5rem); border:2px solid #17161a; border-left:10px solid #c8202f; border-radius:7px; background:#fffaf0; box-shadow:5px 5px 0 rgba(23,22,26,.16); }
+.combat-report h3 { margin:.5rem 0 0; color:#941726; font-size:.9rem; letter-spacing:.07em; text-transform:uppercase; }
+.combat-verdict { padding:1rem 1.2rem; border-left:7px solid #17161a; background:#e5dac5; }
+.combat-verdict small { color:#6b6660; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+.combat-verdict h2 { margin:.15rem 0; font-size:clamp(2rem,5vw,3.2rem); line-height:.95; }
+.combat-verdict p { margin:0; color:#514d49; }
+.combat-verdict-pushover { border-color:#315f45; }
+.combat-verdict-fair-fight { border-color:#2674a8; }
+.combat-verdict-deadly { border-color:#d35e1b; }
+.combat-verdict-overwhelming { border-color:#c8202f; background:#f1d5d2; }
+.combat-bar { display:flex; overflow:hidden; border:2px solid #17161a; border-radius:4px; font-size:.78rem; font-weight:900; letter-spacing:.05em; text-transform:uppercase; }
+.combat-bar span { padding:.5rem .6rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#fffaf0; }
+.combat-bar-heroes { background:#315f45; }
+.combat-bar-enemy { background:#941726; }
+.combat-bar-stalemate { background:#6b6660; }
+.combat-stat-row { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.6rem; }
+.combat-stat { display:grid; gap:.15rem; padding:.7rem; border:1px solid #b9ad9b; border-radius:4px; background:#f3ede0; }
+.combat-stat small { color:#6b6660; font-size:.68rem; font-weight:900; letter-spacing:.07em; text-transform:uppercase; }
+.combat-stat strong { color:#941726; font-family:"Arial Narrow",Impact,sans-serif; font-size:1.8rem; line-height:1; }
+.combat-stat span { color:#6b6660; font-size:.75rem; }
+.table-wrap { overflow-x:auto; }
+.combat-table { width:100%; border-collapse:collapse; font-size:.86rem; }
+.combat-table th, .combat-table td { padding:.5rem .55rem; border-bottom:1px solid #c9c0b1; text-align:left; white-space:nowrap; vertical-align:top; }
+.combat-table thead th { font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; color:#6b6660; border-bottom:2px solid #17161a; }
+.combat-table tbody th { font-weight:900; }
+.combat-table tbody th small, .combat-table td small { display:block; color:#6b6660; font-size:.7rem; }
+.combat-table .is-danger { color:#c8202f; font-weight:900; }
+.combat-actions { margin:0; padding-left:1.2rem; columns:2; }
+.combat-log-header { display:flex; align-items:center; justify-content:space-between; gap:.6rem; }
+.combat-log { margin:0; padding:0; list-style:none; max-height:480px; overflow:auto; border:1px solid #b9ad9b; background:#f3ede0; font-size:.84rem; }
+.combat-log li { display:grid; grid-template-columns:110px 1fr; gap:.6rem; padding:.35rem .6rem; border-bottom:1px solid #e5dac5; }
+.combat-log li span { color:#941726; font-size:.68rem; font-weight:900; letter-spacing:.06em; text-transform:uppercase; }
+.combat-log-reaction { background:rgba(148,23,38,.05); }
+.combat-log-teaser { margin:0; color:#514d49; font-style:italic; }
+.combat-log-teaser small { display:block; color:#6b6660; font-style:normal; }
+.combat-assumptions { margin-top:1.5rem; color:#514d49; }
+.combat-assumptions summary { cursor:pointer; font-weight:900; }
+.combat-assumptions ul { padding-left:1.2rem; line-height:1.45; }
+.combat-assumptions small { color:#941726; font-weight:900; }
+
+@media (max-width:860px) {
+  .combat-grid, .combat-stat-row { grid-template-columns:1fr; }
+  .combat-options, .combat-enemy-controls { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .combat-actions { columns:1; }
+  .combat-log li { grid-template-columns:1fr; gap:.1rem; }
+}
+@media (max-width:560px) {
+  .combat-options, .combat-enemy-controls { grid-template-columns:1fr; }
+}

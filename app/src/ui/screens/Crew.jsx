@@ -5,9 +5,10 @@ import { makeRng } from '../../engine/dice.js'
 import { drawHeroSheet } from '../../pdf/heroSheet.js'
 import HeroSheet from './HeroSheet.jsx'
 
-export default function Crew({ data, onBack, initial = [] }) {
+export default function Crew({ data, onBack, initial = [], onChange }) {
   const [size, setSize] = useState(Math.max(2, initial.length || 3))
-  const [crew, setCrew] = useState(initial)
+  const [crew, setCrewState] = useState(initial)
+  const setCrew = update => setCrewState(current => { const next = typeof update === 'function' ? update(current) : update; onChange?.(next); return next })
   const [open, setOpen] = useState(null)
   const build = () => setCrew(generateCrew(makeRng(Date.now()), data, size))
   const reroll = index => setCrew(current => current.map((hero, position) => position === index ? generateRandom(makeRng(Date.now()), data, { role: hero.role, mode: 'crew' }) : hero))

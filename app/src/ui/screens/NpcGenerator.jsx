@@ -99,9 +99,9 @@ export default function NpcGenerator({ data, onBack }) {
   </main>
 }
 
-function EnemyCard({ enemy, onRerollName }) {
+export function EnemyCard({ enemy, onRerollName }) {
   return <article className="npc-card enemy-card">
-    <header><div><small>{title(enemy.type)} · {enemy.template ? `Template ${enemy.template}` : 'Fast opposition'} · {enemy.themeName || title(enemy.theme)}</small><h2>{enemy.name}</h2><p>{enemy.descriptor}.</p></div><button className="roll-button" aria-label="Reroll enemy name and description" title="Reroll name and description" onClick={onRerollName}>↻</button></header>
+    <header><div><small>{title(enemy.type)} · {enemy.template ? `Template ${enemy.template}` : 'Fast opposition'} · {enemy.themeName || title(enemy.theme)}</small><h2>{enemy.name}</h2><p>{enemy.descriptor}.</p></div>{onRerollName && <button className="roll-button" aria-label="Reroll enemy name and description" title="Reroll name and description" onClick={onRerollName}>↻</button>}</header>
     <div className="enemy-stat-row"><Stat label="Attack" value={score(enemy.attack)} /><Stat label="Defense" value={score(enemy.defense)} /><Stat label="Feat budget" value={`${enemy.feats.reduce((sum, feat) => sum + feat.cost, 0)} / ${enemy.featBudget}`} /></div>
     <section><h3>Grit · {enemy.grit}</h3><div className="enemy-grit" aria-label={`${enemy.grit} Grit; Hot Boxes ${enemy.hotBoxes.join(', ') || 'none'}`}>{Array.from({ length: enemy.grit }, (_, index) => <span key={index} className={enemy.hotBoxes.includes(index + 1) ? 'is-hot' : ''}>{enemy.hotBoxes.includes(index + 1) ? '◆' : ''}</span>)}</div><small className="npc-rule-note">Hot Boxes: {enemy.hotBoxes.join(', ') || 'none'}</small></section>
     <NpcList title="Enemy Feats" items={enemy.feats} empty="No Feats — fast and disposable." />

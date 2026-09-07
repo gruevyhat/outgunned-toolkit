@@ -9,6 +9,7 @@ const OPTIONS = [
   ['crew', 'Assemble a Crew', 'Put together a team with no duplicate Roles.'],
   ['mission', 'New Mission', 'Give the Director a mission worth remembering.'],
   ['npc', 'NPC Generator', 'Roll an Enemy or Supporting Character for the next scene.'],
+  ['combat', 'Combat Simulator', 'Pit a crew against an Enemy and see who walks away.'],
   ['oracles', 'Oracles', 'Roll the tables when the story needs a push.'],
   ['probability', 'Never Tell Me the Odds', 'See how every dice pool fares against each difficulty.'],
 ];
